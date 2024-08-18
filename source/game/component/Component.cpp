@@ -1,1 +1,1 @@
-﻿#include "../../../include/game/component/Component.h"
+﻿#include <include/game/component/Component.h>

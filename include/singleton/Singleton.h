@@ -4,9 +4,7 @@
 
 #pragma once
 
-template<class Type>
-Type& PGetSingleton()
-{
-    static Type instance;
-    return instance;
+template <class Type> Type &PGetSingleton() {
+	static Type instance;
+	return instance;
 }

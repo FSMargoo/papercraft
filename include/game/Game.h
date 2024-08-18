@@ -4,62 +4,62 @@
 
 #pragma once
 
-#include  <include/gui/Input.h>
-#include  <include/gui/Button.h>
-#include  <include/gui/TextLabel.h>
-#include  <include/gui/ProgressBar.h>
-#include  <include/gui/ImageLabel.h>
-#include  <include/assets/AssetManager.h>
-#include  <include/singleton/Singleton.h>
-#include  <include/gui/GUIManager.h>
-#include  <include/../thirdparty/mINI/src/mini/ini.h>
-#include  <include/EasyXBase.h>
+#include <include/../thirdparty/mINI/src/mini/ini.h>
+#include <include/EasyXBase.h>
+#include <include/assets/AssetManager.h>
+#include <include/gui/Button.h>
+#include <include/gui/GUIManager.h>
+#include <include/gui/ImageLabel.h>
+#include <include/gui/Input.h>
+#include <include/gui/ProgressBar.h>
+#include <include/gui/TextLabel.h>
+#include <include/singleton/Singleton.h>
 
 /// The game window
-class PLGame : public PWindow
-{
+class PLGame : public PWindow {
 public:
-    /// Create the game window
-    PLGame(const int &Width, const int &Height, const PString &PlayerName);
+	/// Create the game window
+	PLGame(const int &Width, const int &Height, const PString &PlayerName);
 
 public:
-    /// Enter the message loop of game window
-    void Loop();
-    
-private:
-    /// Init the fake load UI
-    void InitFakeLoadUI();
-    /// Load the menu UI
-    void InitLoadMenuUI();
+	/// Enter the message loop of game window
+	void Loop();
 
 private:
-    /// This functino give a smooth interpolation for progress bar
-    /// @param X The X parameter of the smooth function
-    /// @return The result of the interpolation
-    float SmoothInterpolation(const float &X) const;
-    /// Read the puns from the assets
-    void ReadPuns();
+	/// Init the fake load UI
+	void InitFakeLoadUI();
+	/// Load the menu UI
+	void InitLoadMenuUI();
 
 private:
-    PString _playerName;
-    PDevice* _windowDevice;    
-private:
-    std::vector<PGUIObject *> _fakeLoadUI;
-    PImageLabel*              _logo;
-    PProgressBar*             _progressBar;
+	/// This functino give a smooth interpolation for progress bar
+	/// \param X The X parameter of the smooth function
+	/// \return The result of the interpolation
+	float SmoothInterpolation(const float &X) const;
+	/// Read the puns from the assets
+	void ReadPuns();
 
 private:
-    std::vector<PGUIObject *> _menuUI;
-    PImageLabel*              _backgroundImage;
-    PImageLabel*              _gameLogoImage;
-    PButton*                  _playButton;
-    PButton*                  _settingButton;
-    PButton*                  _quitButton;
+	PString	 _playerName;
+	PDevice *_windowDevice;
 
 private:
-    std::vector<std::wstring> _punList;
-    
+	std::vector<PGUIObject *> _fakeLoadUI;
+	PImageLabel				 *_logo;
+	PProgressBar			 *_progressBar;
+
 private:
-    PAssetManager& _assetManager;
-    PGUIManager*   _manager;
+	std::vector<PGUIObject *> _menuUI;
+	PImageLabel				 *_backgroundImage;
+	PImageLabel				 *_gameLogoImage;
+	PButton					 *_playButton;
+	PButton					 *_settingButton;
+	PButton					 *_quitButton;
+
+private:
+	std::vector<std::wstring> _punList;
+
+private:
+	PAssetManager &_assetManager;
+	PGUIManager	  *_manager;
 };

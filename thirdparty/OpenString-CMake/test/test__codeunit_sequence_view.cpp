@@ -3,37 +3,33 @@
 
 using namespace ostr;
 
-TEST(codeunit_sequence_view, subview)
-{
-	SCOPED_DETECT_MEMORY_LEAK()
-	{
-		constexpr auto view = "sequence view"_cuqv;
+TEST(codeunit_sequence_view, subview) {
+	SCOPED_DETECT_MEMORY_LEAK() {
+		constexpr auto					 view	 = "sequence view"_cuqv;
 		constexpr codeunit_sequence_view subview = view.subview(4, 6);
 		EXPECT_EQ(subview, "ence v"_cuqv);
 	}
 	{
-		constexpr auto view = "你好❤a𪚥"_cuqv;
+		constexpr auto					 view	 = "你好❤a𪚥"_cuqv;
 		constexpr codeunit_sequence_view subview = view.subview(2, 11);
 		EXPECT_EQ(subview, "\xA0好❤a\xF0\xAA\x9A"_cuqv);
 	}
 }
 
-TEST(codeunit_sequence_view, index_of)
-{
-	SCOPED_DETECT_MEMORY_LEAK()
-	{
-		constexpr auto view = "This is a long string"_cuqv;
-		constexpr u64 index_1 = view.index_of(" "_cuqv);
+TEST(codeunit_sequence_view, index_of) {
+	SCOPED_DETECT_MEMORY_LEAK() {
+		constexpr auto view	   = "This is a long string"_cuqv;
+		constexpr u64  index_1 = view.index_of(" "_cuqv);
 		EXPECT_EQ(index_1, 4);
 	}
 	{
-		constexpr auto view = "Hello world!"_cuqv;
-		constexpr u64 index = view.index_of("?"_cuqv);
+		constexpr auto view	 = "Hello world!"_cuqv;
+		constexpr u64  index = view.index_of("?"_cuqv);
 		EXPECT_EQ(index, global_constant::INDEX_INVALID);
 	}
 	{
-		constexpr auto view = "{:r}"_cuqv;
-		constexpr u64 index_1 = view.index_of_any("{}"_cuqv);
+		constexpr auto view	   = "{:r}"_cuqv;
+		constexpr u64  index_1 = view.index_of_any("{}"_cuqv);
 		EXPECT_EQ(index_1, 0);
 		constexpr u64 index_2 = view.index_of_any("{}"_cuqv, 1);
 		EXPECT_EQ(index_2, 3);
@@ -57,33 +53,29 @@ TEST(codeunit_sequence_view, index_of)
 	}
 }
 
-TEST(codeunit_sequence_view, split)
-{
-	SCOPED_DETECT_MEMORY_LEAK()
-	{
-		constexpr auto view = "This is a long string"_cuqv;
-		constexpr auto subviews = view.split(" "_cuqv);
-		constexpr std::array<codeunit_sequence_view, 2> answer { "This"_cuqv, "is a long string"_cuqv };
+TEST(codeunit_sequence_view, split) {
+	SCOPED_DETECT_MEMORY_LEAK() {
+		constexpr auto									view	 = "This is a long string"_cuqv;
+		constexpr auto									subviews = view.split(" "_cuqv);
+		constexpr std::array<codeunit_sequence_view, 2> answer{"This"_cuqv, "is a long string"_cuqv};
 		EXPECT_EQ(subviews, answer);
 	}
 	{
-		constexpr auto view = "This is  a long string"_cuqv;
-		constexpr auto subviews = view.split("  "_cuqv);
-		constexpr std::array<codeunit_sequence_view, 2> answer { "This is"_cuqv, "a long string"_cuqv };
+		constexpr auto									view	 = "This is  a long string"_cuqv;
+		constexpr auto									subviews = view.split("  "_cuqv);
+		constexpr std::array<codeunit_sequence_view, 2> answer{"This is"_cuqv, "a long string"_cuqv};
 		EXPECT_EQ(subviews, answer);
 	}
 	{
-		constexpr auto view = "Hello world!"_cuqv;
-		constexpr auto subviews = view.split("?"_cuqv);
-		constexpr std::array<codeunit_sequence_view, 2> answer { "Hello world!"_cuqv, ""_cuqv };
+		constexpr auto									view	 = "Hello world!"_cuqv;
+		constexpr auto									subviews = view.split("?"_cuqv);
+		constexpr std::array<codeunit_sequence_view, 2> answer{"Hello world!"_cuqv, ""_cuqv};
 		EXPECT_EQ(subviews, answer);
 	}
 }
 
-TEST(codeunit_sequence_view, count)
-{
-	SCOPED_DETECT_MEMORY_LEAK()
-	{
+TEST(codeunit_sequence_view, count) {
+	SCOPED_DETECT_MEMORY_LEAK() {
 		constexpr auto view = "This is a long string "_cuqv;
 		EXPECT_EQ(view.count(" "_cuqv), 5);
 		EXPECT_EQ(view.count(" "_cuqv, 5), 4);
@@ -97,26 +89,22 @@ TEST(codeunit_sequence_view, count)
 	}
 }
 
-TEST(codeunit_sequence_view, iterate)
-{
-	SCOPED_DETECT_MEMORY_LEAK()
-	{
-		static constexpr char sequence[] = "sequence view";
+TEST(codeunit_sequence_view, iterate) {
+	SCOPED_DETECT_MEMORY_LEAK() {
+		static constexpr char			 sequence[] = "sequence view";
 		constexpr codeunit_sequence_view view(sequence);
-		u32 index = 0;
-		for(auto u : view)
-		{
+		u32								 index = 0;
+		for (auto u : view) {
 			EXPECT_EQ(u, sequence[index]);
 			++index;
 		}
 	}
 	{
-		static constexpr char sequence[] = "你好❤a𪚥";
+		static constexpr char			 sequence[] = "你好❤a𪚥";
 		constexpr codeunit_sequence_view view(sequence);
 		constexpr codeunit_sequence_view subview = view.subview(2, 11);
-		u32 index = 2;
-		for(auto u : subview)
-		{
+		u32								 index	 = 2;
+		for (auto u : subview) {
 			EXPECT_EQ(u, sequence[index]);
 			++index;
 		}
@@ -124,10 +112,8 @@ TEST(codeunit_sequence_view, iterate)
 	}
 }
 
-TEST(codeunit_sequence_view, equal)
-{
-	SCOPED_DETECT_MEMORY_LEAK()
-	{
+TEST(codeunit_sequence_view, equal) {
+	SCOPED_DETECT_MEMORY_LEAK() {
 		constexpr codeunit_sequence_view view_default_ctor;
 		EXPECT_EQ(view_default_ctor, "");
 	}
@@ -148,18 +134,16 @@ TEST(codeunit_sequence_view, equal)
 	}
 }
 
-TEST(codeunit_sequence_view, trim)
-{
-	SCOPED_DETECT_MEMORY_LEAK()
-	{
+TEST(codeunit_sequence_view, trim) {
+	SCOPED_DETECT_MEMORY_LEAK() {
 		constexpr codeunit_sequence_view view("   123 1234  \t  ");
-		
+
 		constexpr codeunit_sequence_view view_trim_start = view.trim_start();
 		EXPECT_EQ(view_trim_start, "123 1234  \t  "_cuqv);
 
 		constexpr codeunit_sequence_view view_trim_end = view.trim_end();
 		EXPECT_EQ(view_trim_end, "   123 1234"_cuqv);
-		
+
 		constexpr codeunit_sequence_view view_trim = view.trim();
 		EXPECT_EQ(view_trim, "123 1234"_cuqv);
 	}
@@ -177,17 +161,17 @@ TEST(codeunit_sequence_view, trim)
 		EXPECT_EQ(view.trim_end("你 😙"_cuqv), "你 \xE5\xA5"_cuqv);
 		EXPECT_EQ(view.trim("你 😙"_cuqv), "\xE5\xA5"_cuqv);
 	}
-	
+
 	{
 		constexpr auto view = "   \t    "_cuqv;
 		EXPECT_EQ(view.trim_start(), ""_cuqv);
 		EXPECT_TRUE(view.trim_start().is_empty());
-		
+
 		EXPECT_EQ(view.trim_end(), ""_cuqv);
-		
+
 		EXPECT_EQ(view.trim(), ""_cuqv);
 	}
-	
+
 	{
 		constexpr codeunit_sequence_view view;
 		EXPECT_EQ(view, ""_cuqv);
@@ -199,10 +183,8 @@ TEST(codeunit_sequence_view, trim)
 	}
 }
 
-TEST(codeunit_sequence_view, starts_ends_with)
-{
-	SCOPED_DETECT_MEMORY_LEAK()
-	{
+TEST(codeunit_sequence_view, starts_ends_with) {
+	SCOPED_DETECT_MEMORY_LEAK() {
 		constexpr codeunit_sequence_view view("   123 1234  \t  ");
 		EXPECT_TRUE(view.starts_with("  "_cuqv));
 		EXPECT_TRUE(view.starts_with("   "_cuqv));
@@ -226,7 +208,7 @@ TEST(codeunit_sequence_view, starts_ends_with)
 		EXPECT_TRUE(view.ends_with("好😙"_cuqv));
 		EXPECT_TRUE(view.ends_with("你好😙"_cuqv));
 	}
-	
+
 	{
 		constexpr codeunit_sequence_view view;
 		EXPECT_TRUE(view.starts_with(""_cuqv));
