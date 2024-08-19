@@ -91,7 +91,7 @@ void PLGame::Loop() {
 		musicLoadDone = true;
 	}).detach();
 	float progress = 0.0;
-	while (_progressBar->GetPercentage() < 100) {
+	while (_progressBar->GetPercentage() < 100 && !glfwWindowShouldClose(_glfwWindow)) {
 		glfwPollEvents();
 
 		ExMessage message;
@@ -117,12 +117,12 @@ void PLGame::Loop() {
 
 		// We are actually loading resource of music :)
 		if ((progress >= 70 && musicLoadDone) || progress < 70) {
-			progress += 0.2;
+			progress += 0.3;
 		}
 
 		_progressBar->SetPercentage(progress);
 
-		progress += 0.2;
+		progress += 0.3;
 
 		Sleep(16);
 	}
@@ -137,7 +137,7 @@ void PLGame::Loop() {
 	int	 punY			 = GetHeight() * 0.338;
 	auto pun			 = _punList[rand() % _punList.size()].c_str();
 	auto titileAnimation = 0.1f;
-	while (true) {
+	while (!glfwWindowShouldClose(_glfwWindow)) {
 		glfwPollEvents();
 
 		ExMessage message;

@@ -251,6 +251,10 @@ void PLanuncher::Loop() {
 	glfwMakeContextCurrent(_glfwWindow);
 
 	while (_running) {
+		if (glfwWindowShouldClose(_glfwWindow)) {
+			exit(0);
+		}
+
 		glfwPollEvents();
 
 		ExMessage message;
