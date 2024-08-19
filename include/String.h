@@ -7,8 +7,8 @@
 
 #include <stdexcept>
 
-#include "../thirdparty/OpenString-CMake/include/format.h"
-#include "../thirdparty/OpenString-CMake/include/text.h"
+#include <thirdparty/PaperRenderer/third/OpenString-CMake/include/text.h>
+#include <thirdparty/PaperRenderer/third/OpenString-CMake/include/text_view.h>
 
 namespace std {
 /**

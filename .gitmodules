@@ -1,0 +1,3 @@
+[submodule "thirdparty/PaperRenderer"]
+	path = thirdparty/PaperRenderer
+	url = https://github.com/FSMargoo/PaperRenderer.git

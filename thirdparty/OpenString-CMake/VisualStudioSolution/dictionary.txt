@@ -1,4 +1,0 @@
-Hoshizora
-codeunit
-cbegin
-cend
