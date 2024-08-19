@@ -56,7 +56,6 @@ private:
 
 private:
 	PString	 _playerName;
-	PDevice *_windowDevice;
 
 private:
 	std::vector<PGUIObject *> _fakeLoadUI;
@@ -70,6 +69,9 @@ private:
 	PButton					 *_playButton;
 	PButton					 *_settingButton;
 	PButton					 *_quitButton;
+
+private:
+	SkColor _backgroundColor;
 
 private:
 	std::vector<std::wstring> _punList;

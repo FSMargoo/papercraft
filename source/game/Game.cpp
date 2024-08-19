@@ -14,20 +14,19 @@ PLGame::PLGame(const int &Width, const int &Height, const PString &PlayerName)
 	  _assetManager(PGetSingleton<PAssetManager>()) {
 	ReadPuns();
 
-	_windowDevice = GetDevice();
 	_manager	  = new PGUIManager;
 
-	setbkcolor(RGB(240, 56, 67));
+	_backgroundColor = SkColorSetRGB(240, 56, 67);
 
 	InitFakeLoadUI();
 	InitLoadMenuUI();
 }
 void PLGame::InitFakeLoadUI() {
 	_logo		 = new PImageLabel("./assets/ui/voidjang.png");
-	_progressBar = new PProgressBar(getwidth() * 0.8, 20);
-	_logo->Resize(getwidth() * 0.4, getheight() * 0.5333);
-	_logo->Move(getwidth() / 2 - _logo->GetWidth() / 2, getheight() / 2 - _logo->GetHeight() / 2);
-	_progressBar->Move(getwidth() / 2 - _progressBar->GetWidth() / 2, _logo->GetY() + _logo->GetHeight());
+	_progressBar = new PProgressBar(GetWidth() * 0.8, 20);
+	_logo->Resize(GetWidth() * 0.4, GetHeight() * 0.5333);
+	_logo->Move(GetWidth() / 2 - _logo->GetWidth() / 2, GetHeight() / 2 - _logo->GetHeight() / 2);
+	_progressBar->Move(GetWidth() / 2 - _progressBar->GetWidth() / 2, _logo->GetY() + _logo->GetHeight());
 
 	_fakeLoadUI.emplace_back(_logo);
 	_fakeLoadUI.emplace_back(_progressBar);
@@ -49,27 +48,27 @@ void PLGame::InitLoadMenuUI() {
 
 	// 0.639 0.338
 
-	auto buttonWidth  = 0.309 * getwidth();
-	auto buttonHeight = 0.113 * getheight();
-	auto fontSize	  = getwidth() * 0.03125 > 28 ? 28 : getwidth() * 0.03125;
+	auto buttonWidth  = 0.309 * GetWidth();
+	auto buttonHeight = 0.113 * GetHeight();
+	auto fontSize	  = GetWidth() * 0.03125 > 28 ? 28 : GetWidth() * 0.03125;
 	_playButton		  = new PButton(buttonWidth, buttonHeight, "Play");
 	_settingButton	  = new PButton(buttonWidth, buttonHeight, "Setting");
 	_quitButton		  = new PButton(buttonWidth, buttonHeight, "Quit");
 	_backgroundImage  = new PImageLabel("./assets/ui/menu_background.png");
 	_gameLogoImage	  = new PImageLabel("./assets/ui/title.png");
-	_backgroundImage->Resize(getwidth(), getheight());
+	_backgroundImage->Resize(GetWidth(), GetHeight());
 
-	_playButton->FontStyle.lfHeight	   = fontSize;
-	_settingButton->FontStyle.lfHeight = fontSize;
-	_quitButton->FontStyle.lfHeight	   = fontSize;
+	_playButton->TextStyle.setHeight(fontSize);
+	_settingButton->TextStyle.setHeight(fontSize);
+	_quitButton->TextStyle.setHeight(fontSize);
 
-	_playButton->Move(getwidth() / 2 - _playButton->GetWidth() / 2, getheight() * 0.423);
+	_playButton->Move(GetWidth() / 2 - _playButton->GetWidth() / 2, GetHeight() * 0.423);
 	_settingButton->Move(_playButton->GetX(), _playButton->GetY() + _playButton->GetHeight() + 20);
 	_quitButton->Move(_settingButton->GetX(), _settingButton->GetY() + _settingButton->GetHeight() + 20);
 	_quitButton->OnClick.Connect([]() { exit(0); });
 
-	_gameLogoImage->Resize(getwidth() * 0.569, getheight() * 0.1224);
-	_gameLogoImage->Move(getwidth() * 0.234, getheight() * 0.208);
+	_gameLogoImage->Resize(GetWidth() * 0.569, GetHeight() * 0.1224);
+	_gameLogoImage->Move(GetWidth() * 0.234, GetHeight() * 0.208);
 
 	_menuUI.emplace_back(_backgroundImage);
 	_menuUI.emplace_back(_playButton);
@@ -93,23 +92,37 @@ void PLGame::Loop() {
 	}).detach();
 	float progress = 0.0;
 	while (_progressBar->GetPercentage() < 100) {
+		glfwPollEvents();
+
 		ExMessage message;
 		while (peekmessage(&message)) {
 			_manager->OnMessage(message);
 		}
 
-		cleardevice();
+		sk_sp<VRenderTarget> glRenderTarget =
+			sk_make_sp<VRenderTarget, VRenderTargetViewport>({.Width = _width, .Height = _height, .X = 0, .Y = 0});
+		sk_sp<VRenderContext> glContext = sk_make_sp<VRenderContext, const sk_sp<VRenderInterface> &>(_glInterface);
+		sk_sp<VSurface> glSurface =
+			sk_make_sp<VSurface, const sk_sp<VRenderTarget> &, const sk_sp<VRenderContext> &>(glRenderTarget, glContext);
 
-		_progressBar->SetPercentage(SmoothInterpolation(progress));
+		auto canvas = glSurface->GetNativeSurface()->getCanvas();
+		canvas->drawColor(_backgroundColor);
 
-		_manager->OnDraw(_windowDevice);
+		_manager->OnDraw(canvas);
+		canvas->flush();
 
-		_windowDevice->Flush();
+		glContext->GetNativeContext()->flushAndSubmit();
+
+		glfwSwapBuffers(_glfwWindow);
 
 		// We are actually loading resource of music :)
 		if ((progress >= 70 && musicLoadDone) || progress < 70) {
 			progress += 0.2;
 		}
+
+		_progressBar->SetPercentage(progress);
+
+		progress += 0.2;
 
 		Sleep(16);
 	}
@@ -120,53 +133,33 @@ void PLGame::Loop() {
 		object->Show();
 	}
 
-#ifdef _DEBUG
-	LOGFONT debugFont;
-	gettextstyle(&debugFont);
-	_tcscpy_s(debugFont.lfFaceName, _T("Minecraft"));
-	debugFont.lfHeight = 16;
-#endif
-
-	LOGFONT titleFont;
-	gettextstyle(&titleFont);
-	_tcscpy_s(titleFont.lfFaceName, _T("Minecraft"));
-	titleFont.lfHeight		= getwidth() * 0.0375;
-	titleFont.lfEscapement	= 209;
-	titleFont.lfOrientation = 209;
-
-	int	 punX			 = getwidth() * 0.639;
-	int	 punY			 = getheight() * 0.338;
+	int	 punX			 = GetWidth() * 0.639;
+	int	 punY			 = GetHeight() * 0.338;
 	auto pun			 = _punList[rand() % _punList.size()].c_str();
 	auto titileAnimation = 0.1f;
 	while (true) {
-		titleFont.lfEscapement = 140 * cos(titileAnimation) + 209;
+		glfwPollEvents();
 
 		ExMessage message;
 		while (peekmessage(&message)) {
 			_manager->OnMessage(message);
 		}
 
-		cleardevice();
+		sk_sp<VRenderTarget> glRenderTarget =
+			sk_make_sp<VRenderTarget, VRenderTargetViewport>({.Width = _width, .Height = _height, .X = 0, .Y = 0});
+		sk_sp<VRenderContext> glContext = sk_make_sp<VRenderContext, const sk_sp<VRenderInterface> &>(_glInterface);
+		sk_sp<VSurface> glSurface =
+			sk_make_sp<VSurface, const sk_sp<VRenderTarget> &, const sk_sp<VRenderContext> &>(glRenderTarget, glContext);
 
-		_manager->OnDraw(_windowDevice);
+		auto canvas = glSurface->GetNativeSurface()->getCanvas();
+		canvas->drawColor(_backgroundColor);
 
-#ifdef _DEBUG
-		settextstyle(&debugFont);
-		settextcolor(BLACK);
-		outtextxy(getwidth() / 2 - textwidth(_T("PAPERCRAFT DEBUG MODE")) / 2 + 1, 1, _T("PAPERCRAFT DEBUG MODE"));
-		settextcolor(WHITE);
-		outtextxy(getwidth() / 2 - textwidth(_T("PAPERCRAFT DEBUG MODE")) / 2, 0, _T("PAPERCRAFT DEBUG MODE"));
-#endif
+		_manager->OnDraw(canvas);
+		canvas->flush();
 
-		settextstyle(&titleFont);
+		glContext->GetNativeContext()->flushAndSubmit();
 
-		settextcolor(RGB(34, 34, 34));
-		outtextxy(punX + 2, punY + 2, pun);
-
-		settextcolor(YELLOW);
-		outtextxy(punX, punY, pun);
-
-		_windowDevice->Flush();
+		glfwSwapBuffers(_glfwWindow);
 
 		titileAnimation += 0.02f;
 

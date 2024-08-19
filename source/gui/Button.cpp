@@ -13,22 +13,23 @@ PButton::PButton(const int &Width, const int &Height, const PString &String) {
 	InitStyle();
 }
 void PButton::InitStyle() {
-	_backgroundColor	  = RGB(198, 198, 198);
-	_textcolor			  = BLACK;
-	_borderColor		  = RGB(219, 221, 222);
-	_borderUnderlineColor = RGB(110, 112, 115);
-	_rectangleBorderColor = BLACK;
+	_backgroundColor	  = SkColorSetRGB(198, 198, 198);
+	_borderColor		  = SkColorSetRGB(219, 221, 222);
+	_borderUnderlineColor = SkColorSetRGB(110, 112, 115);
+	_rectangleBorderColor = SK_ColorBLACK;
 
-	gettextstyle(&FontStyle);
-	_tcscpy_s(FontStyle.lfFaceName, _T("Minecraft"));
-	FontStyle.lfHeight	= 20;
-	FontStyle.lfQuality = PROOF_QUALITY;
+	ParagraphStyle.setTextAlign(skia::textlayout::TextAlign::kCenter);
+	TextStyle.setColor(SK_ColorBLACK);
+	TextStyle.setFontFamilies({SkString("Minecraft")});
+	TextStyle.setFontSize(16);
+
+	_fontManager	= SkFontMgr::RefDefault();
+	_fontCollection = sk_make_sp<skia::textlayout::FontCollection>();
+	_fontCollection->setDefaultFontManager(_fontManager);
 
 	_colorDelta = 0;
 }
-void PButton::OnDraw() {
-	LINESTYLE LineStyle;
-
+void PButton::OnDraw(SkCanvas *Canvas) {
 	auto backgroundR = GetRValue(_backgroundColor) - _colorDelta;
 	auto backgroundG = GetGValue(_backgroundColor) - _colorDelta;
 	auto backgroundB = GetBValue(_backgroundColor) - _colorDelta;
@@ -37,29 +38,35 @@ void PButton::OnDraw() {
 	backgroundG = backgroundG < 0 ? 0 : backgroundG;
 	backgroundB = backgroundB < 0 ? 0 : backgroundB;
 
-	setlinecolor(_rectangleBorderColor);
-	setfillcolor(RGB(backgroundR, backgroundG, backgroundB));
-	LineStyle.style = PS_SOLID | PS_ENDCAP_SQUARE;
-	setlinestyle(&LineStyle);
-	LineStyle.thickness = 1;
-	setlinestyle(&LineStyle);
+	SkPaint borderPaint;
+	SkPaint fillPaint;
+	borderPaint.setColor(_rectangleBorderColor);
+	borderPaint.setStyle(SkPaint::kStroke_Style);
+	fillPaint.setColor(SkColorSetRGB(backgroundR, backgroundG, backgroundB));
+	fillPaint.setStyle(SkPaint::kFill_Style);
 
-	fillrectangle(_rectangle.left, _rectangle.top, _rectangle.right, _rectangle.bottom);
+	borderPaint.setStrokeWidth(1);
 
-	setlinecolor(_borderColor);
-	line(_rectangle.left + 1, _rectangle.top + 1, _rectangle.right - 1, _rectangle.top + 1);
-	line(_rectangle.left + 1, _rectangle.top + 1, _rectangle.left + 1, _rectangle.bottom - 1);
+	Canvas->drawRect(SkRect(_rectangle.left, _rectangle.top, _rectangle.right, _rectangle.bottom), fillPaint);
+	Canvas->drawRect(SkRect(_rectangle.left, _rectangle.top, _rectangle.right, _rectangle.bottom), borderPaint);
 
-	LineStyle.thickness = 2;
-	setlinestyle(&LineStyle);
-	setlinecolor(_borderUnderlineColor);
+	SkPaint linePaint;
+	linePaint.setColor(_borderColor);
+	Canvas->drawLine(_rectangle.left + 1, _rectangle.top + 1, _rectangle.right - 1, _rectangle.top + 1, linePaint);
+	Canvas->drawLine(_rectangle.left + 1, _rectangle.top + 1, _rectangle.left + 1, _rectangle.bottom - 1, linePaint);
 
-	line(_rectangle.left + 2, _rectangle.bottom - 1, _rectangle.right - 1, _rectangle.bottom - 1);
+	linePaint.setColor(_borderUnderlineColor);
+	linePaint.setStrokeWidth(2);
 
-	settextstyle(&FontStyle);
-	settextcolor(_textcolor);
+	Canvas->drawLine(_rectangle.left + 2, _rectangle.bottom - 1, _rectangle.right - 1, _rectangle.bottom - 1, linePaint);
 
-	drawtext(PStringToCStr<TCHAR>(_text), &_rectangle, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
+	auto builder = skia::textlayout::ParagraphBuilder::make(ParagraphStyle, _fontCollection);
+	builder->pushStyle(TextStyle);
+	builder->addText(_text.c_str());
+
+	auto paragraph = builder->Build();
+	paragraph->layout(GetWidth());
+	paragraph->paint(Canvas, _rectangle.left, _rectangle.top + GetHeight() / 2 - paragraph->getHeight() / 2);
 }
 bool PButton::OnMessage(const ExMessage &Message, PGUIMangerInterface *Interface) {
 	switch (Message.message) {
@@ -129,14 +136,10 @@ PStressButton::PStressButton(const int &Width, const int &Height, const PString 
 	InitStyle();
 }
 void PStressButton::InitStyle() {
-	_backgroundColor	  = RGB(3, 137, 69);
-	_textcolor			  = WHITE;
-	_borderColor		  = RGB(219, 221, 222);
-	_borderUnderlineColor = RGB(110, 112, 115);
-	_rectangleBorderColor = BLACK;
+	_backgroundColor	  = SkColorSetRGB(3, 137, 69);
+	_borderColor		  = SkColorSetRGB(219, 221, 222);
+	_borderUnderlineColor = SkColorSetRGB(110, 112, 115);
+	_rectangleBorderColor = SK_ColorWHITE;
 
-	gettextstyle(&FontStyle);
-	_tcscpy_s(FontStyle.lfFaceName, _T("Minecraft"));
-	FontStyle.lfHeight	= 20;
-	FontStyle.lfQuality = PROOF_QUALITY;
+	TextStyle.setColor(SK_ColorWHITE);
 }

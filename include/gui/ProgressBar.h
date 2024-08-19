@@ -24,7 +24,7 @@ public:
 	PProgressBar(const int &Width, const int &Height);
 
 public:
-	void OnDraw() override;
+	void OnDraw(SkCanvas *Canvas) override;
 
 public:
 	/**
@@ -39,8 +39,8 @@ public:
 	int GetPercentage() const;
 
 public:
-	COLORREF BoundColor;
-	COLORREF FilledColor;
+	SkColor BoundColor;
+	SkColor FilledColor;
 
 public:
 	/**

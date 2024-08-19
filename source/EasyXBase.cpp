@@ -5,6 +5,8 @@
 
 #include <include/EasyXBase.h>
 
+#ifdef _PAPER_USE_EASYX
+
 COLORREF GetARGBColor(const int &a, const int &r, const int &g, const int &b) {
 	// Check for color over range
 
@@ -94,3 +96,5 @@ PWindow::PWindow(const int &Width, const int &Height, const PString &Title) {
 PDevice *PWindow::GetDevice() {
 	return PDevice::MakeFromScreen();
 }
+
+#endif

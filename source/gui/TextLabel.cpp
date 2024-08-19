@@ -10,18 +10,24 @@ PTextLabel::PTextLabel(const PString &Text) : _text(Text) {
 	ResizeAsText();
 }
 void PTextLabel::InitStyle() {
-	gettextstyle(&FontStyle);
-	_tcscpy_s(FontStyle.lfFaceName, _T("Minecraft"));
-	FontStyle.lfQuality = PROOF_QUALITY;
-	FontStyle.lfHeight	= 16;
+	ParagraphStyle.setTextAlign(skia::textlayout::TextAlign::kLeft);
+	TextStyle.setColor(SK_ColorWHITE);
+	TextStyle.setFontFamilies({SkString("Minecraft")});
+	TextStyle.setFontSize(14);
 
-	FontColor = WHITE;
+	_fontManager	= SkFontMgr::RefDefault();
+	_fontCollection = sk_make_sp<skia::textlayout::FontCollection>();
+	_fontCollection->setDefaultFontManager(_fontManager);
 }
 void PTextLabel::ResizeAsText() {
-	settextstyle(&FontStyle);
+	auto builder = skia::textlayout::ParagraphBuilder::make(ParagraphStyle, _fontCollection);
+	builder->pushStyle(TextStyle);
+	builder->addText(_text.c_str());
 
-	auto wideFormat = PStringToCStr<TCHAR>(_text);
-	Resize(textwidth(wideFormat), textheight(wideFormat));
+	auto paragraph = builder->Build();
+	// Set the value large enough for measure size
+	paragraph->layout(1000.f);
+	Resize(paragraph->getMaxWidth(), paragraph->getHeight());
 }
 void PTextLabel::SetText(const PString &Text) {
 	_text = Text;
@@ -29,9 +35,17 @@ void PTextLabel::SetText(const PString &Text) {
 PString PTextLabel::GetText() const {
 	return _text;
 }
-void PTextLabel::OnDraw() {
-	settextstyle(&FontStyle);
-	settextcolor(FontColor);
+void PTextLabel::OnDraw(SkCanvas *Canvas) {
+	SkPaint textPaint;
 
-	drawtext(PStringToCStr<TCHAR>(_text), &_rectangle, DT_LEFT | DT_WORDBREAK);
+	textPaint.setColor(SK_ColorWHITE);
+	textPaint.setStrokeWidth(2);
+
+	auto builder = skia::textlayout::ParagraphBuilder::make(ParagraphStyle, _fontCollection);
+	builder->pushStyle(TextStyle);
+	builder->addText(_text.c_str());
+
+	auto paragraph = builder->Build();
+	paragraph->layout(GetWidth());
+	paragraph->paint(Canvas, _rectangle.left, _rectangle.top);
 }

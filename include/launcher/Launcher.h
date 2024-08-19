@@ -103,7 +103,6 @@ private:
 	PTextLabel	  *_playerNameText;
 	PInput		  *_playerNameInput;
 	PImageLabel	  *_background;
-	PDevice		  *_windowDevice;
 	PGUIManager	  *_manager;
 
 	PAssetManager &_assetManager;

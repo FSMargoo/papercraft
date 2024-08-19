@@ -6,11 +6,14 @@
 #pragma once
 
 #include <conio.h>
-#include <graphics.h>
 #include <memory>
 #include <string>
 
-#include "String.h"
+#include <include/String.h>
+
+#ifdef _PAPER_USER_EASYX
+
+#include <graphics.h>
 
 #define GetAValue(color) (((color) >> 24) & 0xFF)
 
@@ -178,3 +181,7 @@ public:
 	 */
 	static PDevice *GetDevice();
 };
+
+#else
+#	include <include/SkiaPaperBase.h>
+#endif

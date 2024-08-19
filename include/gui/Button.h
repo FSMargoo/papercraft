@@ -34,10 +34,7 @@ public:
 	virtual ~PButton() override = default;
 
 public:
-	LOGFONT FontStyle;
-
-public:
-	void OnDraw() override;
+	void OnDraw(SkCanvas *Canvas) override;
 	bool OnMessage(const ExMessage &Message, PGUIMangerInterface *Interface) override;
 	void Reset() override;
 
@@ -63,6 +60,14 @@ public:
 	 */
 	PEvent<> OnHover;
 
+public:
+	skia::textlayout::ParagraphStyle ParagraphStyle;
+	skia::textlayout::TextStyle		 TextStyle;
+
+private:
+	sk_sp<SkFontMgr>						_fontManager;
+	sk_sp<skia::textlayout::FontCollection> _fontCollection;
+
 protected:
 	/**
 	 * Init the style of the button
@@ -70,11 +75,11 @@ protected:
 	virtual void InitStyle();
 
 protected:
-	COLORREF _backgroundColor;
-	COLORREF _borderColor;
-	COLORREF _borderUnderlineColor;
-	COLORREF _textcolor;
-	COLORREF _rectangleBorderColor;
+	SkColor _backgroundColor;
+	SkColor _borderColor;
+	SkColor _borderUnderlineColor;
+	SkColor _textcolor;
+	SkColor _rectangleBorderColor;
 
 private:
 	int			  _colorDelta;

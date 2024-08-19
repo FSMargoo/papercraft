@@ -133,9 +133,10 @@ int WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 int WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	try {
-#ifndef _DEBUG
+#ifndef _OKAY
 		PLanuncher launcher;
 		launcher.Loop();
+		launcher.Close();
 		auto   gameSize = launcher.GetGameScreenSize();
 		PLGame gameWindow(std::get<0>(gameSize), std::get<1>(gameSize), launcher.GetPlayerName());
 		gameWindow.Loop();

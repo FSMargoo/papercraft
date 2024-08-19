@@ -31,11 +31,10 @@ void PGUIManager::RemoveObject(PGUIObject *Object) {
 		}
 	}
 }
-void PGUIManager::OnDraw(PDevice *Device) {
-	Device->RaiseAsWorking();
+void PGUIManager::OnDraw(SkCanvas *Canvas) {
 	for (auto &object : _child) {
 		if (object->IsVisible()) {
-			object->OnDraw();
+			object->OnDraw(Canvas);
 		}
 	}
 }

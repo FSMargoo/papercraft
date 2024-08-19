@@ -12,23 +12,22 @@ PProgressBar::PProgressBar(const int &Width, const int &Height) : _percentage(0)
 	Resize(Width, Height);
 	InitStyle();
 }
-void PProgressBar::OnDraw() {
-	LINESTYLE lineStyle;
-	getlinestyle(&lineStyle);
-	setlinecolor(WHITE);
+void PProgressBar::OnDraw(SkCanvas *Canvas) {
+	SkPaint borderPaint;
 
-	lineStyle.thickness = 2;
+	borderPaint.setColor(BoundColor);
+	borderPaint.setStyle(SkPaint::kStroke_Style);
+	borderPaint.setStrokeWidth(2);
 
-	setlinestyle(&lineStyle);
-	setlinecolor(BoundColor);
+	Canvas->drawRect(SkRect(_rectangle.left, _rectangle.top, _rectangle.right, _rectangle.bottom), borderPaint);
 
-	rectangle(_rectangle.left, _rectangle.top, _rectangle.right, _rectangle.bottom);
-
-	setfillcolor(FilledColor);
+	SkPaint fillPaint;
+	borderPaint.setStyle(SkPaint::kFill_Style);
+	fillPaint.setColor(FilledColor);
 
 	if (_percentage > 0) {
 		auto delta = (_rectangle.right - _rectangle.left - 7) * _percentage / 100.f;
-		solidrectangle(_rectangle.left + 3, _rectangle.top + 3, _rectangle.left + 3 + delta, _rectangle.bottom - 4);
+		Canvas->drawRect(SkRect(_rectangle.left + 3, _rectangle.top + 3, _rectangle.left + 3 + delta, _rectangle.bottom - 3), fillPaint);
 	}
 }
 void PProgressBar::SetPercentage(const float &Percentage) {
@@ -48,6 +47,6 @@ int PProgressBar::GetPercentage() const {
 	return _percentage;
 }
 void PProgressBar::InitStyle() {
-	BoundColor	= WHITE;
-	FilledColor = WHITE;
+	BoundColor	= SK_ColorWHITE;
+	FilledColor = SK_ColorWHITE;
 }

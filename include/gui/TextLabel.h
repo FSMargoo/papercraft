@@ -33,11 +33,15 @@ public:
 	PString GetText() const;
 
 public:
-	void OnDraw() override;
+	void OnDraw(SkCanvas *Canvas) override;
 
 public:
-	LOGFONT	 FontStyle;
-	COLORREF FontColor;
+	skia::textlayout::ParagraphStyle ParagraphStyle;
+	skia::textlayout::TextStyle		 TextStyle;
+
+private:
+	sk_sp<SkFontMgr>						_fontManager;
+	sk_sp<skia::textlayout::FontCollection> _fontCollection;
 
 private:
 	/**

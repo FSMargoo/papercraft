@@ -56,7 +56,7 @@ public:
 	void SetMaxLength(const int &Length);
 
 public:
-	void OnDraw() override;
+	void OnDraw(SkCanvas *Canvas) override;
 	bool OnMessage(const ExMessage &Message, PGUIMangerInterface *Interface) override;
 
 public:
@@ -70,7 +70,12 @@ public:
 	PEvent<PString> OnText;
 
 public:
-	LOGFONT FontStyle;
+	skia::textlayout::ParagraphStyle ParagraphStyle;
+	skia::textlayout::TextStyle		 TextStyle;
+
+private:
+	sk_sp<SkFontMgr>						_fontManager;
+	sk_sp<skia::textlayout::FontCollection> _fontCollection;
 
 private:
 	/**

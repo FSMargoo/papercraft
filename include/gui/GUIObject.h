@@ -47,8 +47,9 @@ public:
 public:
 	/**
 	 * When the object was on drawing this function will be called
+	 * @param Canvas The canvas to be drawn on
 	 */
-	 virtual void OnDraw() = 0;
+	 virtual void OnDraw(SkCanvas *Canvas) = 0;
 	/**
 	 * When the object was on the message, this function
 	 * will be called

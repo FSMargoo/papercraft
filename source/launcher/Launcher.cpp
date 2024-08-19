@@ -8,8 +8,6 @@
 PLanuncher::PLanuncher() : PWindow(400, 600, "PaperCraft Launcher"), _assetManager(PGetSingleton<PAssetManager>()) {
 	_running = true;
 
-	_windowDevice = GetDevice();
-
 	_gameWindowWidth  = 640;
 	_gameWindowHeight = 480;
 
@@ -26,23 +24,23 @@ void PLanuncher::InitControl() {
 
 	_background							= new PImageLabel("./assets/ui/launcher/startup_background.png");
 	_gameScreenText						= new PTextLabel("Game Screen Size");
-	_gameScreenText->FontStyle.lfHeight = 14;
+	_gameScreenText->TextStyle.setHeight(14);
 	_gameScreenText->ResizeAsText();
 	_gameScreenText->Move(32, 219);
 
 	_gameScreenButton					  = new PButton(342, 35, "");
-	_gameScreenButton->FontStyle.lfHeight = 18;
+	_gameScreenButton->TextStyle.setHeight(18);
 	_gameScreenButton->SetText(ostr::format("{}x{}", _gameWindowWidth, _gameWindowHeight));
 	_gameScreenButton->Move(32, 242);
 	_gameScreenButton->OnClick.Connect(this, &PLanuncher::OnGameScreenButtonClicked);
 
 	_playerNameText						= new PTextLabel("Player Name");
-	_playerNameText->FontStyle.lfHeight = 14;
+	_playerNameText->TextStyle.setHeight(14);
 	_playerNameText->ResizeAsText();
 	_playerNameText->Move(32, 300);
 
 	_playerNameInput					 = new PInput(342, 35, "Input your game player name");
-	_playerNameInput->FontStyle.lfHeight = 18;
+	_playerNameInput->TextStyle.setHeight(18);
 	_playerNameInput->SetMaxLength(12);
 	_playerNameInput->Move(32, 324);
 	_playerNameInput->SetText(_config["launcher"]["name"].c_str());
@@ -50,7 +48,7 @@ void PLanuncher::InitControl() {
 	_playerNameInput->OnFinish.Connect(this, &PLanuncher::OnNameChanged);
 
 	_launchButton					  = new PStressButton(227, 55, "LAUNCH THE GAME");
-	_launchButton->FontStyle.lfHeight = 24;
+	_launchButton->TextStyle.setHeight(24);
 	_launchButton->Move(91, 431);
 	_launchButton->OnClick.Connect(this, &PLanuncher::OnLaunch);
 
@@ -64,7 +62,7 @@ void PLanuncher::InitControl() {
 	_i1280x960	= new PButton(351, 30, "1280x960");
 	_i640x480	= new PButton(351, 30, "640x480");
 
-	_i4096x3112->Move(getwidth() / 2 - _i4096x3112->GetWidth() / 2, 240);
+	_i4096x3112->Move(GetWidth() / 2 - _i4096x3112->GetWidth() / 2, 240);
 	_i3656x2664->Move(_i4096x3112->GetX(), _i4096x3112->GetY() + _i4096x3112->GetHeight() + 20);
 	_i2560x1440->Move(_i3656x2664->GetX(), _i3656x2664->GetY() + _i3656x2664->GetHeight() + 20);
 	_i1920x1080->Move(_i2560x1440->GetX(), _i2560x1440->GetY() + _i2560x1440->GetHeight() + 20);
@@ -85,7 +83,7 @@ void PLanuncher::InitControl() {
 	_i1280x960->Hide();
 	_i640x480->Hide();
 
-	_sizeTitleText->Move(getwidth() / 2 - _sizeTitleText->GetWidth() / 2, 218);
+	_sizeTitleText->Move(GetWidth() / 2 - _sizeTitleText->GetWidth() / 2, 218);
 
 	_windowSizeBackground->Hide();
 	_sizeTitleText->Hide();
@@ -250,17 +248,31 @@ void PLanuncher::OnNameChanged(PString Name) {
 	_configFile->write(_config);
 }
 void PLanuncher::Loop() {
+	glfwMakeContextCurrent(_glfwWindow);
+
 	while (_running) {
+		glfwPollEvents();
+
 		ExMessage message;
 		while (peekmessage(&message)) {
 			_manager->OnMessage(message);
 		}
 
-		cleardevice();
+		sk_sp<VRenderTarget> glRenderTarget =
+			sk_make_sp<VRenderTarget, VRenderTargetViewport>({.Width = _width, .Height = _height, .X = 0, .Y = 0});
+		sk_sp<VRenderContext> glContext = sk_make_sp<VRenderContext, const sk_sp<VRenderInterface> &>(_glInterface);
+		sk_sp<VSurface> glSurface =
+			sk_make_sp<VSurface, const sk_sp<VRenderTarget> &, const sk_sp<VRenderContext> &>(glRenderTarget, glContext);
+		auto canvas = glSurface->GetNativeSurface()->getCanvas();
 
-		_manager->OnDraw(_windowDevice);
-		_windowDevice->Flush();
+		_manager->OnDraw(canvas);
 
-		Sleep(16);
+		canvas->flush();
+
+		glContext->GetNativeContext()->flushAndSubmit();
+
+		glfwSwapBuffers(_glfwWindow);
+
+		Sleep(1);
 	}
 }

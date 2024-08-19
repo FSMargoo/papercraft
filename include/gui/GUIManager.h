@@ -56,9 +56,9 @@ public:
 	void OnMessage(ExMessage &Message);
 	/**
 	 * Draw the GUI on the specified device
-	 * @param Device The device to be drawn
+	 * @param Canvas The canvas to be drawn
 	 */
-	void OnDraw(PDevice *Device);
+	void OnDraw(SkCanvas *Canvas);
 
 private:
 	PGUIObject				 *_focus;

@@ -9,7 +9,7 @@ PAssetManager::PAssetManager() {
 	LoadAssets("./assets/textures/blocks", _blockAssets);
 	LoadAssets("./assets/textures/items", _itemAssets);
 
-	AddFontResource(_T("./assets/font/minecraft_font.ttf"));
+	AddFontResource(TEXT("./assets/font/minecraft_font.ttf"));
 }
 const PImage *PAssetManager::GetBlock(const PString &Id) const {
 	return _blockAssets.find(Id)->second;
@@ -57,5 +57,5 @@ void PAssetManager::LoadAssets(const PString &RootPath, std::unordered_map<PStri
 	}
 }
 PAssetManager::~PAssetManager() {
-	RemoveFontResource(_T("./assets/font/minecraft_font.ttf"));
+	RemoveFontResource(TEXT("./assets/font/minecraft_font.ttf"));
 }

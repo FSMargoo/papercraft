@@ -29,10 +29,9 @@ public:
 	~PImageLabel() override;
 
 public:
-	void OnDraw() override;
+	void OnDraw(SkCanvas *Canvas) override;
 
 private:
 	PImage	*_image;
-	PDevice *_device;
 	bool	 _destructImage;
 };
