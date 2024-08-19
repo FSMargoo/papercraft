@@ -16,6 +16,8 @@ include_directories(./thirdparty/mINI/src)
 
 add_subdirectory(./thirdparty/OpenString-CMake)
 
-add_executable(PaperCraft main.cpp ${PaperHeader} ${PaperSource})
+add_executable(PaperCraft main.cpp ${PaperHeader} ${PaperSource}
+        include/game/component/Object.h
+        source/game/component/Object.cpp)
 
 target_link_libraries(PaperCraft PRIVATE libostr)

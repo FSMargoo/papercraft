@@ -1,4 +1,9 @@
-#include "../../include/gui/ProgressBar.h"
+/**
+* \file ProgressBar.cpp
+* \brief The progress bar control in paper library
+*/
+
+#include <include/gui/ProgressBar.h>
 
 PProgressBar::PProgressBar() : _percentage(0) {
 	InitStyle();

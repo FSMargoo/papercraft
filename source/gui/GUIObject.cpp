@@ -1,6 +1,11 @@
-﻿#include <stdexcept>
+﻿/**
+* \file GUIObject.cpp
+* \brief The GUI base object definition
+*/
 
-#include "../../include/gui/GUIObject.h"
+#include <stdexcept>
+
+#include <include/gui/GUIObject.h>
 
 PGUIObject::PGUIObject() : _rectangle({0, 0, 0, 0}), _visible(true) {
 }

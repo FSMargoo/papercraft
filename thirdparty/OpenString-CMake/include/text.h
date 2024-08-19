@@ -135,7 +135,7 @@ public:
 	text				   &write_at(u64 index, codepoint cp) noexcept;
 	[[nodiscard]] codepoint read_at(u64 index) const noexcept;
 
-	/// \note: Please use operator[] for read-only access, or use write_at method for write access.
+	// \note: Please use operator[] for read-only access, or use write_at method for write access.
 	[[nodiscard]] codepoint operator[](u64 index) const noexcept;
 
 	text &reverse(u64 from = 0, u64 size = SIZE_MAX) noexcept;

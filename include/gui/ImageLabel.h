@@ -1,23 +1,30 @@
-﻿///
-/// The image label control
-///
+﻿/**
+ * \file ImageLabel.h
+ * \brief The image label control
+ */
 
 #pragma once
 
-#include "GUIObject.h"
+#include <include/gui/GUIObject.h>
 
-/// The image label which display a image on the GUI,
-/// which support the alpha blending and resizing
+/**
+ * The image label which display a image on the GUI,
+ * which support the alpha blending and resizing
+ */
 class PImageLabel : public PGUIObject {
 public:
-	/// Create the image label from the image path, the image label
-	/// will automatically resize into the size of the image, the
-	/// lifetime of the inner image is considered by image label
-	/// \param ImagePath The path of the image file
+	/**
+	 * Create the image label from the image path, the image label
+	 * will automatically resize into the size of the image, the
+	 * lifetime of the inner image is considered by image label
+	 * @param ImagePath The path of the image file
+	 */
 	PImageLabel(const PString &ImagePath);
-	/// Create the image with the image pointer
-	/// \param Image The image pointer referred to the image object,
-	/// the lifetime of the image object is not considered by image label
+	/**
+	 * Create the image with the image pointer
+	 * @param Image The image pointer referred to the image object,
+	 * the lifetime of the image object is not considered by image label
+	 */
 	PImageLabel(PImage *Image);
 	~PImageLabel() override;
 

@@ -1,6 +1,7 @@
-﻿///
-/// The helper class for singleton pattern in paper library
-///
+﻿/**
+ * \file Singleton.h
+ * \brief The helper class for singleton pattern in paper library
+ */
 
 #pragma once
 

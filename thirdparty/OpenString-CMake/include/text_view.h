@@ -192,7 +192,7 @@ public:
 	// This is not allowed for getting rid of misuse.
 	[[nodiscard]] const char *c_str() const noexcept = delete;
 
-	/// \return Is this an empty string
+	// @return Is this an empty string
 	[[nodiscard]] constexpr bool is_empty() const noexcept {
 		return this->view_.is_empty();
 	}

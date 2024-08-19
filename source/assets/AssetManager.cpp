@@ -1,4 +1,9 @@
-﻿#include "../../include/assets/AssetManager.h"
+﻿/**
+ * \file AssetManager.cpp
+ * \brief The asset manager in paper library
+ */
+
+#include <include/assets/AssetManager.h>
 
 PAssetManager::PAssetManager() {
 	LoadAssets("./assets/textures/blocks", _blockAssets);

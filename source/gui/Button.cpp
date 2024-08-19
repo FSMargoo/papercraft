@@ -1,4 +1,9 @@
-﻿#include "../../include/gui/Button.h"
+﻿/**
+* \file Button.cpp
+* \brief The button control in paper library
+*/
+
+#include <include/gui/Button.h>
 
 PButton::PButton(const int &Width, const int &Height, const PString &String) {
 	Resize(Width, Height);

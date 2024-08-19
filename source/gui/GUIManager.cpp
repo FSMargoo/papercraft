@@ -1,4 +1,9 @@
-﻿#include "../../include/gui/GUIManager.h"
+﻿/**
+* \file GUIManager.cpp
+* \brief The GUI manager class definition
+*/
+
+#include <include/gui/GUIManager.h>
 
 PGUIManager::PGUIManager() {
 	_focus = nullptr;

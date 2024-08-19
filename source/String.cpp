@@ -1,4 +1,9 @@
-﻿#include "../include/String.h"
+﻿/**
+ * \file String.h
+ * \brief The basic definition of string
+ */
+
+#include <include/String.h>
 
 template <> const char *PStringToCStr(const PString &String) {
 	// Tips:

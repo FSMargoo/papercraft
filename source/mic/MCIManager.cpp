@@ -1,4 +1,9 @@
-﻿#include "../../include/mic/MCIManager.h"
+﻿/**
+ * \file MCIManager.cpp
+ * \brief MCI Device manager for paper library
+ */
+
+#include <include/mic/MCIManager.h>
 
 PMCIInstance::PMCIInstance(PString Alias) : _alias(std::move(Alias)), _invalid(true) {
 }

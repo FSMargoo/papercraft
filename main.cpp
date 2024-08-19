@@ -1,16 +1,17 @@
 #include <include/game/Game.h>
 #include <include/launcher/Launcher.h>
 
-///
-/// Feel free to delete the code inside the #ifdef
-/// since it is onlt for demo!
-///
+
+/**
+ * Feel free to delete the code inside the #ifdef
+ * since it is onlt for demo!
+ */
 #ifdef UIDemo
-/// The example class for UI creation
+* The example class for UI creation
 class UIExample {
 public:
 	UIExample() {
-		/// Create a window in specified size
+		* Create a window in specified size
 		PWindow window(429, 365, "UI Example");
 
 		// Create a GUI control manager to control repaint progress and message loop

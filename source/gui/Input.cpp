@@ -1,4 +1,9 @@
-﻿#include "../../include/gui/Input.h"
+﻿/**
+* \file Input.cpp
+* \brief The input control in paper library
+*/
+
+#include <include/gui/Input.h>
 
 PInput::PInput(const int &Width, const int &Height) {
 	Resize(Width, Height);

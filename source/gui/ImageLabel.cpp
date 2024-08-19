@@ -1,4 +1,9 @@
-﻿#include "../../include/gui/ImageLabel.h"
+﻿/**
+ * \file ImageLabel.cpp
+ * \brief The image label control
+ */
+
+#include <include/gui/ImageLabel.h>
 
 #pragma comment(lib, "MSIMG32.LIB")
 

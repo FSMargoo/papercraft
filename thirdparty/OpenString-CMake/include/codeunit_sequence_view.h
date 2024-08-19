@@ -87,7 +87,7 @@ public:
 	// this is not guaranteed to be null-terminated
 	[[nodiscard]] const char *data() const noexcept;
 
-	/// \return Is this an empty string
+	// @return Is this an empty string
 	[[nodiscard]] constexpr bool is_empty() const noexcept;
 
 	[[nodiscard]] constexpr codeunit_sequence_view subview(const u64 from, const u64 size = SIZE_MAX) const noexcept;
@@ -104,10 +104,10 @@ public:
 	 * \brief this is learned from FBString in folly
 	 * see https://github.com/facebook/folly/blob/main/folly/FBString.h
 	 * which is a Boyer-Moore-like trick
-	 * \param pattern string which to search in this string
-	 * \param from search range start index
-	 * \param size search range size
-	 * \return index where searched, return global_constant::INDEX_INVALID_INDEX if not found
+	 * @param pattern string which to search in this string
+	 * @param from search range start index
+	 * @param size search range size
+	 * @return index where searched, return global_constant::INDEX_INVALID_INDEX if not found
 	 */
 	[[nodiscard]] constexpr u64 index_of(const codeunit_sequence_view &pattern, const u64 from = 0,
 										 const u64 size = SIZE_MAX) const noexcept;

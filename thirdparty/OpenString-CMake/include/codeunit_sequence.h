@@ -82,26 +82,26 @@ public:
 	codeunit_sequence_view view() && = delete;
 
 	/**
-	 * \return The length of this codeunit sequence
+	 * @return The length of this codeunit sequence
 	 */
 	[[nodiscard]] u64 size() const noexcept;
 
 	/**
-	 * \return Whether this codeunit sequence is empty or not.
+	 * @return Whether this codeunit sequence is empty or not.
 	 */
 	[[nodiscard]] bool is_empty() const noexcept;
 
 	/**
-	 * \param rhs Another codeunit sequence
-	 * \return Whether two codeunit sequences are equal.
+	 * @param rhs Another codeunit sequence
+	 * @return Whether two codeunit sequences are equal.
 	 */
 	[[nodiscard]] bool operator==(const codeunit_sequence_view &rhs) const noexcept;
 	[[nodiscard]] bool operator==(const codeunit_sequence &rhs) const noexcept;
 	[[nodiscard]] bool operator==(const char *rhs) const noexcept;
 
 	/**
-	 * \param rhs Another codeunit sequence
-	 * \return Whether two codeunit sequences are different.
+	 * @param rhs Another codeunit sequence
+	 * @return Whether two codeunit sequences are different.
 	 */
 	[[nodiscard]] bool operator!=(const codeunit_sequence_view &rhs) const noexcept;
 	[[nodiscard]] bool operator!=(const codeunit_sequence &rhs) const noexcept;
@@ -109,7 +109,7 @@ public:
 
 	/**
 	 * Append a codeunit sequence back.
-	 * \return ref of this codeunit sequence.
+	 * @return ref of this codeunit sequence.
 	 */
 	codeunit_sequence &append(const codeunit_sequence_view &rhs) noexcept;
 	codeunit_sequence &append(const codeunit_sequence &rhs) noexcept;
@@ -117,13 +117,13 @@ public:
 	codeunit_sequence &append(const char *rhs) noexcept;
 	/**
 	 * \brief Append amount of same character after this sequence.
-	 * \param codeunit Character to fill in.
+	 * @param codeunit Character to fill in.
 	 * Specially, if character is '\0', it will still resize the sequence,
 	 * but will not set memory to 0, so you can use like
 	 * c.append('\0', 1024);
 	 * for like buffering file or network streaming in.
-	 * \param count How many character to fill in.
-	 * \return self
+	 * @param count How many character to fill in.
+	 * @return self
 	 */
 	codeunit_sequence &append(char codeunit, u64 count = 1) noexcept;
 
@@ -140,9 +140,9 @@ public:
 	 *
 	 * Example: codeunit_sequence("codeunit_sequence").subsequence(2, 3) == "ar_";
 	 *
-	 * \param from start index
-	 * \param size size of subsequence
-	 * \return ref of this codeunit sequence
+	 * @param from start index
+	 * @param size size of subsequence
+	 * @return ref of this codeunit sequence
 	 */
 	codeunit_sequence &subsequence(u64 from, u64 size = SIZE_MAX) noexcept;
 
@@ -151,10 +151,10 @@ public:
 	 *
 	 * Example: codeunit_sequence("codeunit_sequence").index_of("ar_") == 2;
 	 *
-	 * \param pattern pattern to search.
-	 * \param from start index to search
-	 * \param size size of search range
-	 * \return the index of where the codeunit_sequence first found
+	 * @param pattern pattern to search.
+	 * @param from start index to search
+	 * @param size size of search range
+	 * @return the index of where the codeunit_sequence first found
 	 */
 	[[nodiscard]] u64 index_of(const codeunit_sequence_view &pattern, u64 from = 0, u64 size = SIZE_MAX) const noexcept;
 	[[nodiscard]] u64 last_index_of(const codeunit_sequence_view &pattern, u64 from = 0,
@@ -171,7 +171,7 @@ public:
 	void empty();
 	/**
 	 * Empty the string with size reserved.
-	 * \param size the size reserved
+	 * @param size the size reserved
 	 */
 	void empty(u64 size);
 
@@ -235,7 +235,7 @@ private:
 	[[nodiscard]] norm		 &as_norm();
 	[[nodiscard]] const norm &as_norm() const;
 
-	/// \return is this a sequence with less than 15 chars
+	// @return is this a sequence with less than 15 chars
 	[[nodiscard]] bool is_short() const;
 
 	[[nodiscard]] u64 get_capacity() const;
@@ -251,7 +251,7 @@ private:
 	/**
 	 * \brief Receive and consume data from another string.
 	 * eg. "abc".transfer_data("def"); results in "def" and ""
-	 * \param other Provider.
+	 * @param other Provider.
 	 */
 	void transfer_data(codeunit_sequence &other);
 

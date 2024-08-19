@@ -1,4 +1,9 @@
-﻿#define _SILENCE_ALL_CXX17_DEPRECATION_WARNINGS
+﻿/**
+* \file Game.cpp
+* \brief The game window of papercraft
+*/
+
+#define _SILENCE_ALL_CXX17_DEPRECATION_WARNINGS
 
 #include "../../include/game/Game.h"
 

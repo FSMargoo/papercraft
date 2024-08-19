@@ -1,6 +1,7 @@
-﻿///
-/// The game window of papercraft
-///
+﻿/**
+ * \file Game.h
+ * \brief The game window of papercraft
+ */
 
 #pragma once
 
@@ -15,28 +16,42 @@
 #include <include/gui/TextLabel.h>
 #include <include/singleton/Singleton.h>
 
-/// The game window
+/**
+ * The game window
+ */
 class PLGame : public PWindow {
 public:
-	/// Create the game window
+	/**
+	 * Create the game window
+	 */
 	PLGame(const int &Width, const int &Height, const PString &PlayerName);
 
 public:
-	/// Enter the message loop of game window
+	/**
+	 * Enter the message loop of game window
+	 */
 	void Loop();
 
 private:
-	/// Init the fake load UI
+	/**
+	 * Init the fake load UI
+	 */
 	void InitFakeLoadUI();
-	/// Load the menu UI
+	/**
+	 * Load the menu UI
+	 */
 	void InitLoadMenuUI();
 
 private:
-	/// This functino give a smooth interpolation for progress bar
-	/// \param X The X parameter of the smooth function
-	/// \return The result of the interpolation
+	/**
+	 * This functino gives a smooth interpolation for progress bar
+	 * @param X The X parameter of the smooth function
+	 * @return The result of the interpolation
+	 */
 	float SmoothInterpolation(const float &X) const;
-	/// Read the puns from the assets
+	/**
+	 * Read the puns from the assets
+	 */
 	void ReadPuns();
 
 private:

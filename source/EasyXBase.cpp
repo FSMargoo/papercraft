@@ -1,4 +1,9 @@
-﻿#include "../include/EasyXBase.h"
+﻿/**
+ * \file EasyXBase.cpp
+ * \brief The basic definition of EasyX
+ */
+
+#include <include/EasyXBase.h>
 
 COLORREF GetARGBColor(const int &a, const int &r, const int &g, const int &b) {
 	// Check for color over range

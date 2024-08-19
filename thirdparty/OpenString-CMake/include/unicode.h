@@ -48,8 +48,8 @@ static constexpr char32_t SINGLE_UNIT_MAXIMUM_VALUE	 = 0xFFFF;
 } // namespace utf16
 
 /**
- * \param length length of a utf8 sequence
- * \return mask of utf8 code unit
+ * @param length length of a utf8 sequence
+ * @return mask of utf8 code unit
  */
 [[nodiscard]] constexpr char get_utf8_mask(const u64 length) noexcept {
 	constexpr char masks[] = {
@@ -59,8 +59,8 @@ static constexpr char32_t SINGLE_UNIT_MAXIMUM_VALUE	 = 0xFFFF;
 }
 
 /**
- * \param c start of a utf8 sequence
- * \return length of utf8 sequence, return 0 if this is not start of a utf8 sequence
+ * @param c start of a utf8 sequence
+ * @return length of utf8 sequence, return 0 if this is not start of a utf8 sequence
  */
 [[nodiscard]] constexpr u8 parse_utf8_length(const char c) noexcept {
 	if (c == 0)
@@ -100,9 +100,9 @@ static constexpr char32_t SINGLE_UNIT_MAXIMUM_VALUE	 = 0xFFFF;
 }
 
 /**
- * \param utf8 input utf-8 code unit sequence
- * \param length length of utf-8 code unit sequence
- * \return codepoint of input utf8 code unit sequence
+ * @param utf8 input utf-8 code unit sequence
+ * @param length length of utf-8 code unit sequence
+ * @return codepoint of input utf8 code unit sequence
  */
 [[nodiscard]] constexpr char32_t utf8_to_utf32(char const *const utf8, const u64 length) noexcept {
 	if (!utf8)
@@ -121,8 +121,8 @@ static constexpr char32_t SINGLE_UNIT_MAXIMUM_VALUE	 = 0xFFFF;
 }
 
 /**
- * \param utf32 input utf-32 code unit
- * \return decoded utf-8 code unit sequence from utf-32 code unit
+ * @param utf32 input utf-32 code unit
+ * @return decoded utf-8 code unit sequence from utf-32 code unit
  */
 [[nodiscard]] constexpr std::array<char, UTF8_SEQUENCE_MAXIMUM_LENGTH> utf32_to_utf8(const char32_t utf32) noexcept {
 	if (utf32 <= get_utf8_maximum_codepoint(1))

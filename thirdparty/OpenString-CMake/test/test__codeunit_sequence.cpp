@@ -36,7 +36,7 @@ struct codeunit_sequence_accessor {
 		return reinterpret_cast<const norm &>(store);
 	}
 
-	/// \return is this a sequence with less than 15 chars
+	* @return is this a sequence with less than 15 chars
 	[[nodiscard]] bool is_short() const {
 		return !as_sso().alloc;
 	}

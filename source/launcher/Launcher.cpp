@@ -1,4 +1,9 @@
-﻿#include "../../include/launcher/Launcher.h"
+﻿/**
+ * \file Launcher.cpp
+ * \brief The launcher of paper craft
+ */
+
+#include <include/launcher/Launcher.h>
 
 PLanuncher::PLanuncher() : PWindow(400, 600, "PaperCraft Launcher"), _assetManager(PGetSingleton<PAssetManager>()) {
 	_running = true;

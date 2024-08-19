@@ -1,4 +1,9 @@
-﻿#include "../../include/gui/TextLabel.h"
+﻿/**
+* \file TextLabe.cpp
+* \brief The poor text label in paper library
+*/
+
+#include <include/gui/TextLabel.h>
 
 PTextLabel::PTextLabel(const PString &Text) : _text(Text) {
 	InitStyle();

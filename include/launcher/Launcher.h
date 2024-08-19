@@ -1,63 +1,94 @@
-﻿///
-/// The launcher of paper craft
-///
+﻿/**
+ * \file Launcher.h
+ * \brief The launcher of paper craft
+ */
 
 #pragma once
 
-#include "../../thirdparty/mINI/src/mini/ini.h"
-#include "../EasyXBase.h"
-#include "../assets/AssetManager.h"
-#include "../gui/Button.h"
-#include "../gui/GUIManager.h"
-#include "../gui/ImageLabel.h"
-#include "../gui/Input.h"
-#include "../gui/TextLabel.h"
-#include "../singleton/Singleton.h"
+#include <mini/ini.h>
+#include <include/EasyXBase.h>
+#include <include/assets/AssetManager.h>
+#include <include/gui/Button.h>
+#include <include/gui/GUIManager.h>
+#include <include/gui/ImageLabel.h>
+#include <include/gui/Input.h>
+#include <include/gui/TextLabel.h>
+#include <include/singleton/Singleton.h>
 
-/// The launcher window
+/**
+ * The launcher window
+ */
 class PLanuncher : public PWindow {
 public:
-	/// Create the launcher window
+	/**
+	 * Create the launcher window
+	 */
 	PLanuncher();
 
 public:
-	/// Enter the message loop of the launcher
+	/**
+	 * Enter the message loop of the launcher
+	 */
 	void Loop();
 
 private:
-	/// Init the control of the window
+	/**
+	 * Init the control of the window
+	 */
 	void InitControl();
 
 private:
-	/// When the player name editor finished the input, this function will be called
-	/// \param Name The name of the player
+	/**
+	 * When the player name editor finished the input, this function will be called
+	 * @param Name The name of the player
+	 */
 	void OnNameChanged(PString Name);
-	/// When the _gameScreenButton was clicked, this function will lead user into setting
-	/// menu of game window size
+	/**
+	 * When the _gameScreenButton was clicked, this function will lead user into setting
+	 * menu of game window size
+	 */
 	void OnGameScreenButtonClicked();
-	/// Set window size into 4096x3112
+	/**
+	 * Set window size into 4096x3112
+	 */
 	void SetI4096x3112();
-	/// Set window size into 3656x2664
+	/**
+	 * Set window size into 3656x2664
+	 */
 	void SetI3656x2664();
-	/// Set window size into 2560x1440
+	/**
+	 * Set window size into 2560x1440
+	 */
 	void SetI2560x1440();
-	/// Set window size into 1920x1080
+	/**
+	 * Set window size into 1920x1080
+	 */
 	void SetI1920x1080();
-	/// Set window size into 1280x960
+	/**
+	 * Set window size into 1280x960
+	 */
 	void SetI1280x960();
-	/// Set window size into 640x480
+	/**
+	 * Set window size into 640x480
+	 */
 	void SetI640x480();
-	/// When the game launch, exit the message loop
+	/**
+	 * When the game launch, exit the message loop
+	 */
 	void OnLaunch();
 
 public:
-	/// Get the game screen size in tuple form
-	/// \return The game screen size tuple form
+	/**
+	 * Get the game screen size in tuple form
+	 * @return The game screen size tuple form
+	 */
 	std::tuple<int, int> GetGameScreenSize() const {
 		return {_gameWindowWidth, _gameWindowHeight};
 	}
-	/// Get the player name text
-	/// \return The text of player name
+	/**
+	 * Get the player name text
+	 * @return The text of player name
+	 */
 	PString GetPlayerName() const {
 		return _playerNameInput->GetText();
 	}
