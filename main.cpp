@@ -133,7 +133,7 @@ int WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 int WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	try {
-#ifndef _OKAY
+#ifndef _DEBUG
 		PLanuncher launcher;
 		launcher.Loop();
 		launcher.Close();

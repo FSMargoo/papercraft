@@ -80,6 +80,22 @@ void PLGame::InitLoadMenuUI() {
 		_manager->AddObject(object);
 		object->Hide();
 	}
+
+
+	// SK_ColorYELLOW
+	// SkColorSetRGB(34, 34, 34)
+	_minecraftTypeFace = SkTypeface::MakeFromName("Minecraft", SkFontStyle::Normal());
+
+	_paragraphStyle.setTextAlign(skia::textlayout::TextAlign::kCenter);
+	_textStyle.setTypeface(_minecraftTypeFace);
+	_textStyle.setSize(18);
+
+	_shadowTextStyle.setTypeface(_minecraftTypeFace);
+	_shadowTextStyle.setSize(18);
+
+	_fontManager	= SkFontMgr::RefDefault();
+	_fontCollection = sk_make_sp<skia::textlayout::FontCollection>();
+	_fontCollection->setDefaultFontManager(_fontManager);
 }
 float PLGame::SmoothInterpolation(const float &X) const {
 	return pow(X, 2);
@@ -117,14 +133,18 @@ void PLGame::Loop() {
 
 		// We are actually loading resource of music :)
 		if ((progress >= 70 && musicLoadDone) || progress < 70) {
-			progress += 0.3;
+			progress += 0.05;
 		}
 
-		_progressBar->SetPercentage(progress);
+		_progressBar->SetPercentage(SmoothInterpolation(progress));
 
-		progress += 0.3;
+#ifndef _DEBUG
+		progress += 0.05;
+#else
+		progress += 0.2;
+#endif
 
-		Sleep(16);
+		Sleep(1);
 	}
 	for (auto &object : _fakeLoadUI) {
 		object->Hide();
@@ -133,9 +153,10 @@ void PLGame::Loop() {
 		object->Show();
 	}
 
-	int	 punX			 = GetWidth() * 0.639;
+	int	 punX			 = GetWidth() * 0.709;
 	int	 punY			 = GetHeight() * 0.338;
-	auto pun			 = _punList[rand() % _punList.size()].c_str();
+	auto pun			 = _punList[rand() % _punList.size()];
+
 	auto titileAnimation = 0.1f;
 	while (!glfwWindowShouldClose(_glfwWindow)) {
 		glfwPollEvents();
@@ -155,13 +176,26 @@ void PLGame::Loop() {
 		canvas->drawColor(_backgroundColor);
 
 		_manager->OnDraw(canvas);
+		canvas->save();
+		SkPaint punPaint;
+		SkPaint punShadowPaint;
+		punPaint.setColor(SK_ColorYELLOW);
+		punShadowPaint.setColor(SkColorSetRGB(34, 34, 34));
+
+		_textStyle.setSize(18 + 2 * sin(titileAnimation));
+
+		canvas->translate(punX, punY);
+		canvas->rotate(330);
+		canvas->drawSimpleText(pun.c_str(), pun.length() * sizeof(wchar_t), SkTextEncoding::kUTF8, 2, 2, _textStyle, punShadowPaint);
+		canvas->drawSimpleText(pun.c_str(), pun.length() * sizeof(wchar_t), SkTextEncoding::kUTF8, 0, 0, _textStyle, punPaint);
+
 		canvas->flush();
 
 		glContext->GetNativeContext()->flushAndSubmit();
 
 		glfwSwapBuffers(_glfwWindow);
 
-		titileAnimation += 0.02f;
+		titileAnimation += 0.2f;
 
 		Sleep(1);
 	}

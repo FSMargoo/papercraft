@@ -58,6 +58,14 @@ private:
 	PString	 _playerName;
 
 private:
+	skia::textlayout::ParagraphStyle		_paragraphStyle;
+	SkFont									_textStyle;
+	SkFont									_shadowTextStyle;
+	sk_sp<SkTypeface>						_minecraftTypeFace;
+	sk_sp<SkFontMgr>						_fontManager;
+	sk_sp<skia::textlayout::FontCollection> _fontCollection;
+
+private:
 	std::vector<PGUIObject *> _fakeLoadUI;
 	PImageLabel				 *_logo;
 	PProgressBar			 *_progressBar;
