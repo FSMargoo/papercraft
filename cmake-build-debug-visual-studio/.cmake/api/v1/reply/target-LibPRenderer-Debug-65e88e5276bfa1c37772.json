@@ -1,0 +1,456 @@
+{
+	"archive" : 
+	{
+		"commandFragments" : 
+		[
+			{
+				"fragment" : "/machine:x64",
+				"role" : "flags"
+			}
+		]
+	},
+	"artifacts" : 
+	[
+		{
+			"path" : "thirdparty/PaperRenderer/LibPRenderer.lib"
+		}
+	],
+	"backtrace" : 1,
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"add_library",
+			"target_link_libraries",
+			"add_compile_options",
+			"target_include_directories"
+		],
+		"files" : 
+		[
+			"thirdparty/PaperRenderer/CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 25,
+				"parent" : 0
+			},
+			{
+				"command" : 1,
+				"file" : 0,
+				"line" : 137,
+				"parent" : 0
+			},
+			{
+				"command" : 2,
+				"file" : 0,
+				"line" : 19,
+				"parent" : 0
+			},
+			{
+				"command" : 3,
+				"file" : 0,
+				"line" : 83,
+				"parent" : 0
+			},
+			{
+				"command" : 3,
+				"file" : 0,
+				"line" : 84,
+				"parent" : 0
+			},
+			{
+				"command" : 3,
+				"file" : 0,
+				"line" : 85,
+				"parent" : 0
+			},
+			{
+				"command" : 3,
+				"file" : 0,
+				"line" : 86,
+				"parent" : 0
+			},
+			{
+				"command" : 3,
+				"file" : 0,
+				"line" : 87,
+				"parent" : 0
+			},
+			{
+				"command" : 3,
+				"file" : 0,
+				"line" : 88,
+				"parent" : 0
+			}
+		]
+	},
+	"compileGroups" : 
+	[
+		{
+			"compileCommandFragments" : 
+			[
+				{
+					"fragment" : "/DWIN32 /D_WINDOWS /EHsc /Ob0 /Od /RTC1 -std:c++20 -MDd -Zi"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "/wd4244"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "/wd4819"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "/wd4005"
+				}
+			],
+			"includes" : 
+			[
+				{
+					"backtrace" : 4,
+					"path" : "D:/papercraft/thirdparty/PaperRenderer/./include"
+				},
+				{
+					"backtrace" : 5,
+					"path" : "D:/papercraft/thirdparty/PaperRenderer/."
+				},
+				{
+					"backtrace" : 6,
+					"path" : "D:/papercraft/thirdparty/PaperRenderer/./third"
+				},
+				{
+					"backtrace" : 7,
+					"path" : "D:/papercraft/thirdparty/PaperRenderer/./third/SkiaM101Binary"
+				},
+				{
+					"backtrace" : 8,
+					"path" : "D:/papercraft/thirdparty/PaperRenderer/./third/glad/include"
+				},
+				{
+					"backtrace" : 9,
+					"path" : "D:/papercraft/thirdparty/PaperRenderer/./third/OpenString-CMake"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "D:/papercraft/thirdparty/PaperRenderer/third/glfw/include"
+				}
+			],
+			"language" : "CXX",
+			"languageStandard" : 
+			{
+				"backtraces" : 
+				[
+					1
+				],
+				"standard" : "20"
+			},
+			"sourceIndexes" : 
+			[
+				2,
+				4,
+				6,
+				10,
+				12,
+				14,
+				17,
+				21,
+				23,
+				25,
+				27
+			]
+		},
+		{
+			"compileCommandFragments" : 
+			[
+				{
+					"fragment" : "/DWIN32 /D_WINDOWS -D_DEBUG -MDd -Zi"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "/wd4244"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "/wd4819"
+				},
+				{
+					"backtrace" : 3,
+					"fragment" : "/wd4005"
+				}
+			],
+			"includes" : 
+			[
+				{
+					"backtrace" : 4,
+					"path" : "D:/papercraft/thirdparty/PaperRenderer/./include"
+				},
+				{
+					"backtrace" : 5,
+					"path" : "D:/papercraft/thirdparty/PaperRenderer/."
+				},
+				{
+					"backtrace" : 6,
+					"path" : "D:/papercraft/thirdparty/PaperRenderer/./third"
+				},
+				{
+					"backtrace" : 7,
+					"path" : "D:/papercraft/thirdparty/PaperRenderer/./third/SkiaM101Binary"
+				},
+				{
+					"backtrace" : 8,
+					"path" : "D:/papercraft/thirdparty/PaperRenderer/./third/glad/include"
+				},
+				{
+					"backtrace" : 9,
+					"path" : "D:/papercraft/thirdparty/PaperRenderer/./third/OpenString-CMake"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "D:/papercraft/thirdparty/PaperRenderer/third/glfw/include"
+				}
+			],
+			"language" : "C",
+			"sourceIndexes" : 
+			[
+				13
+			]
+		}
+	],
+	"dependencies" : 
+	[
+		{
+			"backtrace" : 2,
+			"id" : "glfw::@464d2a51b5a2f4808184"
+		},
+		{
+			"backtrace" : 2,
+			"id" : "libostr::@70bdd0648bacda2d75f4"
+		}
+	],
+	"id" : "LibPRenderer::@662742145a80ca8fd670",
+	"name" : "LibPRenderer",
+	"nameOnDisk" : "LibPRenderer.lib",
+	"paths" : 
+	{
+		"build" : "thirdparty/PaperRenderer",
+		"source" : "thirdparty/PaperRenderer"
+	},
+	"sourceGroups" : 
+	[
+		{
+			"name" : "Header Files",
+			"sourceIndexes" : 
+			[
+				0,
+				1,
+				3,
+				5,
+				7,
+				8,
+				9,
+				11,
+				15,
+				16,
+				18,
+				19,
+				20,
+				22,
+				24,
+				26,
+				28,
+				29
+			]
+		},
+		{
+			"name" : "Source Files",
+			"sourceIndexes" : 
+			[
+				2,
+				4,
+				6,
+				10,
+				12,
+				13,
+				14,
+				17,
+				21,
+				23,
+				25,
+				27
+			]
+		}
+	],
+	"sources" : 
+	[
+		{
+			"backtrace" : 1,
+			"path" : "thirdparty/PaperRenderer/include/base/test/vTest.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "thirdparty/PaperRenderer/include/base/event/vEvent.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "thirdparty/PaperRenderer/source/base/vtest/vTest.cpp",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "thirdparty/PaperRenderer/include/base/binding/vBindingType.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "thirdparty/PaperRenderer/source/base/binding/vBindingType.cpp",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "thirdparty/PaperRenderer/include/base/command/vCommand.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "thirdparty/PaperRenderer/source/base/command/vCommand.cpp",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "thirdparty/PaperRenderer/include/base/vBase.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "thirdparty/PaperRenderer/include/renderer/vRendererBase.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "thirdparty/PaperRenderer/include/renderer/vSurface.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "thirdparty/PaperRenderer/source/renderer/vSurface.cpp",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "thirdparty/PaperRenderer/include/renderer/vRenderTarget.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "thirdparty/PaperRenderer/source/renderer/vRenderTarget.cpp",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 1,
+			"path" : "thirdparty/PaperRenderer/third/glad/src/glad.c",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "thirdparty/PaperRenderer/source/renderer/vRenderContext.cpp",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "thirdparty/PaperRenderer/include/renderer/vRenderContext.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "thirdparty/PaperRenderer/include/renderer/vRenderInterface.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "thirdparty/PaperRenderer/source/renderer/vRenderInterface.cpp",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "thirdparty/PaperRenderer/include/base/geometry/vPoint.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "thirdparty/PaperRenderer/include/base/geometry/vRect.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "thirdparty/PaperRenderer/include/base/object/vObject.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "thirdparty/PaperRenderer/source/base/object/vObject.cpp",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "thirdparty/PaperRenderer/include/base/object/vObjectProperty.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "thirdparty/PaperRenderer/source/base/object/vObjectProperty.cpp",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "thirdparty/PaperRenderer/include/renderer/vColorFactory.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "thirdparty/PaperRenderer/source/renderer/vColorFactory.cpp",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "thirdparty/PaperRenderer/include/base/message/vMessage.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "thirdparty/PaperRenderer/source/base/message/vMessage.cpp",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "thirdparty/PaperRenderer/include/renderer/vGLHeader.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "thirdparty/PaperRenderer/include/base/message/vKeyMap.h",
+			"sourceGroupIndex" : 0
+		}
+	],
+	"type" : "STATIC_LIBRARY"
+}

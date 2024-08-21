@@ -41,9 +41,20 @@ public:
 	virtual ~PObject() = default;
 
 public:
-	// The hitbox of the object
-	RECT Hitbox;
 
-private:
-	std::vector<PComponent *> _componentList;
+
+public:
+	// The bound of the object
+	RECT Bound;
+
+public:
+	// auto begin() {
+	// 		return _componentList.begin();
+	// }
+	// auto end() {
+	// 		return _componentList.begin();
+	// }
+
+// private:
+//	std::vector<PComponent *> _componentList;
 };

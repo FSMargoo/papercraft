@@ -1,0 +1,261 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"childIndexes" : 
+					[
+						1
+					],
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-Debug-d0094a50bb2071803777.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.29"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						3
+					]
+				},
+				{
+					"build" : "thirdparty/PaperRenderer",
+					"childIndexes" : 
+					[
+						2,
+						5
+					],
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-thirdparty.PaperRenderer-Debug-a6b214ea1a7857bd8094.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 1,
+					"source" : "thirdparty/PaperRenderer",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						4
+					]
+				},
+				{
+					"build" : "thirdparty/PaperRenderer/third/glfw",
+					"childIndexes" : 
+					[
+						3,
+						4
+					],
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-thirdparty.PaperRenderer.third.glfw-Debug-0504978e4fb1f3e11cd5.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.4"
+					},
+					"parentIndex" : 1,
+					"projectIndex" : 2,
+					"source" : "thirdparty/PaperRenderer/third/glfw",
+					"targetIndexes" : 
+					[
+						7
+					]
+				},
+				{
+					"build" : "thirdparty/PaperRenderer/third/glfw/src",
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-thirdparty.PaperRenderer.third.glfw.src-Debug-6cde01f553f254bd9d2c.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.4"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 2,
+					"source" : "thirdparty/PaperRenderer/third/glfw/src",
+					"targetIndexes" : 
+					[
+						5,
+						8
+					]
+				},
+				{
+					"build" : "thirdparty/PaperRenderer/third/glfw/docs",
+					"jsonFile" : "directory-thirdparty.PaperRenderer.third.glfw.docs-Debug-c466dc5108a05f63becc.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.4"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 2,
+					"source" : "thirdparty/PaperRenderer/third/glfw/docs"
+				},
+				{
+					"build" : "thirdparty/PaperRenderer/third/OpenString-CMake",
+					"jsonFile" : "directory-thirdparty.PaperRenderer.third.OpenString-CMake-Debug-382e52e7d9f9213646c1.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 1,
+					"projectIndex" : 3,
+					"source" : "thirdparty/PaperRenderer/third/OpenString-CMake",
+					"targetIndexes" : 
+					[
+						6
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"childIndexes" : 
+					[
+						1
+					],
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "PaperCraft",
+					"targetIndexes" : 
+					[
+						3
+					]
+				},
+				{
+					"childIndexes" : 
+					[
+						2,
+						3
+					],
+					"directoryIndexes" : 
+					[
+						1
+					],
+					"name" : "paperrenderer",
+					"parentIndex" : 0,
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						4
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						2,
+						3,
+						4
+					],
+					"name" : "GLFW",
+					"parentIndex" : 1,
+					"targetIndexes" : 
+					[
+						5,
+						7,
+						8
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						5
+					],
+					"name" : "libostr",
+					"parentIndex" : 1,
+					"targetIndexes" : 
+					[
+						6
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 1,
+					"id" : "Demo_TestSkia::@662742145a80ca8fd670",
+					"jsonFile" : "target-Demo_TestSkia-Debug-b4c2a0500cc041707f53.json",
+					"name" : "Demo_TestSkia",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "Demo_TestSkiaShader::@662742145a80ca8fd670",
+					"jsonFile" : "target-Demo_TestSkiaShader-Debug-1fec2f351bc54422170c.json",
+					"name" : "Demo_TestSkiaShader",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "LibPRenderer::@662742145a80ca8fd670",
+					"jsonFile" : "target-LibPRenderer-Debug-65e88e5276bfa1c37772.json",
+					"name" : "LibPRenderer",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "PaperCraft::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-PaperCraft-Debug-ba68481a5043132d01cf.json",
+					"name" : "PaperCraft",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "WinToast::@662742145a80ca8fd670",
+					"jsonFile" : "target-WinToast-Debug-c278889a0b038883c6c1.json",
+					"name" : "WinToast",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 3,
+					"id" : "glfw::@464d2a51b5a2f4808184",
+					"jsonFile" : "target-glfw-Debug-291625d850f1bb552d83.json",
+					"name" : "glfw",
+					"projectIndex" : 2
+				},
+				{
+					"directoryIndex" : 5,
+					"id" : "libostr::@70bdd0648bacda2d75f4",
+					"jsonFile" : "target-libostr-Debug-6870ec9d238991c034d2.json",
+					"name" : "libostr",
+					"projectIndex" : 3
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "uninstall::@d7901cc130f894e47093",
+					"jsonFile" : "target-uninstall-Debug-abb1ef0b031ffacb3677.json",
+					"name" : "uninstall",
+					"projectIndex" : 2
+				},
+				{
+					"directoryIndex" : 3,
+					"id" : "update_mappings::@464d2a51b5a2f4808184",
+					"jsonFile" : "target-update_mappings-Debug-fb48036d5c0baf4a4e2f.json",
+					"name" : "update_mappings",
+					"projectIndex" : 2
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "D:/papercraft/cmake-build-debug-visual-studio",
+		"source" : "D:/papercraft"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 7
+	}
+}

@@ -7,22 +7,32 @@
 
 #include <include/EasyXBase.h>
 #include <include/game/component/Component.h>
+#include <include/game/component/Object.h>
+#include <vector>
 
 /*
  * Yeah, that is actually the "block" hitbox
  */
+
 class PBlockHitboxComponents : public PComponent {
 public:
 	PBlockHitboxComponents()		   = default;
 	~PBlockHitboxComponents() override = default;
 
 public:
+	RECT HitBox() override;
+
+	bool IsOverlap(const RECT& hitbox);
+
+private:
+	RECT hitbox;
+
 };
 
 /**
  * The basic block class in the paper craft
  */
-class PBlock {
+class PBlock : public PObject {
 public:
 	/**
 	 * Register a block, the block of the position of the instance
@@ -74,6 +84,41 @@ public:
 		return false;
 	}
 
+	/**Whether this block is light sources
+	 * @return the level of light, 0 means not a light source.
+	 */
+	virtual int IsLightSource() {
+		return 0;
+	}
+
+public:
+	/**
+	 * Get the X position of the block
+	 * @return The X position of the block
+	 */
+	[[nodiscard]] int GetX() const {
+		return _x;
+	}
+	/**
+	 * Get the Y position of the block
+	 * @return The Y position of the block
+	 */
+	[[nodiscard]] int GetY() const {
+		return _y;
+	}
+	/**
+	 * Get the texture of the block
+	 * @return the texture of the block
+	 */
+	[[nodiscard]] PImage* GetTexture() const {
+		return _texture;
+	}
+	/**Get the position or hitbox of block
+	 *@return the Bound of block
+	 */
+	[[nodiscard]] const RECT& GetBound() {
+		return Bound;
+	}
 public:
 	/** Clone the block with the specified position
 	 * @tparam Type The type of the
@@ -90,4 +135,22 @@ private:
 	int		_y;
 	PString _id;
 	PImage *_texture;
+};
+
+/**
+ *  the map of papercraft
+ */
+class PBlockMap {
+	/**
+	 * made by block
+	 */
+	typedef std::vector<std::vector<PBlock>> BlockMap;
+public:
+	PBlockMap() = default;
+	~PBlockMap() = default;
+
+	const BlockMap& GetBlockMap(){return _block_map;}
+
+private:
+	BlockMap _block_map;
 };
