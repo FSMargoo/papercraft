@@ -250,6 +250,12 @@ void PLanuncher::OnNameChanged(PString Name) {
 void PLanuncher::Loop() {
 	glfwMakeContextCurrent(_glfwWindow);
 
+	sk_sp<VRenderTarget> glRenderTarget =
+		sk_make_sp<VRenderTarget, VRenderTargetViewport>({.Width = _width, .Height = _height, .X = 0, .Y = 0});
+	sk_sp<VRenderContext> glContext = sk_make_sp<VRenderContext, const sk_sp<VRenderInterface> &>(_glInterface);
+	sk_sp<VSurface> glSurface =
+		sk_make_sp<VSurface, const sk_sp<VRenderTarget> &, const sk_sp<VRenderContext> &>(glRenderTarget, glContext);
+	auto canvas = glSurface->GetNativeSurface()->getCanvas();
 	while (_running) {
 		if (glfwWindowShouldClose(_glfwWindow)) {
 			exit(0);
@@ -261,13 +267,6 @@ void PLanuncher::Loop() {
 		while (peekmessage(&message)) {
 			_manager->OnMessage(message);
 		}
-
-		sk_sp<VRenderTarget> glRenderTarget =
-			sk_make_sp<VRenderTarget, VRenderTargetViewport>({.Width = _width, .Height = _height, .X = 0, .Y = 0});
-		sk_sp<VRenderContext> glContext = sk_make_sp<VRenderContext, const sk_sp<VRenderInterface> &>(_glInterface);
-		sk_sp<VSurface> glSurface =
-			sk_make_sp<VSurface, const sk_sp<VRenderTarget> &, const sk_sp<VRenderContext> &>(glRenderTarget, glContext);
-		auto canvas = glSurface->GetNativeSurface()->getCanvas();
 
 		_manager->OnDraw(canvas);
 
