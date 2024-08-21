@@ -35,7 +35,7 @@ public:
 	 */
 	template <class Type>
 		requires std::is_base_of_v<PBlock, Type>
-	std::unique_ptr<Type> RegisterBlock(const PString &Id, PImage *Texture) {
+	Type *RegisterBlock(const PString &Id, PImage *Texture) {
 		return new PBlock(Id, 0, 0, Texture);
 	}
 
