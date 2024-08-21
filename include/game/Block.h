@@ -119,6 +119,12 @@ public:
 	[[nodiscard]] const RECT& GetBound() {
 		return Bound;
 	}
+	/**
+	 *
+	 */
+	[[nodiscard]] const SkColor& GetColor() {
+		return
+	}
 public:
 	/** Clone the block with the specified position
 	 * @tparam Type The type of the

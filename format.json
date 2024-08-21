@@ -9,6 +9,7 @@
     "*.hpp"
   ],
   "dirs": [
-    "./"
+    "./include",
+    "./source"
   ]
 }
