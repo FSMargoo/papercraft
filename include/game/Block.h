@@ -30,6 +30,14 @@ private:
 };
 
 /**
+ * The concept of the PBlock type, which has the legit Clone function
+ */
+template <typename T>
+concept PBlockTypeHasClone = requires {
+	{ T::Clone() } -> std::same_as<bool>;
+};
+
+/**
  * The basic block class in the paper craft
  */
 class PBlock : public PObject {
@@ -45,7 +53,7 @@ public:
 	 */
 	template <class Type>
 		requires std::is_base_of_v<PBlock, Type>
-	Type *RegisterBlock(const PString &Id, PImage *Texture) {
+	static Type *RegisterBlock(const PString &Id, PImage *Texture) {
 		return new PBlock(Id, 0, 0, Texture);
 	}
 
@@ -58,7 +66,7 @@ private:
 	 * @param Texture The block's texture pointer
 	 */
 	PBlock(const PString &Id, const int &X, const int &Y, PImage *Texture);
-	~PBlock() = default;
+	~PBlock() override = default;
 
 public:
 	/** Whether the block is half brick, if the block is half brick,
@@ -87,8 +95,8 @@ public:
 	/**Whether this block is light sources
 	 * @return the level of light, 0 means not a light source.
 	 */
-	virtual int IsLightSource() {
-		return 0;
+	virtual bool IsLightSource() {
+		return false;
 	}
 
 public:
@@ -113,49 +121,83 @@ public:
 	[[nodiscard]] PImage* GetTexture() const {
 		return _texture;
 	}
-	/**Get the position or hitbox of block
-	 *@return the Bound of block
+	/**
+	 * Get the position or hitbox of block
+	 * @return the Bound of block
 	 */
-	[[nodiscard]] const RECT& GetBound() {
+	[[nodiscard]] const RECT& GetBound() const {
 		return Bound;
 	}
 	/**
-	 *
+	 * Get the color of the block
+	 * @return The color of block
 	 */
-	[[nodiscard]] const SkColor& GetColor() {
-		return
+	[[nodiscard]] virtual const SkColor& GetLightColor() const {
+		return _color;
 	}
+	/**
+	 * Get the light level of the light source
+	 * @return The light source level of the light source
+	 */
+	[[nodiscard]] virtual unsigned short GetLightLevel() const {
+		return 0;
+	}
+
+public:
+
+
 public:
 	/** Clone the block with the specified position
-	 * @tparam Type The type of the
-	 * @param X
-	 * @return
+	 * @tparam Type The type of the block class
+	 * @param X The X position of the block
+	 * @param Y The Y position of the block
+	 * @return The new block pointer
 	 */
 	template<class Type>
+		requires PBlockTypeHasClone<Type> and std::is_base_of_v<PBlock, Type>
 	Type *Clone(const int &X, const int &Y) {
+		return new typename Type::Clone(this, X, Y);
+	}
 
+public:
+	/**
+	 * Clone the PBlock object from a object
+	 * @param Block The existed block pointer
+	 * @param X The X position of the block
+	 * @param Y The Y position of the block
+	 * @return The new block in PBlock pointer
+	 */
+	static PBlock *Clone(PBlock *Block, const int &X, const int &Y) {
+		return new PBlock(Block->_id, X, Y, Block->_texture);
 	}
 
 private:
+	int		_brightness;
 	int		_x;
 	int		_y;
 	PString _id;
 	PImage *_texture;
+	SkColor _color;
 };
 
 /**
  *  the map of papercraft
  */
 class PBlockMap {
+public:
 	/**
 	 * made by block
 	 */
-	typedef std::vector<std::vector<PBlock>> BlockMap;
+	using BlockMap = std::vector<PBlock>;
+
 public:
 	PBlockMap() = default;
 	~PBlockMap() = default;
 
-	const BlockMap& GetBlockMap(){return _block_map;}
+public:
+	const BlockMap &GetBlockMap() {
+		return _block_map;
+	}
 
 private:
 	BlockMap _block_map;
