@@ -158,14 +158,6 @@ void PLGame::Loop() {
 	auto pun			 = _punList[rand() % _punList.size()];
 
 	auto titileAnimation = 0.1f;
-
-	sk_sp<VRenderTarget> glRenderTarget =
-		sk_make_sp<VRenderTarget, VRenderTargetViewport>({.Width = _width, .Height = _height, .X = 0, .Y = 0});
-	sk_sp<VRenderContext> glContext = sk_make_sp<VRenderContext, const sk_sp<VRenderInterface> &>(_glInterface);
-	sk_sp<VSurface> glSurface =
-		sk_make_sp<VSurface, const sk_sp<VRenderTarget> &, const sk_sp<VRenderContext> &>(glRenderTarget, glContext);
-
-	auto canvas = glSurface->GetNativeSurface()->getCanvas();
 	while (!glfwWindowShouldClose(_glfwWindow)) {
 		glfwPollEvents();
 
@@ -174,6 +166,13 @@ void PLGame::Loop() {
 			_manager->OnMessage(message);
 		}
 
+		sk_sp<VRenderTarget> glRenderTarget =
+			sk_make_sp<VRenderTarget, VRenderTargetViewport>({.Width = _width, .Height = _height, .X = 0, .Y = 0});
+		sk_sp<VRenderContext> glContext = sk_make_sp<VRenderContext, const sk_sp<VRenderInterface> &>(_glInterface);
+		sk_sp<VSurface> glSurface =
+			sk_make_sp<VSurface, const sk_sp<VRenderTarget> &, const sk_sp<VRenderContext> &>(glRenderTarget, glContext);
+
+		auto canvas = glSurface->GetNativeSurface()->getCanvas();
 		canvas->drawColor(_backgroundColor);
 
 		_manager->OnDraw(canvas);
