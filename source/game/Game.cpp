@@ -110,7 +110,7 @@ void PLGame::Loop() {
 	while (_progressBar->GetPercentage() < 100 && !glfwWindowShouldClose(_glfwWindow)) {
 		glfwPollEvents();
 
-		ExMessage message;
+		PMessage message;
 		while (peekmessage(&message)) {
 			_manager->OnMessage(message);
 		}
@@ -161,7 +161,7 @@ void PLGame::Loop() {
 	while (!glfwWindowShouldClose(_glfwWindow)) {
 		glfwPollEvents();
 
-		ExMessage message;
+		PMessage message;
 		while (peekmessage(&message)) {
 			_manager->OnMessage(message);
 		}

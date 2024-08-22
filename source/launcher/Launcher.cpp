@@ -263,7 +263,7 @@ void PLanuncher::Loop() {
 
 		glfwPollEvents();
 
-		ExMessage message;
+		PMessage message;
 		while (peekmessage(&message)) {
 			_manager->OnMessage(message);
 		}

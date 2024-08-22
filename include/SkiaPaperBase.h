@@ -36,7 +36,7 @@
 
 #include <include/String.h>
 
-typedef struct PMessage {
+struct PMessage {
 	GLFWwindow *window;
 	USHORT 		message;
 	bool  ctrl	  : 1;
@@ -54,7 +54,7 @@ typedef struct PMessage {
 	bool prevdown : 1;
 
 	TCHAR ch;
-} ExMessage;
+};
 
 class PGLFWFailure : public std::exception {
 public:

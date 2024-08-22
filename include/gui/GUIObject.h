@@ -58,7 +58,7 @@ public:
 	 * @return If the control will take over this message, the return
 	 * should be true, nor false
 	 */
-	virtual bool OnMessage(const ExMessage &Message, PGUIMangerInterface *Interface) {
+	virtual bool OnMessage(const PMessage &Message, PGUIMangerInterface *Interface) {
 		return false;
 	}
 

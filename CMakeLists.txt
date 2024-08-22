@@ -29,5 +29,5 @@ add_executable(PaperCraft main.cpp ${PaperHeader} ${PaperSource}
 
 target_link_libraries(PaperCraft PRIVATE LibPRenderer)
 
-add_executable(TestBlockCombination tester/TestBlockCombinationRendering.cpp)
+add_executable(TestBlockCombination tester/TestBlockCombinationRendering.cpp ${PaperHeader} ${PaperSource})
 target_link_libraries(TestBlockCombination PRIVATE LibPRenderer)

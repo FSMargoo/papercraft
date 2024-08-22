@@ -53,7 +53,7 @@ public:
 	 * Let manager send the message to serveral object
 	 * @param Message The message to be sent
 	 */
-	void OnMessage(ExMessage &Message);
+	void OnMessage(PMessage &Message);
 	/**
 	 * Draw the GUI on the specified device
 	 * @param Canvas The canvas to be drawn

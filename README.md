@@ -271,7 +271,7 @@ public:
         
         while (true)
         {
-            ExMessage message;
+            PMessage message;
             while (peekmessage(&message))
             {
                 // Process message
@@ -335,7 +335,7 @@ virtual void OnDraw() = 0;
 * @param Interface The interface of manager
 * @return If the control will take over this message, the return
 * should be true, nor false
-virtual bool OnMessage(const ExMessage &Message, PGUIMangerInterface* Interface) { return false; }
+virtual bool OnMessage(const PMessage &Message, PGUIMangerInterface* Interface) { return false; }
 ```
 
 其中 ``OnDraw`` 为纯虚函数，一定需要被实现，``OnMessage`` 默认返回 ``false``。
@@ -362,7 +362,7 @@ void PImageLabel::OnDraw()
 接下来是 ``OnMessage``，此处我们以 ``PButton`` 的实现为例：
 
 ```C++
-bool PButton::OnMessage(const ExMessage &Message, PGUIMangerInterface* Interface)
+bool PButton::OnMessage(const PMessage &Message, PGUIMangerInterface* Interface)
 {
     switch (Message.message)
     {
@@ -442,7 +442,7 @@ protected:
 这两个方法分别是将本控件提升/取消为焦点控件，在 GUI 管理器中，作为焦点控件的控件在消息方面会有特殊处理。这里关注 `include/gui/GUIMangaer.h`中 `GUIManager` 的 `OnMessage` 方法，这个方法的实现如下：
 
 ```C++
-void PGUIManager::OnMessage(ExMessage &Message)
+void PGUIManager::OnMessage(PMessage &Message)
 {
     if (_focus)
     {
@@ -537,7 +537,7 @@ float progress = 0.0;
 
 while (_progressBar->GetPercentage() < 100)
 {
-    ExMessage message;
+    PMessage message;
     while (peekmessage(&message))
     {
         _manager->OnMessage(message);

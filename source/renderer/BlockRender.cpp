@@ -29,18 +29,18 @@
 
 PBlockReputableRenderer::PBlockReputableRenderer(PBlockMap &Map) : _map(Map) {
 }
-sk_sp<VSurface> &&PBlockReputableRenderer::RenderImage(const int &Width, const int &Height, PCamera *Camera) {
+sk_sp<VSurface> PBlockReputableRenderer::RenderImage(const int &Width, const int &Height, PCamera *Camera) {
 	auto  surface	  = sk_make_sp<VSurface, const int &, const int &>(Width, Height);
 	auto &blocks	  = _map.GetBlockMap();
 	auto  cameraBound = *Camera;
 	auto  canvas	  = surface->GetNativeSurface()->getCanvas();
 	for (auto &block : blocks) {
-		auto blockBound = block.GetBound();
+		auto blockBound = block->GetBound();
 		if (!(blockBound.left >= cameraBound.right || blockBound.right <= cameraBound.left ||
 			  blockBound.top >= cameraBound.bottom || blockBound.bottom <= cameraBound.top)) {
-			auto relativeX = block.GetX() - Camera->left;
-			auto relativeY = block.GetY() - Camera->top;
-			canvas->drawImage(block.GetTexture()->GetNativeImage(), block.GetX(), block.GetY());
+			auto relativeX = block->GetX() - Camera->left;
+			auto relativeY = block->GetY() - Camera->top;
+			canvas->drawImage(block->GetTexture()->GetNativeImage(), block->GetX(), block->GetY());
 		}
 	}
 

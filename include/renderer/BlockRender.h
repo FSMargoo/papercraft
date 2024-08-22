@@ -51,7 +51,7 @@ public:
 	 * @param Camera The camera of the player view
 	 * @return The block combination surface
 	 */
-	sk_sp<VSurface>&& RenderImage(const int &Width, const int &Height, PCamera *Camera);
+	sk_sp<VSurface> RenderImage(const int &Width, const int &Height, PCamera *Camera);
 
 private:
 	PBlockMap &_map;

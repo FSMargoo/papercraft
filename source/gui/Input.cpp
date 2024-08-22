@@ -117,7 +117,7 @@ void PInput::OnDraw(SkCanvas *Canvas) {
 		}
 	}
 }
-bool PInput::OnMessage(const ExMessage &Message, PGUIMangerInterface *Interface) {
+bool PInput::OnMessage(const PMessage &Message, PGUIMangerInterface *Interface) {
 	static auto normalCursor = glfwCreateStandardCursor(GLFW_ARROW_CURSOR);
 	static auto IBEAMCursor = glfwCreateStandardCursor(GLFW_IBEAM_CURSOR);
 	switch (Message.message) {

@@ -68,7 +68,7 @@ void PButton::OnDraw(SkCanvas *Canvas) {
 	paragraph->layout(GetWidth());
 	paragraph->paint(Canvas, _rectangle.left, _rectangle.top + GetHeight() / 2 - paragraph->getHeight() / 2);
 }
-bool PButton::OnMessage(const ExMessage &Message, PGUIMangerInterface *Interface) {
+bool PButton::OnMessage(const PMessage &Message, PGUIMangerInterface *Interface) {
 	switch (Message.message) {
 	case WM_MOUSEMOVE: {
 		if (IsPointInside(Message.x, Message.y)) {

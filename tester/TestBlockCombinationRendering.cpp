@@ -29,6 +29,8 @@
 #include <include/assets/AssetManager.h>
 #include <include/singleton/Singleton.h>
 
+#include <easyx.h>
+
 sk_sp<VRenderInterface> GLInterface;
 
 #define WIDTH  640
@@ -76,6 +78,7 @@ void Draw(int Width, int Height);
 int WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	InitWindow();
 	InitResource();
+	InitBlockMap();
 	InitGLInterface();
 
 	Draw(WIDTH, HEIGHT);
@@ -87,7 +90,7 @@ int WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 }
 
 void InitBlockMap() {
-	auto stone		   = PGetSingleton<PAssetManager>().GetBlock("block");
+	auto stone		   = PGetSingleton<PAssetManager>().GetBlock("stone");
 	auto redstone	   = PGetSingleton<PAssetManager>().GetBlock("redstone_block");
 	auto emerald	   = PGetSingleton<PAssetManager>().GetBlock("emerald_block");
 	auto diamond	   = PGetSingleton<PAssetManager>().GetBlock("diamond_block");
@@ -96,41 +99,33 @@ void InitBlockMap() {
 	auto emeraldBlock  = PBlock::RegisterBlock<PBlock>("papercraft:emerald_block", emerald);
 	auto diamondBlock  = PBlock::RegisterBlock<PBlock>("papercraft:diamond_block", diamond);
 	PBlockMap::BlockMap map;
-	PImage image("./testMap.png");
+	IMAGE image;
+	loadimage(&image, L"./testMap.png");
+	auto buffer = GetImageBuffer(&image);
 
-	for (auto y = 0; y < image.GetHeight(); ++y) {
-		for (auto x = 0; x < image.GetWidth(); ++x) {
-			SkImageInfo info =
-				SkImageInfo::MakeN32Premul(image.GetNativeImage()->width(), image.GetNativeImage()->height());
-			uint32_t pixelData;
-
-			// Create a SkPixmap to wrap the buffer
-			SkPixmap pixmap(info, &pixelData, sizeof(uint32_t));
-
-			// Read the pixel data from the image at the specified (x, y) position
-			if (image.GetNativeImage()->readPixels(pixmap, x, y)) {
-				SkColor color = SkColorSetARGB(SkGetPackedA32(pixelData), // Alpha
-											   SkGetPackedR32(pixelData), // Red
-											   SkGetPackedG32(pixelData), // Green
-											   SkGetPackedB32(pixelData)  // Blue
-				);
-				if (color == SK_ColorBLACK) {
-					auto block = stoneBlock->Clone<PBlock>(x * 40, y * 40);
-					map.push_back(*stoneBlock);
-				}
-				if (color == SK_ColorBLUE) {
-					map.push_back(*diamondBlock);
-				}
-				if (color == SK_ColorGREEN) {
-					map.push_back(*emeraldBlock);
-				}
-				if (color == SK_ColorRED) {
-					map.push_back(*redstoneBlock);
-				}
+	for (auto y = 0; y < image.getheight(); ++y) {
+		for (auto x = 0; x < image.getwidth(); ++x) {
+			SkColor color = buffer[x + y * image.getwidth()];
+			if (color == SK_ColorBLACK) {
+				auto block = stoneBlock->Clone<PBlock>(x * 40, y * 40);
+				map.push_back(block);
+			}
+			if (color == SK_ColorBLUE) {
+				auto block = diamondBlock->Clone<PBlock>(x * 40, y * 40);
+				map.push_back(block);
+			}
+			if (color == SK_ColorGREEN) {
+				auto block = emeraldBlock->Clone<PBlock>(x * 40, y * 40);
+				map.push_back(block);
+			}
+			if (color == SK_ColorRED) {
+				auto block = redstoneBlock->Clone<PBlock>(x * 40, y * 40);
+				map.push_back(block);
 			}
 		}
 	}
-	// 40x40
+
+	blockMap = new PBlockMap(map);
 }
 void InitGLInterface() {
 	GLInterface = sk_make_sp<VRenderInterface>();
@@ -164,9 +159,12 @@ void Draw(int Width, int Height) {
 		sk_make_sp<VSurface, const sk_sp<VRenderTarget> &, const sk_sp<VRenderContext> &>(glRenderTarget, glContext);
 
 	auto canvas = glSurface->GetNativeSurface()->getCanvas();
-	PBlockReputableRenderer renderer();
+	PBlockReputableRenderer renderer(*blockMap);
+	auto camera = std::make_unique<PCamera>(0, 0, 800, 800);
+	auto blockCanvas = renderer.RenderImage(800, 800, camera.get());
 
 	canvas->flush();
+	glSurface->GetNativeSurface()->draw(blockCanvas.get()->GetNativeSurface()->getCanvas(), 0, 0);
 	glContext->GetNativeContext()->flushAndSubmit();
 
 	glfwSwapBuffers(GLWindow);

@@ -35,7 +35,7 @@ public:
 
 public:
 	void OnDraw(SkCanvas *Canvas) override;
-	bool OnMessage(const ExMessage &Message, PGUIMangerInterface *Interface) override;
+	bool OnMessage(const PMessage &Message, PGUIMangerInterface *Interface) override;
 	void Reset() override;
 
 public:

@@ -38,7 +38,7 @@ void PGUIManager::OnDraw(SkCanvas *Canvas) {
 		}
 	}
 }
-void PGUIManager::OnMessage(ExMessage &Message) {
+void PGUIManager::OnMessage(PMessage &Message) {
 	if (_focus) {
 		if (!_focus->OnMessage(Message, this)) {
 			for (auto &object : _child) {
