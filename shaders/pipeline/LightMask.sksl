@@ -95,8 +95,7 @@ vec3 GammaFixed(in vec3 R) {
     return vec3(pow(R[0], 0.9), pow(R[1], 0.9), pow(R[2], 0.9));
 }
 
-vec4 main(in vec2 fragCoord)
-{
+vec4 main(in vec2 fragCoord) {
     LObject object;
     object.Center       = Center;
     object.Color        = Color;
