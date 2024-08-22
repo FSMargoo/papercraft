@@ -26,15 +26,14 @@ public:
 
 private:
 	RECT hitbox;
-
 };
 
 /**
  * The concept of the PBlock type, which has the legit Clone function
  */
 template <typename T>
-concept PBlockTypeHasClone = requires {
-	{ T::Clone() } -> std::same_as<bool>;
+concept PBlockTypeHasClone = requires(T *A, const int &B, const int &C) {
+	{ T::Clone(A, B, C) } -> std::same_as<T*>;
 };
 
 /**
@@ -57,6 +56,9 @@ public:
 		return new PBlock(Id, 0, 0, Texture);
 	}
 
+public:
+	~PBlock() override = default;
+
 private:
 	/**
 	 * Construct the block with the texture
@@ -66,7 +68,6 @@ private:
 	 * @param Texture The block's texture pointer
 	 */
 	PBlock(const PString &Id, const int &X, const int &Y, PImage *Texture);
-	~PBlock() override = default;
 
 public:
 	/** Whether the block is half brick, if the block is half brick,
@@ -144,9 +145,6 @@ public:
 	}
 
 public:
-
-
-public:
 	/** Clone the block with the specified position
 	 * @tparam Type The type of the block class
 	 * @param X The X position of the block
@@ -191,14 +189,14 @@ public:
 	using BlockMap = std::vector<PBlock>;
 
 public:
-	PBlockMap() = default;
+	PBlockMap(const BlockMap &Map);
 	~PBlockMap() = default;
 
 public:
 	const BlockMap &GetBlockMap() {
-		return _block_map;
+		return _blockMap;
 	}
 
 private:
-	BlockMap _block_map;
+	BlockMap _blockMap;
 };

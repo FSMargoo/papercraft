@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2023~Now Margoo
  *
- * Permission is herebgranted, free of charge, to any person obtaining a copy
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -21,38 +21,6 @@
  */
 
 /**
- * \file BlockRender.h
- * \brief The block render of the PaperCraft
+ * \file Camera.cpp
+ * \brief The camera class in renderer
  */
-
-#pragma once
-
-#include <include/game/block.h>
-#include <include/renderer/Camera.h>
-
-#include <thirdparty/PaperRenderer/include/renderer/vSurface.h>
-
-/**
- * The reputable renderer of the blocks
- */
-class PBlockReputableRenderer {
-public:
-	/**
-	 * Construct the block-reputable renderer with the block map
-	 * @param Map The map of the block
-	 */
-	explicit PBlockReputableRenderer(PBlockMap &Map);
-
-public:
-	/**
-	 * Rendering the image of the basic block image in the rendering pipeline
-	 * @param Width The width of the basic block image
-	 * @param Height The height of the basic block image
-	 * @param Camera The camera of the player view
-	 * @return The block combination surface
-	 */
-	sk_sp<VSurface>&& RenderImage(const int &Width, const int &Height, PCamera *Camera);
-
-private:
-	PBlockMap &_map;
-};

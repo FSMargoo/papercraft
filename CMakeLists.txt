@@ -22,6 +22,12 @@ add_executable(PaperCraft main.cpp ${PaperHeader} ${PaperSource}
         source/game/component/Object.cpp
         include/SkiaPaperBase.h
         source/SkiaPaperBase.cpp
-        include/renderer/BlockRender.h)
+        include/renderer/BlockRender.h
+        source/renderer/BlockRender.cpp
+        include/renderer/Camera.h
+        source/renderer/Camera.cpp)
 
 target_link_libraries(PaperCraft PRIVATE LibPRenderer)
+
+add_executable(TestBlockCombination tester/TestBlockCombinationRendering.cpp)
+target_link_libraries(TestBlockCombination PRIVATE LibPRenderer)

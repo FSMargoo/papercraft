@@ -11,13 +11,13 @@ PAssetManager::PAssetManager() {
 
 	AddFontResource(TEXT("./assets/font/minecraft_font.ttf"));
 }
-const PImage *PAssetManager::GetBlock(const PString &Id) const {
+PImage *PAssetManager::GetBlock(const PString &Id) {
 	return _blockAssets.find(Id)->second;
 }
-const PImage *PAssetManager::GetItem(const PString &Id) const {
+PImage *PAssetManager::GetItem(const PString &Id) {
 	return _itemAssets.find(Id)->second;
 }
-PString PAssetManager::GetSound(const PString &Id) const {
+PString PAssetManager::GetSound(const PString &Id) {
 	return _miscAssets.find(Id)->second;
 }
 void PAssetManager::LoadMiscAssets(const PString &Path) {
@@ -40,7 +40,7 @@ void PAssetManager::LoadMiscAssets(const PString &Path) {
 void PAssetManager::LoadSounds() {
 	LoadMiscAssets("./assets/sounds");
 }
-PMCIInstance *PAssetManager::GetSoundInstance(const PString &Id) const {
+PMCIInstance *PAssetManager::GetSoundInstance(const PString &Id) {
 	if (_miscInstance.find(Id) != _miscInstance.end()) {
 		return _miscInstance.find(Id)->second;
 	}

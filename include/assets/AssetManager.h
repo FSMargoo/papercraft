@@ -31,25 +31,25 @@ public:
 	 * @param Id The id of the block
 	 * @return The const pointer referred to the texture of the block
 	 */
-	const PImage *GetBlock(const PString &Id) const;
+	PImage *GetBlock(const PString &Id);
 	/*
 	 * Get the item texture by the item id
 	 * @param Id The id of the item
 	 * @return The const pointer referred to the item of the block
 	 */
-	const PImage *GetItem(const PString &Id) const;
+	PImage *GetItem(const PString &Id);
 	/**
 	 * Get the sound file path by the id of the sound
 	 * @param Id The id of the sound
 	 * @return The path of the sound file
 	 */
-	PString GetSound(const PString &Id) const;
+	PString GetSound(const PString &Id);
 	/**
 	 * Get the sound instance by the id of the sound
 	 * @param Id The id of the sound
 	 * @return The instance of the sound
 	 */
-	PMCIInstance *GetSoundInstance(const PString &Id) const;
+	PMCIInstance *GetSoundInstance(const PString &Id);
 
 public:
 	/**
