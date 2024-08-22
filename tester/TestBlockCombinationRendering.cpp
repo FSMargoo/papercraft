@@ -105,20 +105,21 @@ void InitBlockMap() {
 
 	for (auto y = 0; y < image.getheight(); ++y) {
 		for (auto x = 0; x < image.getwidth(); ++x) {
-			SkColor color = buffer[x + y * image.getwidth()];
-			if (color == SK_ColorBLACK) {
+			auto color = BGR(buffer[x + y * image.getwidth()]);
+			auto bufColor = RGB(GetRValue(color), GetGValue(color), GetBValue(color));
+			if (bufColor == BLACK) {
 				auto block = stoneBlock->Clone<PBlock>(x * 40, y * 40);
 				map.push_back(block);
 			}
-			if (color == SK_ColorBLUE) {
+			if (bufColor == RGB(32, 32, 255)) {
 				auto block = diamondBlock->Clone<PBlock>(x * 40, y * 40);
 				map.push_back(block);
 			}
-			if (color == SK_ColorGREEN) {
+			if (bufColor == RGB(96, 255, 96)) {
 				auto block = emeraldBlock->Clone<PBlock>(x * 40, y * 40);
 				map.push_back(block);
 			}
-			if (color == SK_ColorRED) {
+			if (bufColor == RGB(255, 32, 32)) {
 				auto block = redstoneBlock->Clone<PBlock>(x * 40, y * 40);
 				map.push_back(block);
 			}
@@ -162,9 +163,9 @@ void Draw(int Width, int Height) {
 	PBlockReputableRenderer renderer(*blockMap);
 	auto camera = std::make_unique<PCamera>(0, 0, 800, 800);
 	auto blockCanvas = renderer.RenderImage(800, 800, camera.get());
-
+	canvas->clear(SK_ColorWHITE);
+	canvas->drawImage(blockCanvas, 0, 0);
 	canvas->flush();
-	glSurface->GetNativeSurface()->draw(blockCanvas.get()->GetNativeSurface()->getCanvas(), 0, 0);
 	glContext->GetNativeContext()->flushAndSubmit();
 
 	glfwSwapBuffers(GLWindow);

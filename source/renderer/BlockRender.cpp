@@ -29,7 +29,7 @@
 
 PBlockReputableRenderer::PBlockReputableRenderer(PBlockMap &Map) : _map(Map) {
 }
-sk_sp<VSurface> PBlockReputableRenderer::RenderImage(const int &Width, const int &Height, PCamera *Camera) {
+sk_sp<SkImage> PBlockReputableRenderer::RenderImage(const int &Width, const int &Height, PCamera *Camera) {
 	auto  surface	  = sk_make_sp<VSurface, const int &, const int &>(Width, Height);
 	auto &blocks	  = _map.GetBlockMap();
 	auto  cameraBound = *Camera;
@@ -40,10 +40,12 @@ sk_sp<VSurface> PBlockReputableRenderer::RenderImage(const int &Width, const int
 			  blockBound.top >= cameraBound.bottom || blockBound.bottom <= cameraBound.top)) {
 			auto relativeX = block->GetX() - Camera->left;
 			auto relativeY = block->GetY() - Camera->top;
-			canvas->drawImage(block->GetTexture()->GetNativeImage(), block->GetX(), block->GetY());
+			canvas->drawImage(block->GetTexture()->GetNativeImage(), relativeX, relativeY);
 		}
 	}
 
-	surface->GetNativeSurface()->flush();
-	return std::move(surface);
+	canvas->flush();
+	surface->GetNativeSurface()->flushAndSubmit();
+
+	return surface->GetNativeSurface()->makeImageSnapshot();
 }
