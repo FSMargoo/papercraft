@@ -25,7 +25,9 @@ add_executable(PaperCraft main.cpp ${PaperHeader} ${PaperSource}
         include/renderer/BlockRender.h
         source/renderer/BlockRender.cpp
         include/renderer/Camera.h
-        source/renderer/Camera.cpp)
+        source/renderer/Camera.cpp
+        include/renderer/LightRenderer.h
+        source/renderer/LightRenderer.cpp)
 
 target_link_libraries(PaperCraft PRIVATE LibPRenderer)
 

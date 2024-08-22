@@ -53,13 +53,13 @@ public:
 	template <class Type>
 		requires std::is_base_of_v<PBlock, Type>
 	static Type *RegisterBlock(const PString &Id, PImage *Texture) {
-		return new PBlock(Id, 0, 0, Texture);
+		return static_cast<Type*>(new PBlock(Id, 0, 0, Texture));
 	}
 
 public:
 	~PBlock() override = default;
 
-private:
+protected:
 	/**
 	 * Construct the block with the texture
 	 * @param Id The id of the block
@@ -154,7 +154,7 @@ public:
 	template<class Type>
 		requires PBlockTypeHasClone<Type> and std::is_base_of_v<PBlock, Type>
 	Type *Clone(const int &X, const int &Y) {
-		return Type::Clone(this, X, Y);
+		return Type::Clone(static_cast<Type*>(this), X, Y);
 	}
 
 public:
@@ -169,7 +169,7 @@ public:
 		return new PBlock(Block->_id, X, Y, Block->_texture);
 	}
 
-private:
+protected:
 	int		_brightness;
 	int		_x;
 	int		_y;

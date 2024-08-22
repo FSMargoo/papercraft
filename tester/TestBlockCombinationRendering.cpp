@@ -33,8 +33,8 @@
 
 sk_sp<VRenderInterface> GLInterface;
 
-#define WIDTH  640
-#define HEIGHT 480
+#define WIDTH  800
+#define HEIGHT 800
 
 sk_sp<SkTextBlob> TextBlob;
 SkPaint			 *Paint;
@@ -43,6 +43,32 @@ SkPaint			 *BlurPaint;
 PBlockMap* blockMap;
 
 GLFWwindow *GLWindow;
+
+class PTestLightBlock : public PBlock {
+public:
+	bool IsLightSource() override {
+		return true;
+	}
+	[[nodiscard]] virtual const SkColor& GetLightColor() const {
+		return Color;
+	}
+	[[nodiscard]] virtual unsigned short GetLightLevel() const {
+		return 2;
+	}
+
+private:
+	PTestLightBlock(const PString &Id, const int &X, const int &Y, PImage *Texture, SkColor LColor) : PBlock(Id, X, Y, Texture), Color(LColor) {
+
+	}
+
+public:
+	static PTestLightBlock *Clone(PTestLightBlock *Block, const int &X, const int &Y) {
+		return new PTestLightBlock(Block->_id, X, Y, Block->_texture, Block->Color);
+	}
+
+public:
+	SkColor Color;
+};
 
 /**
  * Init OpenGL interface object
@@ -95,9 +121,12 @@ void InitBlockMap() {
 	auto emerald	   = PGetSingleton<PAssetManager>().GetBlock("emerald_block");
 	auto diamond	   = PGetSingleton<PAssetManager>().GetBlock("diamond_block");
 	auto stoneBlock	   = PBlock::RegisterBlock<PBlock>("papercraft:stone", stone);
-	auto redstoneBlock = PBlock::RegisterBlock<PBlock>("papercraft:redstone_block", redstone);
-	auto emeraldBlock  = PBlock::RegisterBlock<PBlock>("papercraft:emerald_block", emerald);
-	auto diamondBlock  = PBlock::RegisterBlock<PBlock>("papercraft:diamond_block", diamond);
+	auto redstoneBlock = PBlock::RegisterBlock<PTestLightBlock>("papercraft:redstone_block", redstone);
+	redstoneBlock->Color = SK_ColorRED;
+	auto emeraldBlock  = PBlock::RegisterBlock<PTestLightBlock>("papercraft:emerald_block", emerald);
+	emeraldBlock->Color = SK_ColorGREEN;
+	auto diamondBlock  = PBlock::RegisterBlock<PTestLightBlock>("papercraft:diamond_block", diamond);
+	diamondBlock->Color = SK_ColorBLUE;
 	PBlockMap::BlockMap map;
 	IMAGE image;
 	loadimage(&image, L"./testMap.png");
@@ -112,15 +141,15 @@ void InitBlockMap() {
 				map.push_back(block);
 			}
 			if (bufColor == RGB(32, 32, 255)) {
-				auto block = diamondBlock->Clone<PBlock>(x * 40, y * 40);
+				auto block = diamondBlock->PBlock::Clone<PTestLightBlock>(x * 40, y * 40);
 				map.push_back(block);
 			}
 			if (bufColor == RGB(96, 255, 96)) {
-				auto block = emeraldBlock->Clone<PBlock>(x * 40, y * 40);
+				auto block = emeraldBlock->PBlock::Clone<PTestLightBlock>(x * 40, y * 40);
 				map.push_back(block);
 			}
 			if (bufColor == RGB(255, 32, 32)) {
-				auto block = redstoneBlock->Clone<PBlock>(x * 40, y * 40);
+				auto block = redstoneBlock->PBlock::Clone<PTestLightBlock>(x * 40, y * 40);
 				map.push_back(block);
 			}
 		}

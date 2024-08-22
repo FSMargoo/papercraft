@@ -21,28 +21,23 @@
  */
 
 /**
- * \file BlockRender.cpp
- * \brief {YOUR BRIEF}
+ * \file LightRenderer.cpp
+ * \brief The renderer of light
  */
 
-#include <include/renderer/BlockRender.h>
+#include <include/renderer/LightRenderer.h>
 
-PBlockReputableRenderer::PBlockReputableRenderer(PBlockMap &Map) : _map(Map) {
+PLightRenderer::PLightRenderer(PLightList &List) : _list(List) {
+
 }
-sk_sp<SkImage> PBlockReputableRenderer::RenderImage(const int &Width, const int &Height, PCamera *Camera) {
+sk_sp<SkImage> PLightRenderer::RenderImage(const int &Width, const int &Height, PCamera *Camera) {
 	auto  surface	  = sk_make_sp<VSurface, const int &, const int &>(Width, Height);
-	auto &blocks	  = _map.GetBlockMap();
 	auto  cameraBound = *Camera;
 	auto  canvas	  = surface->GetNativeSurface()->getCanvas();
 	canvas->clear(SK_ColorBLACK);
-	for (auto &block : blocks) {
-		auto blockBound = block->GetBound();
-		if (!(blockBound.left >= cameraBound.right || blockBound.right <= cameraBound.left ||
-			  blockBound.top >= cameraBound.bottom || blockBound.bottom <= cameraBound.top)) {
-			auto relativeX = block->GetX() - Camera->left;
-			auto relativeY = block->GetY() - Camera->top;
-			canvas->drawImage(block->GetTexture()->GetNativeImage(), relativeX, relativeY);
-		}
+
+	for (auto& light : _list) {
+
 	}
 
 	canvas->flush();
