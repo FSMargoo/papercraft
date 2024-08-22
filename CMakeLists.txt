@@ -21,6 +21,7 @@ add_executable(PaperCraft main.cpp ${PaperHeader} ${PaperSource}
         include/game/component/Object.h
         source/game/component/Object.cpp
         include/SkiaPaperBase.h
-        source/SkiaPaperBase.cpp)
+        source/SkiaPaperBase.cpp
+        include/renderer/BlockRender.h)
 
 target_link_libraries(PaperCraft PRIVATE LibPRenderer)

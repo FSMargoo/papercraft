@@ -21,12 +21,11 @@
  */
 
 /**
- * \file Object.cpp
- * \brief The game object which compatible the component systems
+ * \file BlockRender.h
+ * \brief The block render of the PaperCraft
  */
 
-#include <include/game/component/Object.h>
+#pragma once
 
-PObject::PObject() {
+#include <thirdparty/PaperRenderer/include/renderer/vSurface.h>
 
-}
