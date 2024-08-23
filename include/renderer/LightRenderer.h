@@ -27,28 +27,12 @@
 
 #pragma once
 
-#include <include/game/block.h>
-#include <include/renderer/Shader.h>
+#include <include/game/Blocks/Block.h>
 #include <include/renderer/Camera.h>
+#include <include/renderer/Shader.h>
+#include <include/game/blocks/LightSourceBlock.h>
 
 #include <thirdparty/PaperRenderer/include/renderer/vSurface.h>
-
-enum class PLightShapeType {
-	Rectangle, Circle
-};
-
-/**
- * The unit of a light source
- */
-struct PLightUnit {
-	float			Brightness;
-	SkColor			Color;
-	PLightShapeType Shape;
-	float			Radius;
-	float 			Range;
-	float			X;
-	float			Y;
-};
 
 /**
  * The shader compiler of the lighting shader

@@ -3,7 +3,7 @@
  * \breif The block structure in the Game
  */
 
-#include <include/game/Block.h>
+#include <include/game/Blocks/Block.h>
 
 RECT PBlockHitboxComponents::HitBox() {
 	return hitbox;

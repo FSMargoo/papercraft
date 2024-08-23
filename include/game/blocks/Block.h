@@ -8,12 +8,12 @@
 #include <include/EasyXBase.h>
 #include <include/game/component/Component.h>
 #include <include/game/component/Object.h>
+
 #include <vector>
 
 /*
  * Yeah, that is actually the "block" hitbox
  */
-
 class PBlockHitboxComponents : public PComponent {
 public:
 	PBlockHitboxComponents()		   = default;
@@ -152,8 +152,8 @@ public:
 	 * Get the light level of the light source
 	 * @return The light source level of the light source
 	 */
-	[[nodiscard]] virtual unsigned short GetLightLevel() const {
-		return 0;
+	[[nodiscard]] virtual float GetLightLevel() const {
+		return 0.;
 	}
 
 public:
@@ -189,7 +189,6 @@ protected:
 	PImage *_texture;
 	SkColor _color;
 };
-
 /**
  *  the map of papercraft
  */
@@ -205,7 +204,7 @@ public:
 	~PBlockMap() = default;
 
 public:
-	const BlockMap &GetBlockMap() {
+	const BlockMap &GetBlockMap() const {
 		return _blockMap;
 	}
 

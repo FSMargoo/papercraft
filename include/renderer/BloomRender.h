@@ -27,9 +27,9 @@
 
 #pragma once
 
-#include <include/game/block.h>
-#include <include/renderer/Shader.h>
+#include "include/game/Blocks/Block.h"
 #include <include/renderer/Camera.h>
+#include <include/renderer/Shader.h>
 
 #include <thirdparty/PaperRenderer/include/renderer/vSurface.h>
 

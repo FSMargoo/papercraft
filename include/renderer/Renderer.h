@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2023~Now Margoo
  *
- * Permission is herebgranted, free of charge, to any person obtaining a copy
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -21,38 +21,29 @@
  */
 
 /**
- * \file BlockRender.h
- * \brief The block render of the PaperCraft
+ * \file Renderer.h
+ * \brief The renderer of the paper craft
  */
 
 #pragma once
 
-#include "include/game/Blocks/Block.h"
-#include <include/renderer/Camera.h>
-
-#include <thirdparty/PaperRenderer/include/renderer/vSurface.h>
+#include <include/renderer/BlendRender.h>
+#include <include/renderer/BloomRender.h>
+#include <include/renderer/BlockRender.h>
+#include <include/game/blocks/LightSourceBlock.h>
+#include <include/renderer/LightRenderer.h>
 
 /**
- * The reputable renderer of the blocks
+ * The renderer of the PaperCraft
  */
-class PBlockReputableRenderer {
+class PRenderer {
 public:
 	/**
-	 * Construct the block-reputable renderer with the block map
-	 * @param Map The map of the block
+	 * Construct the renderer by the parameter
+	 * @param Width The width of the renderer window
+	 * @param Height The height of the renderer window
+	 * @param Surface The surface of the OpenGL surface
+	 * @param Map The map of the blocks
 	 */
-	explicit PBlockReputableRenderer(PBlockMap &Map);
-
-public:
-	/**
-	 * Rendering the image of the basic block image in the rendering pipeline
-	 * @param Width The width of the basic block image
-	 * @param Height The height of the basic block image
-	 * @param Camera The camera of the player view
-	 * @return The block combination surface
-	 */
-	sk_sp<SkImage> RenderImage(const int &Width, const int &Height, PCamera *Camera);
-
-private:
-	PBlockMap &_map;
+	static sk_sp<SkImage> Render(const int &Width, const int &Height, sk_sp<VSurface> &GLSurface, PBlockMap *Map);
 };
