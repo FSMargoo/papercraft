@@ -1,0 +1,23 @@
+//
+// Blend.sksl (Written in non-standard SKSL):
+//      The final process of blend light
+//
+
+const float TMin = 0.09;
+const float TMax = 0.615;
+
+uniform shader LightMask;
+uniform shader Origin;
+
+vec4 main(in vec2 fragCoord) {
+    vec4 color = Origin.eval(fragColor);
+
+    float maxValue = max(max(color.r, color.g), color.b);
+    float alpha = 0.f;
+
+    if (maxValue <= TMin) alpha = 1.f;
+    else if (maxValue >= TMax) alpha = 0.f;
+    else alpha_val = (pow(TMax, 2.f) - pow(maxValue, 2.f)) / (pow(TMax, 2.f) - pow(TMin, 2.f));
+
+    return (1.f - alpha) * LightMask.eval(fragCoord) * Origin.eval(fragCoord);
+}

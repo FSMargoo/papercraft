@@ -16,39 +16,23 @@ uniform float2 Center;
 // The radius of the light source object
 uniform float Radius;
 // The range of the light source
-uniform float Range;
+uniform float ValidRadius;
 // The light brighteness level of the light source
-uniform float Level;
+uniform float Intensity;
 // The color of the light source
 uniform float3 Color;
 
 // The texture shader for background texture
 uniform shader BackgroundTexture;
 
-// The ray structure
-struct Ray {
-    vec2 Origin;
-    vec2 Direction;
-};
-// The light source object structure
-struct LObject {
-    vec2    Center;
-    vec3    Color;
-    float   Radius;
-    float   ValidRadius;
-    float   Intensity;
-};
-
 // The SDF of ellipse
-float EllipseSDF(in Ray R, in float Radius) {
-    vec2 ray = R.Origin - R.Direction;
-    return length(ray) - Radius;
+float EllipseSDF(in vec2 R, in float Radius) {
+    return length(R) - Radius;
 }
 // The SDF of rectangle
-float RectangleSDF(in Ray R, in float Radius) {
-    vec2 Point  = R.Direction - R.Origin;
+float RectangleSDF(in vec2 R, in float Radius) {
     vec2 Box    = vec2(Radius, Radius);
-    vec2 Delta  = abs(Point) - Box;
+    vec2 Delta  = abs(R) - Box;
     return length(max(Delta, vec2(0.))) + min(max(Delta.x, Delta.y), 0.0);
 }
 // The phi interpolation function
@@ -57,37 +41,43 @@ float Phi(in float Value) {
 }
 
 // Calculate the light brightness contribution from the SDF
-vec3 SDFContribution(in float Distance, in LObject Object) {
+vec3 SDFContribution(in float Distance, in float Intensity, in float ValidRadius, in vec3 Color) {
     vec3 col = vec3(0., 0., 0.);
     if (Distance <= 0.0) {
-        float D = Object.Intensity + 1.;
-        col = Object.Color * D;
+        float D = Intensity + 1.;
+        col = Color * D;
     }
-    else if (Distance <= Object.ValidRadius) {
-        float F = (Distance / Object.ValidRadius);
-        float D = Phi(F) * (Object.Intensity + 1.);
-        col = vec3(Object.Color[0] * D, Object.Color[1] * D, Object.Color[2] * D);
+    else if (Distance <= ValidRadius) {
+        float F = (Distance / ValidRadius);
+        float D = Phi(F) * (Intensity + 1.);
+        col = vec3(Color[0] * D, Color[1] * D, Color[2] * D);
     }
 
     return col;
 }
 // Sample the coord light from a ellipse object
-vec3 SampleEllipse(in LObject Object, in vec2 Coord) {
-    Ray R;
-    R.Origin    = Object.Center;
-    R.Direction = Coord;
+vec3 SampleEllipse(in vec2  Center,
+                   in vec3  Color,
+                   in float Radius,
+                   in float ValidRadius,
+                   in float Intensity,
+                   in vec2  Coord) {
+    vec2 R = Center - Coord;
 
-    float sdf = EllipseSDF(R, Object.Radius);
-    return SDFContribution(sdf, Object);
+    float sdf = EllipseSDF(R, Radius);
+    return SDFContribution(sdf, Intensity, ValidRadius, Color);
 }
 // Sample the coord light from a rectangle object
-vec3 SampleRectangle(in LObject Object, in vec2 Coord) {
-    Ray R;
-    R.Origin    = Object.Center;
-    R.Direction = Coord;
+vec3 SampleRectangle(in vec2  Center,
+                     in vec3  Color,
+                     in float Radius,
+                     in float ValidRadius,
+                     in float Intensity,
+                     in vec2  Coord) {
+    vec2 R = Center - Coord;
 
-    float sdf = RectangleSDF(R, Object.Radius);
-    return SDFContribution(sdf, Object);
+    float sdf = RectangleSDF(R, Radius);
+    return SDFContribution(sdf, Intensity, ValidRadius, Color);
 }
 
 // Fix the gamma value
@@ -96,16 +86,10 @@ vec3 GammaFixed(in vec3 R) {
 }
 
 vec4 main(in vec2 fragCoord) {
-    LObject object;
-    object.Center       = Center;
-    object.Color        = Color;
-    object.Radius       = Radius;
-    object.ValidRadius  = Range;
-    object.Intensity    = Level;
-
-	vec4 fragColor = BackgroundTexture.eval(fragCoord);
-    if (LightType < 10.) fragColor += vec4(SampleEllipse(object, fragCoord), 1.);
-    else fragColor += vec4(SampleRectangle(object, fragCoord), 1.);
+    vec4 fragColor = BackgroundTexture.eval(fragCoord);
+    if (LightType < 10.) fragColor += vec4(SampleEllipse(Center, Color, Radius, ValidRadius, Intensity, fragCoord), 1.);
+    else fragColor += vec4(SampleRectangle(Center, Color, Radius, ValidRadius, Intensity, fragCoord), 1.);
+    // fragColor = vec4(fragColor.rgb, .1);
 
 	return fragColor;
 }

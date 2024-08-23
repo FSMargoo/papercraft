@@ -26,9 +26,11 @@
  */
 
 #include <include/assets/AssetManager.h>
-#include <include/singleton/Singleton.h>
+#include <include/renderer/BlendRender.h>
 #include <include/renderer/BlockRender.h>
+#include <include/renderer/BloomRender.h>
 #include <include/renderer/LightRenderer.h>
+#include <include/singleton/Singleton.h>
 
 #include <easyx.h>
 
@@ -58,8 +60,8 @@ public:
 	}
 
 public:
-	PLightUnit GetUnit() {
-		return { .Brightness = 2, .Color = Color, .Shape = PLightShapeType::Rectangle, .Radius = 40, .Range = 100, .X = static_cast<float>(Bound.left), .Y = static_cast<float>(Bound.top) };
+	PLightUnit GetUnit() const {
+		return { .Brightness = 0.4f, .Color = Color, .Shape = PLightShapeType::Rectangle, .Radius = 20, .Range = 120, .X = static_cast<float>(Bound.left) + 20, .Y = static_cast<float>(Bound.top) + 20 };
 	}
 
 private:
@@ -132,7 +134,7 @@ void InitBlockMap() {
 	auto emeraldBlock  = PBlock::RegisterBlock<PTestLightBlock>("papercraft:emerald_block", emerald);
 	emeraldBlock->Color = SK_ColorGREEN;
 	auto diamondBlock  = PBlock::RegisterBlock<PTestLightBlock>("papercraft:diamond_block", diamond);
-	diamondBlock->Color = SK_ColorBLUE;
+	diamondBlock->Color = SkColorSetRGB(84, 214, 172);
 	PBlockMap::BlockMap map;
 	IMAGE image;
 	loadimage(&image, L"./testMap.png");
@@ -148,6 +150,7 @@ void InitBlockMap() {
 			}
 			if (bufColor == RGB(32, 32, 255)) {
 				auto block = diamondBlock->PBlock::Clone<PTestLightBlock>(x * 40, y * 40);
+				_flushall();
 				map.push_back(block);
 			}
 			if (bufColor == RGB(96, 255, 96)) {
@@ -204,12 +207,24 @@ void Draw(int Width, int Height) {
 	auto map = blockMap->GetBlockMap();
 	for (auto& object : map) {
 		if (object->IsLightSource()) {
-			object->Cast<PTestLightBlock>();
+			auto unit = object->Cast<PTestLightBlock>()->GetUnit();
+			list.push_back(unit);
 		}
 	}
 
-	canvas->clear(SK_ColorWHITE);
-	canvas->drawImage(blockCanvas, 0, 0);
+	PLightRenderer lightRenderer(list);
+	auto surface = glSurface->GetNativeSurface()->makeSurface(800, 800);
+	auto lightImage = lightRenderer.RenderImage(800, 800, camera.get(), surface);
+	auto bloomRenderer = PBloomRenderer();
+	auto lightImageShader = lightImage->makeShader(SkSamplingOptions(SkFilterMode::kLinear));
+	auto blockSurface = glSurface->GetNativeSurface()->makeSurface(800, 800);
+	auto bloomImage = bloomRenderer.RenderImage(blockSurface, lightImageShader);
+	auto blendRenderer = PBlendRenderer();
+	auto blockShader = blockCanvas->makeShader(SkSamplingOptions(SkFilterMode::kLinear));
+	auto result = blendRenderer.RenderImage(blockSurface, lightImageShader, blockShader);
+
+	canvas->clear(SK_ColorBLACK);
+	canvas->drawImage(result, 0, 0);
 	canvas->flush();
 	glContext->GetNativeContext()->flushAndSubmit();
 

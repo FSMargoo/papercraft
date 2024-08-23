@@ -21,16 +21,16 @@
  */
 
 /**
- * \file LightRenderer.cpp
- * \brief The renderer of light
+ * \file Bloom.cpp
+ * \brief The bloom process in PaperCraft
  */
 
-#include <include/renderer/LightRenderer.h>
+#include <include/renderer/BloomRender.h>
 #include <include/singleton/Singleton.h>
 
 #include <fstream>
 
-PLightShaderCompiler::PLightShaderCompiler() {
+PBloomShaderCompiler::PBloomShaderCompiler() {
 	_shaderCode = ReadShader();
 	auto result = SkRuntimeEffect::MakeForShader(SkString(_shaderCode));
 	_shader		= result.effect;
@@ -41,30 +41,14 @@ PLightShaderCompiler::PLightShaderCompiler() {
 		throw PShaderFailureSyntaxError(result.errorText.c_str());
 	}
 }
-sk_sp<SkShader> PLightShaderCompiler::MakeShader(const PLightShapeType &Type, const float &X, const float &Y, const float &Radius,
-												 const float &Range, const float &Level, const SkColor &Color, sk_sp<SkShader> &ImageShader) {
-	float r = SkColorGetR(Color) / 255.f;
-	float g = SkColorGetG(Color) / 255.f;
-	float b = SkColorGetB(Color) / 255.f;
-	float uniformData[9] = { 0., X, Y, Radius, Range, Level, r, g, b };
-	if (Type == PLightShapeType::Circle) {
-		uniformData[0] = 5.f;
-	}
-	else {
-		uniformData[0] = 15.f;
-	}
-
-	sk_sp<SkData>			  uniform	  = SkData::MakeWithCopy(uniformData, sizeof(float) * 9);
-	SkRuntimeEffect::ChildPtr children[]  = {ImageShader};
-
-	return _shader->makeShader(uniform, {
-										   children, 1
-									   });
+sk_sp<SkShader> PBloomShaderCompiler::MakeShader(sk_sp<SkShader> &ImageShader) {
+	SkRuntimeEffect::ChildPtr children[] = {ImageShader};
+	return _shader->makeShader(nullptr, {children, 1});
 }
-std::string PLightShaderCompiler::ReadShader() {
-	std::ifstream stream("./assets/shaders/pipeline/LightMask.sksl");
+std::string PBloomShaderCompiler::ReadShader() {
+	std::ifstream stream("./assets/shaders/pipeline/Bloom.sksl");
 	if (!stream.good()) {
-		throw PShaderFailureNotFound("./assets/shader/pipeline/LightMask.sksl");
+		throw PShaderFailureNotFound("./assets/shader/pipeline/Bloom.sksl");
 	}
 
 	std::string line;
@@ -77,23 +61,17 @@ std::string PLightShaderCompiler::ReadShader() {
 	return file;
 }
 
-PLightRenderer::PLightRenderer(PLightList &List) : _list(List) {
-
-}
-sk_sp<SkImage> PLightRenderer::RenderImage(const int &Width, const int &Height, PCamera *Camera, sk_sp<SkSurface> &Surface) {
+sk_sp<SkImage> PBloomRenderer::RenderImage(sk_sp<SkSurface> &Surface,
+										   sk_sp<SkShader> &ImageShader) {
 	sk_sp<VRenderInterface> GLInterface = sk_make_sp<VRenderInterface>();
-	auto cameraBound = *Camera;
-	auto glCanvas = Surface->getCanvas();
-	for (auto& light : _list) {
-		sk_sp<SkShader> sampler = Surface->makeImageSnapshot()->makeShader(SkSamplingOptions(SkFilterMode::kLinear));
-		auto shader = PGetSingleton<PLightShaderCompiler>().MakeShader(light.Shape, light.X, light.Y, light.Radius, light.Range, light.Brightness, light.Color, sampler);
+	auto					glCanvas	= Surface->getCanvas();
+	auto					shader		= PGetSingleton<PBloomShaderCompiler>().MakeShader(ImageShader);
 
-		SkPaint shaderPlayground;
-		shaderPlayground.setShader(shader);
+	SkPaint shaderPlayground;
+	shaderPlayground.setShader(shader);
 
-		glCanvas->drawPaint(shaderPlayground);
-		glCanvas->flush();
-	}
+	glCanvas->drawPaint(shaderPlayground);
+	glCanvas->flush();
 
 	Surface->flushAndSubmit();
 	return Surface->makeImageSnapshot();

@@ -21,8 +21,8 @@
  */
 
 /**
- * \file LightRenderer.h
- * \brief The renderer of light
+ * \file Blend.h
+ * \brief The blend process of the rendering pipeline
  */
 
 #pragma once
@@ -33,45 +33,21 @@
 
 #include <thirdparty/PaperRenderer/include/renderer/vSurface.h>
 
-enum class PLightShapeType {
-	Rectangle, Circle
-};
-
 /**
- * The unit of a light source
+ * The shader compiler of the blend shader
  */
-struct PLightUnit {
-	float			Brightness;
-	SkColor			Color;
-	PLightShapeType Shape;
-	float			Radius;
-	float 			Range;
-	float			X;
-	float			Y;
-};
-
-/**
- * The shader compiler of the lighting shader
- */
-class PLightShaderCompiler {
+class PBlendShaderCompiler {
 public:
-	PLightShaderCompiler();
+	PBlendShaderCompiler();
 
 public:
 	/**
 	 * Make the light mask shader
-	 * @param Type The type of the light shape
-	 * @param X The X of the light position
-	 * @param Y The Y of the light position
-	 * @param Radius The radius of the light body
-	 * @param Range The radius of the light range
-	 * @param Level The level of the light
-	 * @param Color The color of the light
+	 * @param LightMask The mask of the lighting
 	 * @param ImageShader The sub image sampler shader
 	 * @return The shader object
 	 */
-	sk_sp<SkShader> MakeShader(const PLightShapeType &Type, const float &X, const float &Y, const float &Radius,
-							   const float &Range, const float &Level, const SkColor &Color, sk_sp<SkShader> &ImageShader);
+	sk_sp<SkShader> MakeShader(sk_sp<SkShader> &LightMask, sk_sp<SkShader> &ImageShader);
 
 private:
 	/**
@@ -86,30 +62,23 @@ private:
 };
 
 /**
- * The reputable renderer of the blocks
+ * The blender renderer
  */
-class PLightRenderer {
-public:
-	using PLightList = std::vector<PLightUnit>;
-
+class PBlendRenderer {
 public:
 	/**
 	 * Construct the block-reputable renderer with the block map
 	 * @param Map The map of the block
 	 */
-	explicit PLightRenderer(PLightList &Map);
+	explicit PBlendRenderer() = default;
 
 public:
 	/**
 	 * Rendering the image of the lighting image in the rendering pipeline
-	 * @param Width The width of the lighting image
-	 * @param Height The height of the lighting image
-	 * @param Camera The camera of the player view
 	 * @param Surface The OpenGL created surface
+	 * @param LightMask The shader of the lighting mask
+	 * @param ImageShader The shader of the image
 	 * @return The lighting surface
 	 */
-	sk_sp<SkImage> RenderImage(const int &Width, const int &Height, PCamera *Camera, sk_sp<SkSurface> &Surface);
-
-private:
-	PLightList &_list;
+	sk_sp<SkImage> RenderImage(sk_sp<SkSurface> &Surface, sk_sp<SkShader> &LightMask, sk_sp<SkShader> &ImageShader);
 };
