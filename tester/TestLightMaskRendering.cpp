@@ -94,16 +94,6 @@ int WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 }
 
 void InitBlockMap() {
-	auto redstoneDiffuse = new PLightSourceComponent;
-	redstoneDiffuse->Level = 0.4;
-	redstoneDiffuse->Color = SK_ColorRED;
-	auto diamondDiffuse = new PLightSourceComponent;
-	diamondDiffuse->Level = 0.4;
-	diamondDiffuse->Color = SkColorSetRGB(84, 214, 172);
-	auto emeraldDiffuse = new PLightSourceComponent();
-	emeraldDiffuse->Level = 0.4;
-	emeraldDiffuse->Color = SK_ColorGREEN;
-
 	auto stone			  = PGetSingleton<PAssetManager>().GetBlock("cobbled_deepslate");
 	auto redstone		  = PGetSingleton<PAssetManager>().GetBlock("redstone_block");
 	auto emerald		  = PGetSingleton<PAssetManager>().GetBlock("emerald_block");
@@ -116,10 +106,12 @@ void InitBlockMap() {
 	auto redstoneBlock = PBlock::RegisterBlock<PBlock>("papercraft:redstone_block", redstone, redstoneNormal);
 	auto emeraldBlock  = PBlock::RegisterBlock<PBlock>("papercraft:emerald_block", emerald, emeraldNormal);
 	auto diamondBlock  = PBlock::RegisterBlock<PBlock>("papercraft:diamond_block", diamond, diamondNormal);
-	redstoneBlock->AddComponent(redstoneDiffuse);
-	redstoneBlock->AddComponent(redstoneDiffuse);
-	diamondBlock->AddComponent(diamondDiffuse);
-	emeraldBlock->AddComponent(emeraldDiffuse);
+	redstoneBlock->RegisterComponent<PLightSourceComponent>();
+	diamondBlock->RegisterComponent<PLightSourceComponent>();
+	emeraldBlock->RegisterComponent<PLightSourceComponent>();
+	redstoneBlock->GetComponent<PLightSourceComponent>("light_source")->Color = SK_ColorRED;
+	diamondBlock->GetComponent<PLightSourceComponent>("light_source")->Color = SkColorSetRGB(84, 214, 172);
+	emeraldBlock->GetComponent<PLightSourceComponent>("light_source")->Color = SK_ColorGREEN;
 	PBlockMap::BlockMap map;
 	IMAGE image;
 	loadimage(&image, L"./testMap.png");
@@ -194,8 +186,8 @@ void Draw(int Width, int Height) {
 	auto map = blockMap->GetBlockMap();
 	for (auto& object : map) {
 		for (auto& component : *object) {
-			if (component->IsLuminous()) {
-				auto unit = component->Cast<PLightSourceComponent>()->GetUnit(object);
+			if (component.second->IsLuminous()) {
+				auto unit = component.second->Cast<PLightSourceComponent>()->GetUnit(object);
 				list.push_back(unit);
 			}
 		}

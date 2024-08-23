@@ -168,8 +168,8 @@ public:
 	template<class Type>
 		requires PBlockTypeHasClone<Type> and std::is_base_of_v<PBlock, Type>
 	Type *Clone(const int &X, const int &Y) {
-		auto object = Type::Clone(static_cast<Type*>(this), X, Y);
-		object->_componentList = _componentList;
+		auto object	  = Type::Clone(static_cast<Type *>(this), X, Y);
+		object->_list = _list;
 
 		return object;
 	}

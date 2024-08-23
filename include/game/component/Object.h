@@ -45,17 +45,17 @@ public:
 public:
 	template <class Type, class... Parameter>
 		requires std::is_base_of_v<PComponent, Type>
-	void RegisterComponent(PString Id, Parameter... parameter) {
-		PComponent *component = new Type(this, parameter);
-		_list.insert({component->GetID(), component});
+	void RegisterComponent(Parameter... parameter) {
+		PComponent *component = new Type(parameter...);
+		auto		Id		  = component->GetID();
+		_list.insert({Id, component});
 		_list[Id]->OnPropertyRegistering();
 	}
 
 	template <class Type>
 	Type *GetComponent(PString Id) {
-		return static_cast<Type>(_list[Id]);
+		return static_cast<Type*>(_list[Id]);
 	}
-
 
 	template <class Type>
 	void RegisterProperty(Type *Pointer, PString Id) {
