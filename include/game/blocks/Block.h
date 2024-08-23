@@ -48,12 +48,13 @@ public:
 	 * @param Id The id of the block
 	 * @param Texture The texture of the block, the lifetime of the texture
 	 * will be maintained by the unique block instance
+	 * @param NormalTexture The normal texture of the block
 	 * @return The block
 	 */
 	template <class Type>
 		requires std::is_base_of_v<PBlock, Type>
-	static Type *RegisterBlock(const PString &Id, PImage *Texture) {
-		return static_cast<Type*>(new PBlock(Id, 0, 0, Texture));
+	static Type *RegisterBlock(const PString &Id, PImage *Texture, PImage *NormalTexture) {
+		return static_cast<Type*>(new PBlock(Id, 0, 0, Texture, NormalTexture));
 	}
 
 public:
@@ -66,8 +67,9 @@ protected:
 	 * @param X The X axis of the block
 	 * @param Y The Y axis of the block
 	 * @param Texture The block's texture pointer
+	 * @param NormalTexture The normal texture of the block
 	 */
-	PBlock(const PString &Id, const int &X, const int &Y, PImage *Texture);
+	PBlock(const PString &Id, const int &X, const int &Y, PImage *Texture, PImage *NormalTexture);
 
 public:
 	/** Whether the block is half brick, if the block is half brick,
@@ -135,6 +137,13 @@ public:
 		return _texture;
 	}
 	/**
+	 * Get the normal texture of the block
+	 * @return the texture of the block
+	 */
+	[[nodiscard]] PImage* GetNormalTexture() const {
+		return _normalTexture;
+	}
+	/**
 	 * Get the position or hitbox of block
 	 * @return the Bound of block
 	 */
@@ -174,7 +183,7 @@ public:
 	 * @return The new block in PBlock pointer
 	 */
 	static PBlock *Clone(PBlock *Block, const int &X, const int &Y) {
-		return new PBlock(Block->_id, X, Y, Block->_texture);
+		return new PBlock(Block->_id, X, Y, Block->_texture, Block->_normalTexture);
 	}
 
 protected:
@@ -182,6 +191,7 @@ protected:
 	int		_y;
 	PString _id;
 	PImage *_texture;
+	PImage *_normalTexture;
 };
 /**
  *  the map of papercraft

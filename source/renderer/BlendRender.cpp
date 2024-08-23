@@ -41,9 +41,9 @@ PBlendShaderCompiler::PBlendShaderCompiler() {
 		throw PShaderFailureSyntaxError(result.errorText.c_str());
 	}
 }
-sk_sp<SkShader> PBlendShaderCompiler::MakeShader(sk_sp<SkShader> &LightMask, sk_sp<SkShader> &ImageShader) {
-	SkRuntimeEffect::ChildPtr children[] = {LightMask, ImageShader};
-	return _shader->makeShader(nullptr, {children, 2});
+sk_sp<SkShader> PBlendShaderCompiler::MakeShader(sk_sp<SkShader> &LightMask, sk_sp<SkShader> &ImageShader, sk_sp<SkShader> &NormalShader) {
+	SkRuntimeEffect::ChildPtr children[] = {LightMask, NormalShader, ImageShader};
+	return _shader->makeShader(nullptr, {children, 3});
 }
 std::string PBlendShaderCompiler::ReadShader() {
 	std::ifstream stream("./assets/shaders/pipeline/Blend.sksl");
@@ -61,10 +61,10 @@ std::string PBlendShaderCompiler::ReadShader() {
 	return file;
 }
 
-sk_sp<SkImage> PBlendRenderer::RenderImage(sk_sp<SkSurface> &Surface, sk_sp<SkShader> &LightMask, sk_sp<SkShader> &ImageShader) {
+sk_sp<SkImage> PBlendRenderer::RenderImage(sk_sp<SkSurface> &Surface, sk_sp<SkShader> &LightMask, sk_sp<SkShader> &ImageShader, sk_sp<SkShader> &NormalShader) {
 	sk_sp<VRenderInterface> GLInterface = sk_make_sp<VRenderInterface>();
 	auto					glCanvas	= Surface->getCanvas();
-	auto					shader		= PGetSingleton<PBlendShaderCompiler>().MakeShader(LightMask, ImageShader);
+	auto					shader		= PGetSingleton<PBlendShaderCompiler>().MakeShader(LightMask, ImageShader, NormalShader);
 
 	SkPaint shaderPlayground;
 	shaderPlayground.setShader(shader);

@@ -50,3 +50,27 @@ sk_sp<SkImage> PBlockReputableRenderer::RenderImage(const int &Width, const int 
 
 	return surface->GetNativeSurface()->makeImageSnapshot();
 }
+PNormalBlockReputableRenderer::PNormalBlockReputableRenderer(PBlockMap &Map) : _map(Map) {
+
+}
+sk_sp<SkImage> PNormalBlockReputableRenderer::RenderImage(const int &Width, const int &Height, PCamera *Camera) {
+	auto  surface	  = sk_make_sp<VSurface, const int &, const int &>(Width, Height);
+	auto &blocks	  = _map.GetBlockMap();
+	auto  cameraBound = *Camera;
+	auto  canvas	  = surface->GetNativeSurface()->getCanvas();
+	canvas->clear(SK_ColorWHITE);
+	for (auto &block : blocks) {
+		auto blockBound = block->GetBound();
+		if (!(blockBound.left >= cameraBound.right || blockBound.right <= cameraBound.left ||
+			  blockBound.top >= cameraBound.bottom || blockBound.bottom <= cameraBound.top)) {
+			auto relativeX = block->GetX() - Camera->left;
+			auto relativeY = block->GetY() - Camera->top;
+			canvas->drawImage(block->GetNormalTexture()->GetNativeImage(), relativeX, relativeY);
+		}
+	}
+
+	canvas->flush();
+	surface->GetNativeSurface()->flushAndSubmit();
+
+	return surface->GetNativeSurface()->makeImageSnapshot();
+}

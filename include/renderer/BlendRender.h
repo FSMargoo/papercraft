@@ -47,7 +47,7 @@ public:
 	 * @param ImageShader The sub image sampler shader
 	 * @return The shader object
 	 */
-	sk_sp<SkShader> MakeShader(sk_sp<SkShader> &LightMask, sk_sp<SkShader> &ImageShader);
+	sk_sp<SkShader> MakeShader(sk_sp<SkShader> &LightMask, sk_sp<SkShader> &ImageShader, sk_sp<SkShader> &NormalShader);
 
 private:
 	/**
@@ -78,7 +78,8 @@ public:
 	 * @param Surface The OpenGL created surface
 	 * @param LightMask The shader of the lighting mask
 	 * @param ImageShader The shader of the image
+	 * @param NormalShader The shader of the normal image
 	 * @return The lighting surface
 	 */
-	sk_sp<SkImage> RenderImage(sk_sp<SkSurface> &Surface, sk_sp<SkShader> &LightMask, sk_sp<SkShader> &ImageShader);
+	sk_sp<SkImage> RenderImage(sk_sp<SkSurface> &Surface, sk_sp<SkShader> &LightMask, sk_sp<SkShader> &ImageShader, sk_sp<SkShader> &NormalShader);
 };
