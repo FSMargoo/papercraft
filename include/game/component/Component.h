@@ -12,23 +12,15 @@
 class PObject;
 
 /**
- * The abstract class for map interface
- */
-class PComponentMapInterface {
-public:
-	virtual PObject* Get(const int &X, const int &Y);
-};
-
-/**
  * The component base class
  */
 class PComponent {
 public:
-	PComponent()		  = default;
+	PComponent() = default;
 	virtual ~PComponent() = default;
 
 public:
-	virtual PString GetID();
+	virtual PString GetID() const = 0;
 	virtual void OnPropertyRegistering() {
 
 	}
@@ -59,15 +51,5 @@ public:
 		requires std::is_base_of_v<PComponent, Type>
 	Type* Cast() {
 		return static_cast<Type*>(this);
-	}
-
-public:
-	/**
-	 * When a tick passed, this function will be called
-	 * @param Object The object of the component
-	 * @param Interface The interface of the component map
-	 */
-	virtual void OnTickUpdated(PObject *Object, PComponentMapInterface *Interface) {
-
 	}
 };

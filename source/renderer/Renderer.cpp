@@ -43,7 +43,7 @@ sk_sp<SkImage> PRenderer::Render(const int &Width, const int &Height, sk_sp<VSur
 	auto					   map = Map->GetBlockMap();
 	for (auto &object : map) {
 		for (auto &component : *object) {
-			auto unit = component->Cast<PLightSourceComponent>()->GetUnit(object);
+			auto unit = component.second->Cast<PLightSourceComponent>()->GetUnit(object);
 			list.push_back(unit);
 		}
 	}

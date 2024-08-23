@@ -55,6 +55,11 @@ public:
 	~PLightSourceComponent() override = default;
 
 public:
+	PString GetID() const override {
+		return "light_source";
+	}
+
+public:
 	bool IsLuminous() override {
 		return true;
 	}
