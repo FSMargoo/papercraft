@@ -104,14 +104,18 @@ void InitBlockMap() {
 	emeraldDiffuse->Level = 0.4;
 	emeraldDiffuse->Color = SK_ColorGREEN;
 
-	auto stone		   = PGetSingleton<PAssetManager>().GetBlock("stone");
-	auto redstone	   = PGetSingleton<PAssetManager>().GetBlock("redstone_block");
-	auto emerald	   = PGetSingleton<PAssetManager>().GetBlock("emerald_block");
-	auto diamond	   = PGetSingleton<PAssetManager>().GetBlock("diamond_block");
-	auto stoneBlock	   = PBlock::RegisterBlock<PBlock>("papercraft:stone", stone);
-	auto redstoneBlock = PBlock::RegisterBlock<PBlock>("papercraft:redstone_block", redstone);
-	auto emeraldBlock  = PBlock::RegisterBlock<PBlock>("papercraft:emerald_block", emerald);
-	auto diamondBlock  = PBlock::RegisterBlock<PBlock>("papercraft:diamond_block", diamond);
+	auto stone			  = PGetSingleton<PAssetManager>().GetBlock("cobbled_deepslate");
+	auto redstone		  = PGetSingleton<PAssetManager>().GetBlock("redstone_block");
+	auto emerald		  = PGetSingleton<PAssetManager>().GetBlock("emerald_block");
+	auto diamond		  = PGetSingleton<PAssetManager>().GetBlock("diamond_block");
+	auto stoneNormal	  = PGetSingleton<PAssetManager>().GetBlock("cobbled_deepslate_n");
+	auto redstoneNormal	  = PGetSingleton<PAssetManager>().GetBlock("redstone_block_n");
+	auto emeraldNormal	  = PGetSingleton<PAssetManager>().GetBlock("emerald_block_n");
+	auto diamondNormal	  = PGetSingleton<PAssetManager>().GetBlock("diamond_block_n");
+	auto stoneBlock = PBlock::RegisterBlock<PBlock>("papercraft:stone", stone, stoneNormal);
+	auto redstoneBlock = PBlock::RegisterBlock<PBlock>("papercraft:redstone_block", redstone, redstoneNormal);
+	auto emeraldBlock  = PBlock::RegisterBlock<PBlock>("papercraft:emerald_block", emerald, emeraldNormal);
+	auto diamondBlock  = PBlock::RegisterBlock<PBlock>("papercraft:diamond_block", diamond, diamondNormal);
 	redstoneBlock->AddComponent(redstoneDiffuse);
 	redstoneBlock->AddComponent(redstoneDiffuse);
 	diamondBlock->AddComponent(diamondDiffuse);
@@ -180,8 +184,10 @@ void Draw(int Width, int Height) {
 
 	auto canvas = glSurface->GetNativeSurface()->getCanvas();
 	PBlockReputableRenderer renderer(*blockMap);
+	PNormalBlockReputableRenderer normalRenderer(*blockMap);
 	auto camera = std::make_unique<PCamera>(0, 0, 800, 800);
 	auto blockCanvas = renderer.RenderImage(800, 800, camera.get());
+	auto normalBlockCanvas = normalRenderer.RenderImage(800, 800, camera.get());
 
 	PLightRenderer::PLightList list;
 
@@ -204,7 +210,9 @@ void Draw(int Width, int Height) {
 	auto bloomImage = bloomRenderer.RenderImage(blockSurface, lightImageShader);
 	auto blendRenderer = PBlendRenderer();
 	auto blockShader = blockCanvas->makeShader(SkSamplingOptions(SkFilterMode::kLinear));
-	auto result = blendRenderer.RenderImage(blockSurface, lightImageShader, blockShader);
+	auto normalBlockShader = normalBlockCanvas->makeShader(SkSamplingOptions(SkFilterMode::kLinear));
+	auto resultSurface = glSurface->GetNativeSurface()->makeSurface(800, 800);
+	auto result = blendRenderer.RenderImage(resultSurface, lightImageShader, blockShader, normalBlockShader);
 
 	canvas->clear(SK_ColorBLACK);
 	canvas->drawImage(result, 0, 0);

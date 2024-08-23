@@ -61,7 +61,7 @@ public:
 
 public:
 	PLightUnit GetUnit(PObject *Object) const {
-		return { .Brightness = 0.4f, .Color = Color, .Shape = PLightShapeType::Rectangle, .Radius = 20, .Range = 120, .X = static_cast<float>(Object->Bound.left) + 20, .Y = static_cast<float>(Object->Bound.top) + 20 };
+		return { .Brightness = 0.4f, .Color = Color, .Shape = PLightShapeType::Rectangle, .Radius = 40 / 2, .Range = 120, .X = static_cast<float>(Object->Bound.left) + 40 / 2, .Y = static_cast<float>(Object->Bound.top) + 40 / 2 };
 	}
 
 public:

@@ -56,3 +56,28 @@ public:
 private:
 	PBlockMap &_map;
 };
+
+/**
+ * The reputable renderer of the blocks
+ */
+class PNormalBlockReputableRenderer {
+public:
+	/**
+	 * Construct the block-reputable renderer with the block map
+	 * @param Map The map of the block
+	 */
+	explicit PNormalBlockReputableRenderer(PBlockMap &Map);
+
+public:
+	/**
+	 * Rendering the image of the basic block image in the rendering pipeline
+	 * @param Width The width of the basic block image
+	 * @param Height The height of the basic block image
+	 * @param Camera The camera of the player view
+	 * @return The block combination surface
+	 */
+	sk_sp<SkImage> RenderImage(const int &Width, const int &Height, PCamera *Camera);
+
+private:
+	PBlockMap &_map;
+};

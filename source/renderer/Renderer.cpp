@@ -28,34 +28,39 @@
 #include <include/renderer/renderer.h>
 
 sk_sp<SkImage> PRenderer::Render(const int &Width, const int &Height, sk_sp<VSurface> &GLSurface, PBlockMap *Map) {
-	PBlockReputableRenderer renderer(*Map);
-	auto camera = std::make_unique<PCamera>(0, 0, Width, Height);
+	PBlockReputableRenderer		  renderer(*Map);
+	PNormalBlockReputableRenderer normalRenderer(*Map);
+	auto						  camera = std::make_unique<PCamera>(0, 0, Width, Height);
 
 	// Rendering The Block Union
-	auto blockCanvas = renderer.RenderImage(Width, Height, camera.get());
+	auto blockImage = renderer.RenderImage(Width, Height, camera.get());
+
+	// Rendering The Normal Block Union
+	auto normalBlockImage = normalRenderer.RenderImage(Width, Height, camera.get());
 
 	// Rendering The Lighting
 	PLightRenderer::PLightList list;
-	auto map = Map->GetBlockMap();
-	for (auto& object : map) {
-		for (auto& component : *object) {
+	auto					   map = Map->GetBlockMap();
+	for (auto &object : map) {
+		for (auto &component : *object) {
 			auto unit = component->Cast<PLightSourceComponent>()->GetUnit(object);
 			list.push_back(unit);
 		}
 	}
 	PLightRenderer lightRenderer(list);
-	auto surface = GLSurface->GetNativeSurface()->makeSurface(Width, Height);
-	auto lightImage = lightRenderer.RenderImage(Width, Height, camera.get(), surface);
+	auto		   surface	  = GLSurface->GetNativeSurface()->makeSurface(Width, Height);
+	auto		   lightImage = lightRenderer.RenderImage(Width, Height, camera.get(), surface);
 
 	// Rendering The Bloom
-	auto bloomRenderer = PBloomRenderer();
+	auto bloomRenderer	  = PBloomRenderer();
 	auto lightImageShader = lightImage->makeShader(SkSamplingOptions(SkFilterMode::kLinear));
-	auto bloomImage = bloomRenderer.RenderImage(surface, lightImageShader);
+	auto bloomImage		  = bloomRenderer.RenderImage(surface, lightImageShader);
 
 	// Rendering The Blend
-	auto blendRenderer = PBlendRenderer();
-	auto blockShader = blockCanvas->makeShader(SkSamplingOptions(SkFilterMode::kLinear));
-	auto result = blendRenderer.RenderImage(surface, lightImageShader, blockShader);
+	auto blendRenderer	   = PBlendRenderer();
+	auto blockShader	   = blockImage->makeShader(SkSamplingOptions(SkFilterMode::kLinear));
+	auto normalBlockShader = normalBlockImage->makeShader(SkSamplingOptions(SkFilterMode::kLinear));
+	auto result			   = blendRenderer.RenderImage(surface, lightImageShader, blockShader, normalBlockShader);
 
 	return std::move(result);
 }
