@@ -6,6 +6,7 @@
 #pragma once
 
 #include <Windows.h>
+#include <type_traits>
 
 class PObject;
 
@@ -31,8 +32,28 @@ public:
 	 * @return The hitbox area, if it doesn't a component with hitbox, it will return a
 	 * rectangle in { 0, 0, 0, 0 }
 	 */
-	[[maybe_unused]] virtual RECT HitBox() {
+	virtual RECT HitBox() {
 		return {0, 0, 0, 0};
+	}
+
+	/**
+	 * Whether this component attend the light rendering
+	 * @return If the value is false, it dose not attend the light rendering
+	 */
+	virtual bool IsLuminous() {
+		return false;
+	}
+
+public:
+	/**
+	 * Casting this pointer to the specified type
+	 * @tparam Type The type to be converted
+	 * @return The pointer in specified type
+	 */
+	template<class Type>
+		requires std::is_base_of_v<PComponent, Type>
+	Type* Cast() {
+		return static_cast<Type*>(this);
 	}
 
 public:

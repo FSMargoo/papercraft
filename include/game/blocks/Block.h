@@ -142,13 +142,6 @@ public:
 		return Bound;
 	}
 	/**
-	 * Get the color of the block
-	 * @return The color of block
-	 */
-	[[nodiscard]] virtual const SkColor& GetLightColor() const {
-		return _color;
-	}
-	/**
 	 * Get the light level of the light source
 	 * @return The light source level of the light source
 	 */
@@ -166,7 +159,10 @@ public:
 	template<class Type>
 		requires PBlockTypeHasClone<Type> and std::is_base_of_v<PBlock, Type>
 	Type *Clone(const int &X, const int &Y) {
-		return Type::Clone(static_cast<Type*>(this), X, Y);
+		auto object = Type::Clone(static_cast<Type*>(this), X, Y);
+		object->_componentList = _componentList;
+
+		return object;
 	}
 
 public:
@@ -182,12 +178,10 @@ public:
 	}
 
 protected:
-	int		_brightness;
 	int		_x;
 	int		_y;
 	PString _id;
 	PImage *_texture;
-	SkColor _color;
 };
 /**
  *  the map of papercraft

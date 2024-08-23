@@ -82,7 +82,6 @@ PLightRenderer::PLightRenderer(PLightList &List) : _list(List) {
 }
 sk_sp<SkImage> PLightRenderer::RenderImage(const int &Width, const int &Height, PCamera *Camera, sk_sp<SkSurface> &Surface) {
 	sk_sp<VRenderInterface> GLInterface = sk_make_sp<VRenderInterface>();
-	auto cameraBound = *Camera;
 	auto glCanvas = Surface->getCanvas();
 	for (auto& light : _list) {
 		sk_sp<SkShader> sampler = Surface->makeImageSnapshot()->makeShader(SkSamplingOptions(SkFilterMode::kLinear));

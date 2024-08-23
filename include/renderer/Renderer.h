@@ -30,7 +30,7 @@
 #include <include/renderer/BlendRender.h>
 #include <include/renderer/BloomRender.h>
 #include <include/renderer/BlockRender.h>
-#include <include/game/blocks/LightSourceBlock.h>
+#include <include/game/blocks/LightSourceComponent.h>
 #include <include/renderer/LightRenderer.h>
 
 /**

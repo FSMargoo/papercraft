@@ -49,34 +49,19 @@ struct PLightUnit {
 	float			Y;
 };
 
-/**
- * The light source block
- */
-class PLightSourceBlock : public PBlock {
+class PLightSourceComponent : public PComponent {
 public:
-	bool IsLightSource() override {
+	PLightSourceComponent() = default;
+	~PLightSourceComponent() override = default;
+
+public:
+	bool IsLuminous() override {
 		return true;
 	}
-	[[nodiscard]] virtual const SkColor& GetLightColor() const {
-		return Color;
-	}
-	[[nodiscard]] virtual float GetLightLevel() const {
-		return Level;
-	}
 
 public:
-	PLightUnit GetUnit() const {
-		return { .Brightness = 0.4f, .Color = Color, .Shape = PLightShapeType::Rectangle, .Radius = 20, .Range = 120, .X = static_cast<float>(Bound.left) + 20, .Y = static_cast<float>(Bound.top) + 20 };
-	}
-
-private:
-	PLightSourceBlock(const PString &Id, const int &X, const int &Y, PImage *Texture, SkColor LColor) : PBlock(Id, X, Y, Texture), Color(LColor), Level(0.8f) {
-
-	}
-
-public:
-	static PLightSourceBlock *Clone(PLightSourceBlock *Block, const int &X, const int &Y) {
-		return new PLightSourceBlock(Block->_id, X, Y, Block->_texture, Block->Color);
+	PLightUnit GetUnit(PObject *Object) const {
+		return { .Brightness = 0.4f, .Color = Color, .Shape = PLightShapeType::Rectangle, .Radius = 20, .Range = 120, .X = static_cast<float>(Object->Bound.left) + 20, .Y = static_cast<float>(Object->Bound.top) + 20 };
 	}
 
 public:

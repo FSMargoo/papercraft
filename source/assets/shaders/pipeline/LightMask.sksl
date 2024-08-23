@@ -1,0 +1,95 @@
+//
+// LightMask.sksl (Written in non-standard SKSL):
+//      The light mask shader in the papercraft pipeline,
+//      it will generating the light mask image for the
+//      next rendering 
+//
+
+// The uniform varaibles
+
+// The light type of the shader
+//      If LightType < 10. = Ellipse
+//      Else = Rectangle
+uniform float LightType;
+// The X position of the light
+uniform float2 Center;
+// The radius of the light source object
+uniform float Radius;
+// The range of the light source
+uniform float ValidRadius;
+// The light brighteness level of the light source
+uniform float Intensity;
+// The color of the light source
+uniform float3 Color;
+
+// The texture shader for background texture
+uniform shader BackgroundTexture;
+
+// The SDF of ellipse
+float EllipseSDF(in vec2 R, in float Radius) {
+    return length(R) - Radius;
+}
+// The SDF of rectangle
+float RectangleSDF(in vec2 R, in float Radius) {
+    vec2 Box    = vec2(Radius, Radius);
+    vec2 Delta  = abs(R) - Box;
+    return length(max(Delta, vec2(0.))) + min(max(Delta.x, Delta.y), 0.0);
+}
+// The phi interpolation function
+float Phi(in float Value) {
+    return 1.0 - pow(Value, 0.3);
+}
+
+// Calculate the light brightness contribution from the SDF
+vec3 SDFContribution(in float Distance, in float Intensity, in float ValidRadius, in vec3 Color) {
+    vec3 col = vec3(0., 0., 0.);
+    if (Distance <= 0.0) {
+        float D = Intensity + 1.;
+        col = Color * D;
+    }
+    else if (Distance <= ValidRadius) {
+        float F = (Distance / ValidRadius);
+        float D = Phi(F) * (Intensity + 1.);
+        col = vec3(Color[0] * D, Color[1] * D, Color[2] * D);
+    }
+
+    return col;
+}
+// Sample the coord light from a ellipse object
+vec3 SampleEllipse(in vec2  Center,
+                   in vec3  Color,
+                   in float Radius,
+                   in float ValidRadius,
+                   in float Intensity,
+                   in vec2  Coord) {
+    vec2 R = Center - Coord;
+
+    float sdf = EllipseSDF(R, Radius);
+    return SDFContribution(sdf, Intensity, ValidRadius, Color);
+}
+// Sample the coord light from a rectangle object
+vec3 SampleRectangle(in vec2  Center,
+                     in vec3  Color,
+                     in float Radius,
+                     in float ValidRadius,
+                     in float Intensity,
+                     in vec2  Coord) {
+    vec2 R = Center - Coord;
+
+    float sdf = RectangleSDF(R, Radius);
+    return SDFContribution(sdf, Intensity, ValidRadius, Color);
+}
+
+// Fix the gamma value
+vec3 GammaFixed(in vec3 R) {
+    return vec3(pow(R[0], 0.9), pow(R[1], 0.9), pow(R[2], 0.9));
+}
+
+vec4 main(in vec2 fragCoord) {
+    vec4 fragColor = BackgroundTexture.eval(fragCoord);
+    if (LightType < 10.) fragColor += vec4(SampleEllipse(Center, Color, Radius, ValidRadius, Intensity, fragCoord), 1.);
+    else fragColor += vec4(SampleRectangle(Center, Color, Radius, ValidRadius, Intensity, fragCoord), 1.);
+    // fragColor = vec4(fragColor.rgb, .1);
+
+	return fragColor;
+}

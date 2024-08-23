@@ -48,13 +48,23 @@ public:
 	RECT Bound;
 
 public:
-	// auto begin() {
-	// 		return _componentList.begin();
-	// }
-	// auto end() {
-	// 		return _componentList.begin();
-	// }
+	auto begin() {
+			return _componentList.begin();
+	}
+	auto end() {
+			return _componentList.end();
+	}
 
-// private:
-//	std::vector<PComponent *> _componentList;
+	/**
+	 * Add a component to this object
+	 * @param Component The component to be added
+	 */
+	void AddComponent(PComponent *Component) {
+		if (Component) {
+			_componentList.push_back(Component);
+		}
+	}
+
+protected:
+	std::vector<PComponent *> _componentList;
 };

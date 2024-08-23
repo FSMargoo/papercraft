@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/thirdparty/PaperRenderer" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/thirdparty/PaperRenderer/third/OpenString-CMake" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/thirdparty/PaperRenderer/third/SkiaM101Binary" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/thirdparty/PaperRenderer/third/glfw" vcs="Git" />
+  </component>
+</project>

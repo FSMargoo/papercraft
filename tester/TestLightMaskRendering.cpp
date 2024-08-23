@@ -29,6 +29,7 @@
 #include <include/renderer/BlendRender.h>
 #include <include/renderer/BlockRender.h>
 #include <include/renderer/BloomRender.h>
+#include <include/game/blocks/LightSourceComponent.h>
 #include <include/renderer/LightRenderer.h>
 #include <include/singleton/Singleton.h>
 
@@ -46,37 +47,6 @@ SkPaint			 *BlurPaint;
 PBlockMap* blockMap;
 
 GLFWwindow *GLWindow;
-
-class PTestLightBlock : public PBlock {
-public:
-	bool IsLightSource() override {
-		return true;
-	}
-	[[nodiscard]] virtual const SkColor& GetLightColor() const {
-		return Color;
-	}
-	[[nodiscard]] virtual unsigned short GetLightLevel() const {
-		return 2;
-	}
-
-public:
-	PLightUnit GetUnit() const {
-		return { .Brightness = 0.4f, .Color = Color, .Shape = PLightShapeType::Rectangle, .Radius = 20, .Range = 120, .X = static_cast<float>(Bound.left) + 20, .Y = static_cast<float>(Bound.top) + 20 };
-	}
-
-private:
-	PTestLightBlock(const PString &Id, const int &X, const int &Y, PImage *Texture, SkColor LColor) : PBlock(Id, X, Y, Texture), Color(LColor) {
-
-	}
-
-public:
-	static PTestLightBlock *Clone(PTestLightBlock *Block, const int &X, const int &Y) {
-		return new PTestLightBlock(Block->_id, X, Y, Block->_texture, Block->Color);
-	}
-
-public:
-	SkColor Color;
-};
 
 /**
  * Init OpenGL interface object
@@ -124,17 +94,28 @@ int WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 }
 
 void InitBlockMap() {
+	auto redstoneDiffuse = new PLightSourceComponent;
+	redstoneDiffuse->Level = 0.4;
+	redstoneDiffuse->Color = SK_ColorRED;
+	auto diamondDiffuse = new PLightSourceComponent;
+	diamondDiffuse->Level = 0.4;
+	diamondDiffuse->Color = SkColorSetRGB(84, 214, 172);
+	auto emeraldDiffuse = new PLightSourceComponent();
+	emeraldDiffuse->Level = 0.4;
+	emeraldDiffuse->Color = SK_ColorGREEN;
+
 	auto stone		   = PGetSingleton<PAssetManager>().GetBlock("stone");
 	auto redstone	   = PGetSingleton<PAssetManager>().GetBlock("redstone_block");
 	auto emerald	   = PGetSingleton<PAssetManager>().GetBlock("emerald_block");
 	auto diamond	   = PGetSingleton<PAssetManager>().GetBlock("diamond_block");
 	auto stoneBlock	   = PBlock::RegisterBlock<PBlock>("papercraft:stone", stone);
-	auto redstoneBlock = PBlock::RegisterBlock<PTestLightBlock>("papercraft:redstone_block", redstone);
-	redstoneBlock->Color = SK_ColorRED;
-	auto emeraldBlock  = PBlock::RegisterBlock<PTestLightBlock>("papercraft:emerald_block", emerald);
-	emeraldBlock->Color = SK_ColorGREEN;
-	auto diamondBlock  = PBlock::RegisterBlock<PTestLightBlock>("papercraft:diamond_block", diamond);
-	diamondBlock->Color = SkColorSetRGB(84, 214, 172);
+	auto redstoneBlock = PBlock::RegisterBlock<PBlock>("papercraft:redstone_block", redstone);
+	auto emeraldBlock  = PBlock::RegisterBlock<PBlock>("papercraft:emerald_block", emerald);
+	auto diamondBlock  = PBlock::RegisterBlock<PBlock>("papercraft:diamond_block", diamond);
+	redstoneBlock->AddComponent(redstoneDiffuse);
+	redstoneBlock->AddComponent(redstoneDiffuse);
+	diamondBlock->AddComponent(diamondDiffuse);
+	emeraldBlock->AddComponent(emeraldDiffuse);
 	PBlockMap::BlockMap map;
 	IMAGE image;
 	loadimage(&image, L"./testMap.png");
@@ -149,16 +130,16 @@ void InitBlockMap() {
 				map.push_back(block);
 			}
 			if (bufColor == RGB(32, 32, 255)) {
-				auto block = diamondBlock->PBlock::Clone<PTestLightBlock>(x * 40, y * 40);
+				auto block = diamondBlock->PBlock::Clone<PBlock>(x * 40, y * 40);
 				_flushall();
 				map.push_back(block);
 			}
 			if (bufColor == RGB(96, 255, 96)) {
-				auto block = emeraldBlock->PBlock::Clone<PTestLightBlock>(x * 40, y * 40);
+				auto block = emeraldBlock->PBlock::Clone<PBlock>(x * 40, y * 40);
 				map.push_back(block);
 			}
 			if (bufColor == RGB(255, 32, 32)) {
-				auto block = redstoneBlock->PBlock::Clone<PTestLightBlock>(x * 40, y * 40);
+				auto block = redstoneBlock->PBlock::Clone<PBlock>(x * 40, y * 40);
 				map.push_back(block);
 			}
 		}
@@ -206,9 +187,11 @@ void Draw(int Width, int Height) {
 
 	auto map = blockMap->GetBlockMap();
 	for (auto& object : map) {
-		if (object->IsLightSource()) {
-			auto unit = object->Cast<PTestLightBlock>()->GetUnit();
-			list.push_back(unit);
+		for (auto& component : *object) {
+			if (component->IsLuminous()) {
+				auto unit = component->Cast<PLightSourceComponent>()->GetUnit(object);
+				list.push_back(unit);
+			}
 		}
 	}
 

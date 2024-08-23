@@ -30,7 +30,7 @@
 #include <include/game/Blocks/Block.h>
 #include <include/renderer/Camera.h>
 #include <include/renderer/Shader.h>
-#include <include/game/blocks/LightSourceBlock.h>
+#include <include/game/blocks/LightSourceComponent.h>
 
 #include <thirdparty/PaperRenderer/include/renderer/vSurface.h>
 

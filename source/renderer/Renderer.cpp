@@ -38,8 +38,8 @@ sk_sp<SkImage> PRenderer::Render(const int &Width, const int &Height, sk_sp<VSur
 	PLightRenderer::PLightList list;
 	auto map = Map->GetBlockMap();
 	for (auto& object : map) {
-		if (object->IsLightSource()) {
-			auto unit = object->Cast<PLightSourceBlock>()->GetUnit();
+		for (auto& component : *object) {
+			auto unit = component->Cast<PLightSourceComponent>()->GetUnit(object);
 			list.push_back(unit);
 		}
 	}

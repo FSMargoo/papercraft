@@ -36,7 +36,7 @@ add_executable(PaperCraft main.cpp ${PaperHeader} ${PaperSource}
         source/renderer/BlendRender.cpp
         include/renderer/Renderer.h
         source/renderer/Renderer.cpp
-        include/game/blocks/LightSourceBlock.h)
+        include/game/blocks/LightSourceComponent.h)
 
 target_link_libraries(PaperCraft PRIVATE LibPRenderer)
 
