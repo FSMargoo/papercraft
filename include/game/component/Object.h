@@ -28,6 +28,8 @@
 #pragma once
 
 #include <include/game/component/Component.h>
+#include <include/String.h>
+#include <unordered_map>
 
 #include <vector>
 
@@ -41,7 +43,29 @@ public:
 	virtual ~PObject() = default;
 
 public:
+	template <class Type, class... Parameter>
+		requires std::is_base_of_v<PComponent, Type>
+	void RegisterComponent(PString Id, Parameter... parameter) {
+		PComponent *component = new Type(this, parameter);
+		_list.insert({component->GetID(), component});
+		_list[Id]->OnPropertyRegistering();
+	}
 
+	template <class Type>
+	Type *GetComponent(PString Id) {
+		return static_cast<Type>(_list[Id]);
+	}
+
+
+	template <class Type>
+	void RegisterProperty(Type *Pointer, PString Id) {
+		_propertyMap.insert({Id, reinterpret_cast<void *>(Pointer)});
+	}
+
+	template <class Type>
+	Type *GetProperty(PString Id) {
+		return static_cast<Type *>(_propertyMap[Id]);
+	}
 
 public:
 	// The bound of the object
@@ -49,22 +73,14 @@ public:
 
 public:
 	auto begin() {
-			return _componentList.begin();
-	}
-	auto end() {
-			return _componentList.end();
+		return _list.begin();
 	}
 
-	/**
-	 * Add a component to this object
-	 * @param Component The component to be added
-	 */
-	void AddComponent(PComponent *Component) {
-		if (Component) {
-			_componentList.push_back(Component);
-		}
+	auto end() {
+		return _list.end();
 	}
 
 protected:
-	std::vector<PComponent *> _componentList;
+	std::unordered_map<PString, PComponent *> _list;
+	std::unordered_map<PString, void *> _propertyMap;
 };

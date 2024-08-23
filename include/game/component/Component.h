@@ -7,6 +7,7 @@
 
 #include <Windows.h>
 #include <type_traits>
+#include <include/String.h>
 
 class PObject;
 
@@ -27,6 +28,10 @@ public:
 	virtual ~PComponent() = default;
 
 public:
+	virtual PString GetID();
+	virtual void OnPropertyRegistering() {
+
+	}
 	/**
 	 * The hitbox component virtual method
 	 * @return The hitbox area, if it doesn't a component with hitbox, it will return a
