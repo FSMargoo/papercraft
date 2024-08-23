@@ -102,6 +102,18 @@ public:
 
 public:
 	/**
+	 * Convert this pointer to the specified type
+	 * @tparam Type The specified type to be converted
+	 * @return The pointer in specified type
+	 */
+	template<class Type>
+		requires std::is_base_of_v<PBlock, Type>
+	Type* Cast() {
+		return static_cast<Type*>(this);
+	}
+
+public:
+	/**
 	 * Get the X position of the block
 	 * @return The X position of the block
 	 */

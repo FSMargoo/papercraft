@@ -28,6 +28,7 @@
 #pragma once
 
 #include <include/game/block.h>
+#include <include/renderer/Shader.h>
 #include <include/renderer/Camera.h>
 
 #include <thirdparty/PaperRenderer/include/renderer/vSurface.h>
@@ -44,15 +45,44 @@ struct PLightUnit {
 	SkColor			Color;
 	PLightShapeType Shape;
 	float			Radius;
+	float 			Range;
 	float			X;
 	float			Y;
 };
 
 /**
- * The shader manager of the lighting shader
+ * The shader compiler of the lighting shader
  */
-class PLightShader {
+class PLightShaderCompiler {
+public:
+	PLightShaderCompiler();
 
+public:
+	/**
+	 * Make the light mask shader
+	 * @param Type The type of the light shape
+	 * @param X The X of the light position
+	 * @param Y The Y of the light position
+	 * @param Radius The radius of the light body
+	 * @param Range The radius of the light range
+	 * @param Level The level of the light
+	 * @param Color The color of the light
+	 * @param ImageShader The sub image sampler shader
+	 * @return The shader object
+	 */
+	sk_sp<SkShader> MakeShader(const PLightShapeType &Type, const float &X, const float &Y, const float &Radius,
+							   const float &Range, const float &Level, const SkColor &Color, sk_sp<SkShader> &ImageShader);
+
+private:
+	/**
+	 * Read the shader code
+	 * @return The code of the shader file
+	 */
+	std::string ReadShader();
+
+private:
+	sk_sp<SkRuntimeEffect> 	_shader;
+	std::string 			_shaderCode;
 };
 
 /**

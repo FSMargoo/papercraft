@@ -21,13 +21,14 @@
  */
 
 /**
- * \file TestBlockCombinationRendering.cpp
- * \brief Test the Block Combination Rendering
+ * \file TestLightMaskRendering.cpp
+ * \brief Test Light Mask Rendering
  */
 
-#include <include/renderer/BlockRender.h>
 #include <include/assets/AssetManager.h>
 #include <include/singleton/Singleton.h>
+#include <include/renderer/BlockRender.h>
+#include <include/renderer/LightRenderer.h>
 
 #include <easyx.h>
 
@@ -56,8 +57,13 @@ public:
 		return 2;
 	}
 
+public:
+	PLightUnit GetUnit() {
+		return { .Brightness = 2, .Color = Color, .Shape = PLightShapeType::Rectangle, .Radius = 40, .Range = 100, .X = static_cast<float>(Bound.left), .Y = static_cast<float>(Bound.top) };
+	}
+
 private:
-	PTestLightBlock(const PString &Id, const int &X, const int &Y, PImage *Texture, SkColor LColor) : PBlock(Id, X, Y, Texture), Color(LColor) const {
+	PTestLightBlock(const PString &Id, const int &X, const int &Y, PImage *Texture, SkColor LColor) : PBlock(Id, X, Y, Texture), Color(LColor) {
 
 	}
 
@@ -192,9 +198,18 @@ void Draw(int Width, int Height) {
 	PBlockReputableRenderer renderer(*blockMap);
 	auto camera = std::make_unique<PCamera>(0, 0, 800, 800);
 	auto blockCanvas = renderer.RenderImage(800, 800, camera.get());
-	canvas->clear(SK_ColorBLACK);
-	canvas->drawImage(blockCanvas, 0, 0);
 
+	PLightRenderer::PLightList list;
+
+	auto map = blockMap->GetBlockMap();
+	for (auto& object : map) {
+		if (object->IsLightSource()) {
+			object->Cast<PTestLightBlock>();
+		}
+	}
+
+	canvas->clear(SK_ColorWHITE);
+	canvas->drawImage(blockCanvas, 0, 0);
 	canvas->flush();
 	glContext->GetNativeContext()->flushAndSubmit();
 

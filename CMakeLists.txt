@@ -27,9 +27,14 @@ add_executable(PaperCraft main.cpp ${PaperHeader} ${PaperSource}
         include/renderer/Camera.h
         source/renderer/Camera.cpp
         include/renderer/LightRenderer.h
-        source/renderer/LightRenderer.cpp)
+        source/renderer/LightRenderer.cpp
+        include/renderer/Shader.h
+        source/renderer/Shader.cpp)
 
 target_link_libraries(PaperCraft PRIVATE LibPRenderer)
 
 add_executable(TestBlockCombination tester/TestBlockCombinationRendering.cpp ${PaperHeader} ${PaperSource})
 target_link_libraries(TestBlockCombination PRIVATE LibPRenderer)
+
+add_executable(TestLightMaskRendering tester/TestLightMaskRendering.cpp ${PaperHeader} ${PaperSource})
+target_link_libraries(TestLightMaskRendering PRIVATE LibPRenderer)
