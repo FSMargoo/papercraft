@@ -89,7 +89,6 @@ vec4 main(in vec2 fragCoord) {
     vec4 fragColor = BackgroundTexture.eval(fragCoord);
     if (LightType < 10.) fragColor += vec4(SampleEllipse(Center, Color, Radius, ValidRadius, Intensity, fragCoord), 1.);
     else fragColor += vec4(SampleRectangle(Center, Color, Radius, ValidRadius, Intensity, fragCoord), 1.);
-    // fragColor = vec4(fragColor.rgb, .1);
 
 	return fragColor;
 }
