@@ -21,8 +21,14 @@
  */
 
 /**
- * \file PVelocityComponent.h
- * \brief The velocity component of the game
+ * \file CollisionReactionComponent.h
+ * \brief The collision reaction component
  */
 
 #pragma once
+
+#include <include/game/component/Component.h>
+
+class PCollisionReactionComponent : public PComponent {
+
+};

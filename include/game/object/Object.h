@@ -54,7 +54,13 @@ private:
 class PObject : public PComponentObjectInterface {
 public:
 	PObject();
-	virtual ~PObject() = default;
+	virtual ~PObject() {
+		for (auto &component : _list) {
+			delete component.second;
+		}
+
+		_list.clear();
+	}
 
 public:
 	template <class Type, class... Parameter>
@@ -67,7 +73,7 @@ public:
 				"Component ID repeating, trying to register two same component in one object?");
 		}
 		_list.insert({Id, component});
-		_list[Id]->OnPropertyRegistering();
+		_list[Id]->OnPropertyRegistering(this);
 	}
 
 	template <class Type> Type *GetComponent(PString Id) {

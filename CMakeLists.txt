@@ -41,7 +41,8 @@ add_executable(PaperCraft main.cpp ${PaperHeader} ${PaperSource}
         source/game/component/CollisionComponent.cpp
         include/game/manager/CollisionManager.h
         source/game/manager/CollisionManager.cpp
-        include/game/component/PVelocityComponent.h)
+        include/game/component/VelocityComponent.h
+        include/game/component/CollisionReactionComponent.h)
 
 target_link_libraries(PaperCraft PRIVATE LibPRenderer)
 
