@@ -27,17 +27,31 @@
 
 #pragma once
 
-#include <include/game/component/Component.h>
 #include <include/String.h>
-#include <unordered_map>
+#include <include/game/component/Component.h>
 
+#include <unordered_map>
 #include <vector>
+
+class PObjectComponentRegisterFailure : public std::exception {
+public:
+	PObjectComponentRegisterFailure(const PString &Info) {
+		_info = ostr::format("PObject component registering failure: {}", Info);
+	}
+
+	const char *what() const throw() override {
+		return _info.c_str();
+	}
+
+private:
+	PString _info;
+};
 
 /**
  * The game object base class, attention, only objects that can have their
  * own position in the game is game objects
  */
-class PObject {
+class PObject : public PComponentObjectInterface {
 public:
 	PObject();
 	virtual ~PObject() = default;
@@ -48,23 +62,25 @@ public:
 	void RegisterComponent(Parameter... parameter) {
 		PComponent *component = new Type(parameter...);
 		auto		Id		  = component->GetID();
+		if (_list.find(Id) != _list.end()) {
+			throw new PObjectComponentRegisterFailure(
+				"Component ID repeating, trying to register two same component in one object?");
+		}
 		_list.insert({Id, component});
 		_list[Id]->OnPropertyRegistering();
 	}
 
-	template <class Type>
-	Type *GetComponent(PString Id) {
-		return static_cast<Type*>(_list[Id]);
+	template <class Type> Type *GetComponent(PString Id) {
+		return static_cast<Type *>(_list[Id]);
 	}
 
-	template <class Type>
-	void RegisterProperty(Type *Pointer, PString Id) {
-		_propertyMap.insert({Id, reinterpret_cast<void *>(Pointer)});
-	}
-
-	template <class Type>
-	Type *GetProperty(PString Id) {
+	template <class Type> Type *GetProperty(PString Id) {
 		return static_cast<Type *>(_propertyMap[Id]);
+	}
+
+private:
+	void IRegisterVoidProperty(void *Pointer, const PString &Id) override {
+		_propertyMap.insert({Id, Pointer});
 	}
 
 public:
@@ -82,5 +98,5 @@ public:
 
 protected:
 	std::unordered_map<PString, PComponent *> _list;
-	std::unordered_map<PString, void *> _propertyMap;
+	std::unordered_map<PString, void *>		  _propertyMap;
 };

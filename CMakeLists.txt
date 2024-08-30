@@ -18,7 +18,7 @@ include_directories(./thirdparty/)
 include_directories(./thirdparty/mINI/src)
 
 add_executable(PaperCraft main.cpp ${PaperHeader} ${PaperSource}
-        include/game/component/Object.h
+        include/game/object/Object.h
         source/game/component/Object.cpp
         include/SkiaPaperBase.h
         source/SkiaPaperBase.cpp
@@ -36,7 +36,12 @@ add_executable(PaperCraft main.cpp ${PaperHeader} ${PaperSource}
         source/renderer/BlendRender.cpp
         include/renderer/Renderer.h
         source/renderer/Renderer.cpp
-        include/game/blocks/LightSourceComponent.h)
+        include/game/component/LightSourceComponent.h
+        include/game/component/CollisionComponent.h
+        source/game/component/CollisionComponent.cpp
+        include/game/manager/CollisionManager.h
+        source/game/manager/CollisionManager.cpp
+        include/game/component/PVelocityComponent.h)
 
 target_link_libraries(PaperCraft PRIVATE LibPRenderer)
 

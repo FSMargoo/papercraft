@@ -21,29 +21,31 @@
  */
 
 /**
- * \file Renderer.h
- * \brief The renderer of the paper craft
+ * \file CollisionComponent.h
+ * \brief The collision component
  */
 
 #pragma once
 
-#include "include/game/component/LightSourceComponent.h"
-#include <include/renderer/BlendRender.h>
-#include <include/renderer/BlockRender.h>
-#include <include/renderer/BloomRender.h>
-#include <include/renderer/LightRenderer.h>
+#include <include/game/component/Component.h>
 
 /**
- * The renderer of the PaperCraft
+ * The component of the HitBox
  */
-class PRenderer {
+class PCollisionComponent : public PComponent {
+public:
+	PCollisionComponent() = default;
+	~PCollisionComponent() override = default;
+
+public:
+	PString GetID() const override {
+		return "collision";
+	}
+
 public:
 	/**
-	 * Construct the renderer by the parameter
-	 * @param Width The width of the renderer window
-	 * @param Height The height of the renderer window
-	 * @param Surface The surface of the OpenGL surface
-	 * @param Map The map of the blocks
+	 * Judge whether two hitbox was overlapped
+	 * @return If two hitbox are overlapped, returning true, nor false
 	 */
-	static sk_sp<SkImage> Render(const int &Width, const int &Height, sk_sp<VSurface> &GLSurface, PBlockMap *Map);
+	bool Overlap(RECT& HitBox1, RECT &HitBox2) const;
 };

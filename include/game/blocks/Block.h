@@ -5,9 +5,9 @@
 
 #pragma once
 
+#include "include/game/object/Object.h"
 #include <include/EasyXBase.h>
 #include <include/game/component/Component.h>
-#include <include/game/component/Object.h>
 
 #include <vector>
 

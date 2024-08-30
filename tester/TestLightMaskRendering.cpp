@@ -25,11 +25,11 @@
  * \brief Test Light Mask Rendering
  */
 
+#include "include/game/component/LightSourceComponent.h"
 #include <include/assets/AssetManager.h>
 #include <include/renderer/BlendRender.h>
 #include <include/renderer/BlockRender.h>
 #include <include/renderer/BloomRender.h>
-#include <include/game/blocks/LightSourceComponent.h>
 #include <include/renderer/LightRenderer.h>
 #include <include/singleton/Singleton.h>
 

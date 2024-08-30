@@ -21,29 +21,13 @@
  */
 
 /**
- * \file Renderer.h
- * \brief The renderer of the paper craft
+ * \file CollisionComponent.cpp
+ * \brief The collision component
  */
 
-#pragma once
+#include <include/game/component/CollisionComponent.h>
 
-#include "include/game/component/LightSourceComponent.h"
-#include <include/renderer/BlendRender.h>
-#include <include/renderer/BlockRender.h>
-#include <include/renderer/BloomRender.h>
-#include <include/renderer/LightRenderer.h>
-
-/**
- * The renderer of the PaperCraft
- */
-class PRenderer {
-public:
-	/**
-	 * Construct the renderer by the parameter
-	 * @param Width The width of the renderer window
-	 * @param Height The height of the renderer window
-	 * @param Surface The surface of the OpenGL surface
-	 * @param Map The map of the blocks
-	 */
-	static sk_sp<SkImage> Render(const int &Width, const int &Height, sk_sp<VSurface> &GLSurface, PBlockMap *Map);
-};
+bool PCollisionComponent::Overlap(RECT& HitBox1, RECT &HitBox2) const {
+	return !(HitBox1.right <= HitBox2.left || HitBox1.left >= HitBox2.right || HitBox1.bottom <= HitBox2.top ||
+			 HitBox1.top >= HitBox2.bottom);
+}

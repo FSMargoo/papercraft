@@ -21,29 +21,25 @@
  */
 
 /**
- * \file Renderer.h
- * \brief The renderer of the paper craft
+ * \file CollisionManager.cpp
+ * \brief The collision manager of the game, this manager class will update the status of the velocity info
  */
 
-#pragma once
+#include <include/game/manager/CollisionManager.h>
 
-#include "include/game/component/LightSourceComponent.h"
-#include <include/renderer/BlendRender.h>
-#include <include/renderer/BlockRender.h>
-#include <include/renderer/BloomRender.h>
-#include <include/renderer/LightRenderer.h>
+void PCollisionManager::CalculateCollision() {
+	if (ObjectList.empty()) {
+		return;
+	}
 
-/**
- * The renderer of the PaperCraft
- */
-class PRenderer {
-public:
-	/**
-	 * Construct the renderer by the parameter
-	 * @param Width The width of the renderer window
-	 * @param Height The height of the renderer window
-	 * @param Surface The surface of the OpenGL surface
-	 * @param Map The map of the blocks
-	 */
-	static sk_sp<SkImage> Render(const int &Width, const int &Height, sk_sp<VSurface> &GLSurface, PBlockMap *Map);
-};
+	for (auto object1 = ObjectList.begin(), object2 = object1 + 1; object1 != ObjectList.end(); ++object1, ++object2) {
+		for (auto &component : *(*object1)) {
+			if (component.first == "collision") {
+				auto collisionComponent = component.second->Cast<PCollisionComponent>();
+				if (collisionComponent->Overlap((*object1)->Bound, (*object2)->Bound)) {
+
+				}
+			}
+		}
+	}
+}

@@ -21,29 +21,30 @@
  */
 
 /**
- * \file Renderer.h
- * \brief The renderer of the paper craft
+ * \file CollisionManager.h
+ * \brief The collision manager of the game, this manager class will update the status of the velocity info
  */
 
 #pragma once
 
-#include "include/game/component/LightSourceComponent.h"
-#include <include/renderer/BlendRender.h>
-#include <include/renderer/BlockRender.h>
-#include <include/renderer/BloomRender.h>
-#include <include/renderer/LightRenderer.h>
+#include <include/game/component/CollisionComponent.h>
+#include <include/game/object/Object.h>
 
-/**
- * The renderer of the PaperCraft
+/*+
+ * The collision manager of the game, this manager will update the velocity status of the
+ * object in the game, the user should maintain the lifetime of the PObject pointer
  */
-class PRenderer {
+class PCollisionManager : public PComponent {
+public:
+	PCollisionManager() = default;
+	~PCollisionManager() override = default;
+
 public:
 	/**
-	 * Construct the renderer by the parameter
-	 * @param Width The width of the renderer window
-	 * @param Height The height of the renderer window
-	 * @param Surface The surface of the OpenGL surface
-	 * @param Map The map of the blocks
+	 * Calculate the collision and update the velocity status of the object
 	 */
-	static sk_sp<SkImage> Render(const int &Width, const int &Height, sk_sp<VSurface> &GLSurface, PBlockMap *Map);
+	void CalculateCollision();
+
+public:
+	std::vector<PObject *> ObjectList;
 };

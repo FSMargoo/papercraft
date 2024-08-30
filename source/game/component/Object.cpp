@@ -25,7 +25,7 @@
  * \brief The game object which compatible the component systems
  */
 
-#include <include/game/component/Object.h>
+#include "include/game/object/Object.h"
 
 PObject::PObject() {
 

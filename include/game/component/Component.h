@@ -5,11 +5,29 @@
 
 #pragma once
 
-#include <Windows.h>
-#include <type_traits>
 #include <include/String.h>
 
-class PObject;
+#include <windows.h>
+#include <type_traits>
+
+/**
+ * The interface for component property registering
+ */
+class PComponentObjectInterface {
+public:
+	template <class Type>
+	void RegisterProperty(Type *Pointer, PString Id) {
+		IRegisterVoidProperty(reinterpret_cast<void *>(Pointer), Id);
+	}
+
+protected:
+	/**
+	 * The interface of registering property
+	 * @param Pointer The pointer of the property
+	 * @param Id The ID of the property
+	 */
+	virtual void IRegisterVoidProperty(void *Pointer, const PString &Id) = 0;
+};
 
 /**
  * The component base class
@@ -21,16 +39,8 @@ public:
 
 public:
 	virtual PString GetID() const = 0;
-	virtual void OnPropertyRegistering() {
+	virtual void OnPropertyRegistering(PComponentObjectInterface *Interface) {
 
-	}
-	/**
-	 * The hitbox component virtual method
-	 * @return The hitbox area, if it doesn't a component with hitbox, it will return a
-	 * rectangle in { 0, 0, 0, 0 }
-	 */
-	virtual RECT HitBox() {
-		return {0, 0, 0, 0};
 	}
 
 	/**
