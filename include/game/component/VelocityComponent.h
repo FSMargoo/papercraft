@@ -33,23 +33,14 @@
 
 class PVelocityComponent : public PComponent {
 public:
-	PVelocityComponent()		   = default;
-	~PVelocityComponent() override {
-		delete _velocity;
-		delete _accelerationVelocity;
-	}
+	PVelocityComponent() = default;
+	~PVelocityComponent() override;
 
 public:
 	PString GetID() const {
 		return "velocity";
 	}
-	void OnPropertyRegistering(PComponentObjectInterface *Interface) override {
-		_velocity			  = new vecmath::Vector<float>();
-		_accelerationVelocity = new vecmath::Vector<float>();
-
-		Interface->RegisterProperty(_velocity, "velocity_vector");
-		Interface->RegisterProperty(_accelerationVelocity, "acceleration_velocity_vector");
-	}
+	void OnPropertyRegistering(PComponentObjectInterface *Interface) override;
 
 private:
 	vecmath::Vector<float> *_velocity;

@@ -21,36 +21,14 @@
  */
 
 /**
- * \file CollisionReactionComponent.h
+ * \file CollisionReactionComponent.cpp
  * \brief The collision reaction component
  */
 
-#pragma once
+#include <include/game/component/CollisionReactionComponent.h>
 
-#include <include/game/component/Component.h>
-
-/**
- * The collision reaction component for paper craft, this class is the
- * base class of the collision reaction component
- */
-class PCollisionReactionComponent : public PComponent {
-public:
-	PCollisionReactionComponent() = default;
-	~PCollisionReactionComponent() override = default;
-
-public:
-	PString GetID() const override {
-		return "collision_reaction";
+void PCollisionReactionComponent::CalculateCollision(PComponentObjectInterface *Interface) {
+	if (Interface->HasProperty("velocity_vector")) {
+		ICollisionCalculating(Interface);
 	}
-
-public:
-	/**
-	 * Calculate the collision, if the object has the velocity property, it will adjust the
-	 * velocity property
-	 * @param Interface The interface of the object
-	 */
-	void CalculateCollision(PComponentObjectInterface *Interface);
-
-private:
-	virtual void ICollisionCalculating(PComponentObjectInterface *Interface) = 0;
-};
+}

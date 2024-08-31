@@ -20,8 +20,6 @@ public:
 	~PBlockHitboxComponents() override = default;
 
 public:
-	RECT HitBox() override;
-
 	bool IsOverlap(const RECT& hitbox);
 
 private:

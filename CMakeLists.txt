@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.29)
 project(PaperCraft)
 
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /SUBSYSTEM:WINDOWS")
 
 add_link_options(/SUBSYSTEM:WINDOWS)
@@ -42,7 +42,11 @@ add_executable(PaperCraft main.cpp ${PaperHeader} ${PaperSource}
         include/game/manager/CollisionManager.h
         source/game/manager/CollisionManager.cpp
         include/game/component/VelocityComponent.h
-        include/game/component/CollisionReactionComponent.h)
+        include/game/component/CollisionReactionComponent.h
+        include/game/component/PauseCollisionComponent.h
+        source/game/component/CollisionReactionComponent.cpp
+        source/game/component/PauseCollisionComponent.cpp
+        source/game/component/VelocityComponent.cpp)
 
 target_link_libraries(PaperCraft PRIVATE LibPRenderer)
 

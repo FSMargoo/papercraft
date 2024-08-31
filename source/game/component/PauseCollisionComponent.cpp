@@ -21,36 +21,18 @@
  */
 
 /**
- * \file CollisionReactionComponent.h
- * \brief The collision reaction component
+ * \file PauseCollisionComponent.cpp
+ * \brief The reaction component of the collision, which will freeze the object
  */
 
-#pragma once
+#include <include/game/component/PauseCollisionComponent.h>
 
-#include <include/game/component/Component.h>
+#include <typeinfo>
 
-/**
- * The collision reaction component for paper craft, this class is the
- * base class of the collision reaction component
- */
-class PCollisionReactionComponent : public PComponent {
-public:
-	PCollisionReactionComponent() = default;
-	~PCollisionReactionComponent() override = default;
+void PPauseCollisionComponent::ICollisionCalculating(PComponentObjectInterface *Interface) {
+	auto velocity			  = Interface->GetProperty<vecmath::Vector<float>>("velocity_vector");
+	auto accelerationVelocity = Interface->GetProperty<vecmath::Vector<float>>("acceleration_velocity_vector");
 
-public:
-	PString GetID() const override {
-		return "collision_reaction";
-	}
-
-public:
-	/**
-	 * Calculate the collision, if the object has the velocity property, it will adjust the
-	 * velocity property
-	 * @param Interface The interface of the object
-	 */
-	void CalculateCollision(PComponentObjectInterface *Interface);
-
-private:
-	virtual void ICollisionCalculating(PComponentObjectInterface *Interface) = 0;
-};
+	*velocity			  = vecmath::Vector<float>(0.f, 0.f, 0.f);
+	*accelerationVelocity = vecmath::Vector<float>(0.f, 0.f, 0.f);
+}

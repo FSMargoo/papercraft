@@ -80,13 +80,16 @@ public:
 		return static_cast<Type *>(_list[Id]);
 	}
 
-	template <class Type> Type *GetProperty(PString Id) {
-		return static_cast<Type *>(_propertyMap[Id]);
+	bool HasProperty(const PString &Id) override {
+		return _propertyMap.find(Id) != _propertyMap.end();
 	}
 
 private:
 	void IRegisterVoidProperty(void *Pointer, const PString &Id) override {
 		_propertyMap.insert({Id, Pointer});
+	}
+	void *IGetVoidProperty(const PString &Id) override {
+		return _propertyMap[Id];
 	}
 
 public:

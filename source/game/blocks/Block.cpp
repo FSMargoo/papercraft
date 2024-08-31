@@ -5,10 +5,6 @@
 
 #include <include/game/Blocks/Block.h>
 
-RECT PBlockHitboxComponents::HitBox() {
-	return hitbox;
-}
-
 bool PBlockHitboxComponents::IsOverlap(const RECT &rect) {
 	// 判断是否不重叠
 	if (rect.right <= hitbox.left || rect.left >= hitbox.right || rect.bottom <= hitbox.top ||
