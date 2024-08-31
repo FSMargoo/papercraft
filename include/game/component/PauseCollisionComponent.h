@@ -33,5 +33,10 @@
 
 class PPauseCollisionComponent : public PCollisionReactionComponent {
 private:
-	void ICollisionCalculating(PComponentObjectInterface *Interface) override;
+	void ICollisionCalculating(PComponentObjectInterface *Interface, PComponentObjectInterface *Target) override;
+
+private:
+	PComponent *IClone() override {
+		return new PPauseCollisionComponent;
+	}
 };

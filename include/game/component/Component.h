@@ -98,12 +98,31 @@ public:
 	virtual void	OnPropertyRegistering(PComponentObjectInterface *Interface) {
 	}
 
+public:
 	/**
 	 * Whether this component attend the light rendering
 	 * @return If the value is false, it dose not attend the light rendering
 	 */
 	virtual bool IsLuminous() {
 		return false;
+	}
+
+public:
+	/**
+	 * Clone the component which bound to the specified object
+	 * @tparam Type The type of the clone component
+	 * @param Object The object to be bound with
+	 * @return The new object
+	 */
+	template<class Type>
+		requires std::is_base_of_v<PComponent, Type>
+	Type *Clone(PComponentObjectInterface *Object) {
+		auto clonedPointer = static_cast<Type*>(IClone());
+		
+		Object->RegisterProperty(clonedPointer, GetID());
+
+		clonedPointer->OnPropertyRegistering(Object);
+		return clonedPointer;
 	}
 
 public:
@@ -117,4 +136,7 @@ public:
 	Type *Cast() {
 		return static_cast<Type *>(this);
 	}
+
+private:
+	virtual PComponent *IClone() = 0;
 };

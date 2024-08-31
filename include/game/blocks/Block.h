@@ -11,21 +11,6 @@
 
 #include <vector>
 
-/*
- * Yeah, that is actually the "block" hitbox
- */
-class PBlockHitboxComponents : public PComponent {
-public:
-	PBlockHitboxComponents()		   = default;
-	~PBlockHitboxComponents() override = default;
-
-public:
-	bool IsOverlap(const RECT& hitbox);
-
-private:
-	RECT hitbox;
-};
-
 /**
  * The concept of the PBlock type, which has the legit Clone function
  */
@@ -155,6 +140,9 @@ public:
 	[[nodiscard]] virtual float GetLightLevel() const {
 		return 0.;
 	}
+	[[nodiscard]] const PString& GetID() const {
+		return _id;
+	}
 
 public:
 	/** Clone the block with the specified position
@@ -166,8 +154,7 @@ public:
 	template<class Type>
 		requires PBlockTypeHasClone<Type> and std::is_base_of_v<PBlock, Type>
 	Type *Clone(const int &X, const int &Y) {
-		auto object	  = Type::Clone(static_cast<Type *>(this), X, Y);
-		object->_list = _list;
+		auto object = Type::Clone(static_cast<Type *>(this), X, Y);
 
 		return object;
 	}

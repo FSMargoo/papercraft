@@ -43,6 +43,17 @@ public:
 	void OnPropertyRegistering(PComponentObjectInterface *Interface) override;
 
 private:
-	vecmath::Vector<float> *_velocity;
-	vecmath::Vector<float> *_accelerationVelocity;
+	vecmath::Vector<float> *_velocity			  = nullptr;
+	vecmath::Vector<float> *_accelerationVelocity = nullptr;
+
+private:
+	PComponent *IClone() override {
+		auto cloneObject = new PVelocityComponent;
+
+		cloneObject->_velocity			   = new vecmath::Vector<float>;
+		cloneObject->_accelerationVelocity = new vecmath::Vector<float>;
+
+		*cloneObject->_velocity				= *_velocity;
+		*cloneObject->_accelerationVelocity = *_accelerationVelocity;
+	}
 };

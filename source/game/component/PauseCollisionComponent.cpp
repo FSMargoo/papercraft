@@ -29,7 +29,7 @@
 
 #include <typeinfo>
 
-void PPauseCollisionComponent::ICollisionCalculating(PComponentObjectInterface *Interface) {
+void PPauseCollisionComponent::ICollisionCalculating(PComponentObjectInterface *Interface, PComponentObjectInterface *Target) {
 	auto velocity			  = Interface->GetProperty<vecmath::Vector<float>>("velocity_vector");
 	auto accelerationVelocity = Interface->GetProperty<vecmath::Vector<float>>("acceleration_velocity_vector");
 

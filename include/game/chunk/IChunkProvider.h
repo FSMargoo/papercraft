@@ -21,36 +21,15 @@
  */
 
 /**
- * \file CollisionComponent.h
- * \brief The collision component
+ * \file IChunkProvider.h
+ * \brief The chunk provider interface
  */
 
 #pragma once
 
-#include <include/game/component/Component.h>
+#include <include/game/blocks/Block.h>
 
-/**
- * The component of the HitBox
- */
-class PCollisionComponent : public PComponent {
+class PChunkProviderInterface {
 public:
-	PCollisionComponent() = default;
-	~PCollisionComponent() override = default;
 
-public:
-	PString GetID() const override {
-		return "collision";
-	}
-
-public:
-	/**
-	 * Judge whether two hitbox was overlapped
-	 * @return If two hitbox are overlapped, returning true, nor false
-	 */
-	bool Overlap(RECT& HitBox1, RECT &HitBox2) const;
-
-private:
-	PComponent *IClone() override {
-		return new PCollisionComponent;
-	}
 };

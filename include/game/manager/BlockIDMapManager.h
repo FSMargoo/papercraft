@@ -21,36 +21,34 @@
  */
 
 /**
- * \file CollisionComponent.h
- * \brief The collision component
+ * \file BlockIDMapManager.h
+ * \brief The id mapping manager of the block
  */
 
 #pragma once
 
-#include <include/game/component/Component.h>
+#include <include/String.h>
 
-/**
- * The component of the HitBox
- */
-class PCollisionComponent : public PComponent {
-public:
-	PCollisionComponent() = default;
-	~PCollisionComponent() override = default;
+#include <filesystem>
+#include <unordered_map>
 
+class PBlockIDMapManager {
 public:
-	PString GetID() const override {
-		return "collision";
-	}
+	PBlockIDMapManager();
 
 public:
-	/**
-	 * Judge whether two hitbox was overlapped
-	 * @return If two hitbox are overlapped, returning true, nor false
-	 */
-	bool Overlap(RECT& HitBox1, RECT &HitBox2) const;
+	unsigned int GetHash(const PString &ID);
+	PString GetID(const unsigned int &Hash);
 
 private:
-	PComponent *IClone() override {
-		return new PCollisionComponent;
-	}
+	/**
+	 * Calculate the hash value of the string
+	 * @param Input The Input string
+	 * @return The hash value
+	 */
+	unsigned int HashValue(const PString &Input);
+
+private:
+	std::unordered_map<unsigned int, PString> _mapping;
+	std::unordered_map<PString, unsigned int> _reserveMapping;
 };

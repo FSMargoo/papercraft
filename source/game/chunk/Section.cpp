@@ -21,36 +21,12 @@
  */
 
 /**
- * \file CollisionComponent.h
- * \brief The collision component
+ * \file Section.cpp
+ * \brief The section structure of the game
  */
 
-#pragma once
+#include <include/game/chunk/Section.h>
 
-#include <include/game/component/Component.h>
+PSection::PSection(std::vector<PBlock *> BlockList, const int &X) : Block(std::move(BlockList)), _x(X) {
 
-/**
- * The component of the HitBox
- */
-class PCollisionComponent : public PComponent {
-public:
-	PCollisionComponent() = default;
-	~PCollisionComponent() override = default;
-
-public:
-	PString GetID() const override {
-		return "collision";
-	}
-
-public:
-	/**
-	 * Judge whether two hitbox was overlapped
-	 * @return If two hitbox are overlapped, returning true, nor false
-	 */
-	bool Overlap(RECT& HitBox1, RECT &HitBox2) const;
-
-private:
-	PComponent *IClone() override {
-		return new PCollisionComponent;
-	}
-};
+}

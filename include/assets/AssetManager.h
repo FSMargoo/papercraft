@@ -9,7 +9,6 @@
 #include <unordered_map>
 
 #include "../mic/MCIManager.h"
-
 #include "../EasyXBase.h"
 
 /**

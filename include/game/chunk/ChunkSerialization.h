@@ -21,36 +21,46 @@
  */
 
 /**
- * \file CollisionComponent.h
- * \brief The collision component
+ * \file ChunkSerialization.h
+ * \brief The serialization tool for chunk structure
  */
 
 #pragma once
 
-#include <include/game/component/Component.h>
+#include <include/game/chunk/Chunk.h>
+#include <include/singleton/Singleton.h>
+#include <include/game/manager/BlockIDMapManager.h>
 
-/**
- * The component of the HitBox
- */
-class PCollisionComponent : public PComponent {
-public:
-	PCollisionComponent() = default;
-	~PCollisionComponent() override = default;
+#include <fstream>
 
+constexpr short PBN_MapMagicNumber = 0xfa;
+constexpr short PBN_MapVersion	   = 0xf1;
+constexpr short PBN_ChunkStart	   = 0x01;
+constexpr short PBN_SectionStart   = 0x02;
+constexpr short PBN_ChunkEnd	   = 0x03;
+constexpr short PBN_SectionEnd	   = 0x04;
+constexpr short PBN_Empty		   = 0xb0;
+
+class PChunkSerializationChunkSizeOverflow : public std::exception {
 public:
-	PString GetID() const override {
-		return "collision";
+	PChunkSerializationChunkSizeOverflow() {
+		_info = "PChunkSerialization failed: Chunk size overflow, it should not greater than 32!";
 	}
 
-public:
-	/**
-	 * Judge whether two hitbox was overlapped
-	 * @return If two hitbox are overlapped, returning true, nor false
-	 */
-	bool Overlap(RECT& HitBox1, RECT &HitBox2) const;
+	const char *what() const throw() override {
+		return _info.c_str();
+	}
 
 private:
-	PComponent *IClone() override {
-		return new PCollisionComponent;
-	}
+	PString _info;
+};
+
+class PChunkSerialization {
+public:
+	/**
+	 * Serialize a chunk and write into std::ofstream
+	 * @param Stream The stream to be written
+	 * @param ChunkList The chunk list
+	 */
+	static void Serialization(std::ofstream &Stream, const std::vector<PChunk *> &ChunkList);
 };

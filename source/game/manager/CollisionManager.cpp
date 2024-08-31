@@ -33,11 +33,28 @@ void PCollisionManager::CalculateCollision() {
 	}
 
 	for (auto object1 = ObjectList.begin(), object2 = object1 + 1; object1 != ObjectList.end(); ++object1, ++object2) {
+		PCollisionReactionComponent *object1Reaction = nullptr;
+		PCollisionReactionComponent *object2Reaction = nullptr;
+		for (auto &component : *(*object1)) {
+			if (component.first == "collision_reaction") {
+				object1Reaction = component.second->Cast<PCollisionReactionComponent>();
+			}
+		}
+		for (auto &component : *(*object2)) {
+			if (component.first == "collision_reaction") {
+				object2Reaction = component.second->Cast<PCollisionReactionComponent>();
+			}
+		}
 		for (auto &component : *(*object1)) {
 			if (component.first == "collision") {
 				auto collisionComponent = component.second->Cast<PCollisionComponent>();
 				if (collisionComponent->Overlap((*object1)->Bound, (*object2)->Bound)) {
-
+					if (object1Reaction != nullptr) {
+						object1Reaction->CalculateCollision(*object1, *object2);
+					}
+					if (object2Reaction != nullptr) {
+						object2Reaction->CalculateCollision(*object2, *object1);
+					}
 				}
 			}
 		}

@@ -72,4 +72,13 @@ public:
 public:
 	float	Level;
 	SkColor Color;
+
+private:
+	PComponent *IClone() override {
+		auto cloneObject = new PLightSourceComponent;
+		cloneObject->Level = Level;
+		cloneObject->Color = Color;
+
+		return cloneObject;
+	}
 };

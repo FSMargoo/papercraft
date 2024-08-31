@@ -46,7 +46,16 @@ add_executable(PaperCraft main.cpp ${PaperHeader} ${PaperSource}
         include/game/component/PauseCollisionComponent.h
         source/game/component/CollisionReactionComponent.cpp
         source/game/component/PauseCollisionComponent.cpp
-        source/game/component/VelocityComponent.cpp)
+        source/game/component/VelocityComponent.cpp
+        include/game/manager/BlockIDMapManager.h
+        source/game/manager/BlockIDMapManager.cpp
+        include/game/chunk/Section.h
+        source/game/chunk/Section.cpp
+        include/game/chunk/IChunkProvider.h
+        include/game/chunk/Chunk.h
+        source/game/chunk/Chunk.cpp
+        include/game/chunk/ChunkSerialization.h
+        source/game/chunk/ChunkSerialization.cpp)
 
 target_link_libraries(PaperCraft PRIVATE LibPRenderer)
 

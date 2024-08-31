@@ -21,36 +21,27 @@
  */
 
 /**
- * \file CollisionComponent.h
- * \brief The collision component
+ * \file Chunk.h
+ * \brief The chunk structure in paper craft
  */
 
 #pragma once
 
-#include <include/game/component/Component.h>
+#include <include/game/chunk/Section.h>
 
-/**
- * The component of the HitBox
- */
-class PCollisionComponent : public PComponent {
+class PChunk {
 public:
-	PCollisionComponent() = default;
-	~PCollisionComponent() override = default;
+	explicit PChunk(std::vector<PSection *> Sections, const int &X);
+	~PChunk();
 
 public:
-	PString GetID() const override {
-		return "collision";
+	[[nodiscard]] int GetX() const {
+		return _x;
 	}
 
 public:
-	/**
-	 * Judge whether two hitbox was overlapped
-	 * @return If two hitbox are overlapped, returning true, nor false
-	 */
-	bool Overlap(RECT& HitBox1, RECT &HitBox2) const;
+	std::vector<PSection *> SectionList;
 
 private:
-	PComponent *IClone() override {
-		return new PCollisionComponent;
-	}
+	int _x;
 };

@@ -27,8 +27,9 @@
 
 #pragma once
 
-#include <include/game/component/CollisionComponent.h>
 #include <include/game/object/Object.h>
+#include <include/game/component/CollisionComponent.h>
+#include <include/game/component/CollisionReactionComponent.h>
 
 /*+
  * The collision manager of the game, this manager will update the velocity status of the

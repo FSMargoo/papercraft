@@ -27,8 +27,8 @@
 
 #include <include/game/component/CollisionReactionComponent.h>
 
-void PCollisionReactionComponent::CalculateCollision(PComponentObjectInterface *Interface) {
+void PCollisionReactionComponent::CalculateCollision(PComponentObjectInterface *Interface, PComponentObjectInterface *Target) {
 	if (Interface->HasProperty("velocity_vector")) {
-		ICollisionCalculating(Interface);
+		ICollisionCalculating(Interface, Target);
 	}
 }

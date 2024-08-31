@@ -48,9 +48,10 @@ public:
 	 * Calculate the collision, if the object has the velocity property, it will adjust the
 	 * velocity property
 	 * @param Interface The interface of the object
+	 * @param Target The object collided with
 	 */
-	void CalculateCollision(PComponentObjectInterface *Interface);
+	void CalculateCollision(PComponentObjectInterface *Interface, PComponentObjectInterface *Target);
 
 private:
-	virtual void ICollisionCalculating(PComponentObjectInterface *Interface) = 0;
+	virtual void ICollisionCalculating(PComponentObjectInterface *Interface, PComponentObjectInterface *Target) = 0;
 };

@@ -32,8 +32,8 @@ PVelocityComponent::~PVelocityComponent() {
 	delete _accelerationVelocity;
 }
 void PVelocityComponent::OnPropertyRegistering(PComponentObjectInterface *Interface) {
-	_velocity			  = new vecmath::Vector<float>();
-	_accelerationVelocity = new vecmath::Vector<float>();
+	_velocity			  = _velocity == nullptr ? new vecmath::Vector<float>() : _velocity;
+	_accelerationVelocity = _accelerationVelocity == nullptr ? new vecmath::Vector<float>() : _accelerationVelocity;
 
 	Interface->RegisterProperty(_velocity, "velocity_vector");
 	Interface->RegisterProperty(_accelerationVelocity, "acceleration_velocity_vector");
