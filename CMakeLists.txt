@@ -55,7 +55,11 @@ add_executable(PaperCraft main.cpp ${PaperHeader} ${PaperSource}
         include/game/chunk/Chunk.h
         source/game/chunk/Chunk.cpp
         include/game/chunk/ChunkSerialization.h
-        source/game/chunk/ChunkSerialization.cpp)
+        source/game/chunk/ChunkSerialization.cpp
+        include/game/manager/BlockManager.h
+        source/game/manager/BlockManager.cpp
+        include/game/entity/Entity.h
+        source/entity/Entity.cpp)
 
 target_link_libraries(PaperCraft PRIVATE LibPRenderer)
 

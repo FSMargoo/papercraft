@@ -29,6 +29,7 @@
 
 #include <include/game/chunk/Chunk.h>
 #include <include/singleton/Singleton.h>
+#include <include/game/manager/BlockManager.h>
 #include <include/game/manager/BlockIDMapManager.h>
 
 #include <fstream>
@@ -40,11 +41,25 @@ constexpr short PBN_SectionStart   = 0x02;
 constexpr short PBN_ChunkEnd	   = 0x03;
 constexpr short PBN_SectionEnd	   = 0x04;
 constexpr short PBN_Empty		   = 0xb0;
+constexpr short PBN_FileEnd		   = 0xc0;
 
 class PChunkSerializationChunkSizeOverflow : public std::exception {
 public:
 	PChunkSerializationChunkSizeOverflow() {
-		_info = "PChunkSerialization failed: Chunk size overflow, it should not greater than 32!";
+		_info = "PChunkSerialization failure: Chunk size overflow, it should not greater than 32!";
+	}
+
+	const char *what() const throw() override {
+		return _info.c_str();
+	}
+
+private:
+	PString _info;
+};
+class PChunkDeserializationFailure : public std::exception {
+public:
+	PChunkDeserializationFailure(const PString &Info) {
+		_info = ostr::format(R"(PChunkDeserialization failure: {})", Info);
 	}
 
 	const char *what() const throw() override {
@@ -62,5 +77,14 @@ public:
 	 * @param Stream The stream to be written
 	 * @param ChunkList The chunk list
 	 */
-	static void Serialization(std::ofstream &Stream, const std::vector<PChunk *> &ChunkList);
+	static void Serialize(std::ofstream &Stream, const std::vector<PChunk *> &ChunkList);
+};
+class PChunkDeserialization {
+public:
+	/**
+	 * Deserialize a chunk and write into std::ofstream
+	 * @param Stream The stream to be read
+	 * @return The chunk list
+	 */
+	static std::vector<PChunk *> Deserialize(std::ifstream &Stream);
 };

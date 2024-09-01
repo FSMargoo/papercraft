@@ -21,17 +21,36 @@
  */
 
 /**
- * \file IChunkProvider.h
- * \brief The chunk provider interface
+ * \file BlockManager.h
+ * \brief The manager of the blocks, it will store a set of the parent instance of blocks
  */
 
 #pragma once
 
+#include <include/String.h>
 #include <include/game/blocks/Block.h>
-#include <include/game/chunk/Chunk.h>
 
-class PChunkProviderInterface {
+#include <unordered_map>
+
+class PBlockManager {
 public:
-	virtual PChunk *GetChunkAt(const int &X) = 0;
-	virtual PChunk *GetChunkInRange(const int &XLeft ,const int &XRight) = 0;
+	PBlockManager() = default;
+	~PBlockManager() = default;
+
+public:
+	/**
+	 * Register a block into the manager
+	 * @param ID The ID of the block
+	 * @param Block The pointer to the block
+	 */
+	void Register(const PString &ID, PBlock *Block);
+	/**
+	 * Get a parent instance of the block in the specified ID
+	 * @param ID The ID of the block
+	 * @return The block parent pointer
+	 */
+	PBlock *GetBlockParent(const PString &ID);
+
+private:
+	std::unordered_map<PString, PBlock*> _blockMapping;
 };

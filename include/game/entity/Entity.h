@@ -21,17 +21,15 @@
  */
 
 /**
- * \file IChunkProvider.h
- * \brief The chunk provider interface
+ * \file Entity.h
+ * \brief The entity class in paper craft
  */
 
 #pragma once
 
-#include <include/game/blocks/Block.h>
-#include <include/game/chunk/Chunk.h>
+#include <include/game/object/Object.h>
 
-class PChunkProviderInterface {
+class PEntity final : public PObject {
 public:
-	virtual PChunk *GetChunkAt(const int &X) = 0;
-	virtual PChunk *GetChunkInRange(const int &XLeft ,const int &XRight) = 0;
+	PEntity();
 };

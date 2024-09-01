@@ -37,6 +37,12 @@ public:
 	 * @return The const pointer referred to the item of the block
 	 */
 	PImage *GetItem(const PString &Id);
+	/*
+	 * Get the hud texture by the item id
+	 * @param Id The id of the hud
+	 * @return The const pointer referred to the item of the block
+	 */
+	PImage *GetHud(const PString &Id);
 	/**
 	 * Get the sound file path by the id of the sound
 	 * @param Id The id of the sound
@@ -72,6 +78,7 @@ private:
 private:
 	std::unordered_map<PString, PImage *>		_blockAssets;
 	std::unordered_map<PString, PImage *>		_itemAssets;
+	std::unordered_map<PString, PImage *>		_hudAssets;
 	std::unordered_map<PString, PString>		_miscAssets;
 	std::unordered_map<PString, PMCIInstance *> _miscInstance;
 };

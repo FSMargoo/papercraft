@@ -69,7 +69,7 @@ public:
 		PComponent *component = new Type(parameter...);
 		auto		Id		  = component->GetID();
 		if (_list.find(Id) != _list.end()) {
-			throw new PObjectComponentRegisterFailure(
+			throw PObjectComponentRegisterFailure(
 				"Component ID repeating, trying to register two same component in one object?");
 		}
 		_list.insert({Id, component});

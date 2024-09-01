@@ -21,17 +21,15 @@
  */
 
 /**
- * \file IChunkProvider.h
- * \brief The chunk provider interface
+ * \file BlockManager.cpp
+ * \brief The manager of the blocks, it will store a set of the parent instance of blocks
  */
 
-#pragma once
+#include <include/game/manager/BlockManager.h>
 
-#include <include/game/blocks/Block.h>
-#include <include/game/chunk/Chunk.h>
-
-class PChunkProviderInterface {
-public:
-	virtual PChunk *GetChunkAt(const int &X) = 0;
-	virtual PChunk *GetChunkInRange(const int &XLeft ,const int &XRight) = 0;
-};
+void PBlockManager::Register(const PString &ID, PBlock *Block) {
+	_blockMapping.insert({ID, Block});
+}
+PBlock *PBlockManager::GetBlockParent(const PString &ID) {
+	return _blockMapping[ID];
+}
