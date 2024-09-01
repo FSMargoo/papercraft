@@ -21,29 +21,18 @@
  */
 
 /**
- * \file Renderer.h
- * \brief The renderer of the paper craft
+ * \file PauseCollisionComponent.cpp
+ * \brief The reaction component of the collision, which will freeze the object
  */
 
-#pragma once
+#include <include/game/component/PauseCollisionComponent.h>
 
-#include "include/game/component/LightSourceComponent.h"
-#include <include/renderer/BlendRender.h>
-#include <include/renderer/BlockRender.h>
-#include <include/renderer/BloomRender.h>
-#include <include/renderer/LightRenderer.h>
+#include <typeinfo>
 
-/**
- * The renderer of the PaperCraft
- */
-class PRenderer {
-public:
-	/**
-	 * Construct the renderer by the parameter
-	 * @param Width The width of the renderer window
-	 * @param Height The height of the renderer window
-	 * @param Surface The surface of the OpenGL surface
-	 * @param Map The map of the blocks
-	 */
-	static sk_sp<SkImage> Render(const int &Width, const int &Height, sk_sp<VSurface> &GLSurface, PBlockMap *Map);
-};
+void PPauseCollisionComponent::ICollisionCalculating(PComponentObjectInterface *Interface, PComponentObjectInterface *Target) {
+	auto velocity			  = Interface->GetProperty<vecmath::Vector<float>>("velocity_vector");
+	auto accelerationVelocity = Interface->GetProperty<vecmath::Vector<float>>("acceleration_velocity_vector");
+
+	*velocity			  = vecmath::Vector<float>(0.f, 0.f, 0.f);
+	*accelerationVelocity = vecmath::Vector<float>(0.f, 0.f, 0.f);
+}

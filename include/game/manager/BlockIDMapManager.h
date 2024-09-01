@@ -21,29 +21,34 @@
  */
 
 /**
- * \file Renderer.h
- * \brief The renderer of the paper craft
+ * \file BlockIDMapManager.h
+ * \brief The id mapping manager of the block
  */
 
 #pragma once
 
-#include "include/game/component/LightSourceComponent.h"
-#include <include/renderer/BlendRender.h>
-#include <include/renderer/BlockRender.h>
-#include <include/renderer/BloomRender.h>
-#include <include/renderer/LightRenderer.h>
+#include <include/String.h>
 
-/**
- * The renderer of the PaperCraft
- */
-class PRenderer {
+#include <filesystem>
+#include <unordered_map>
+
+class PBlockIDMapManager {
 public:
+	PBlockIDMapManager();
+
+public:
+	unsigned int GetHash(const PString &ID);
+	PString GetID(const unsigned int &Hash);
+
+private:
 	/**
-	 * Construct the renderer by the parameter
-	 * @param Width The width of the renderer window
-	 * @param Height The height of the renderer window
-	 * @param Surface The surface of the OpenGL surface
-	 * @param Map The map of the blocks
+	 * Calculate the hash value of the string
+	 * @param Input The Input string
+	 * @return The hash value
 	 */
-	static sk_sp<SkImage> Render(const int &Width, const int &Height, sk_sp<VSurface> &GLSurface, PBlockMap *Map);
+	unsigned int HashValue(const PString &Input);
+
+private:
+	std::unordered_map<unsigned int, PString> _mapping;
+	std::unordered_map<PString, unsigned int> _reserveMapping;
 };

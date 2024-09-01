@@ -2,6 +2,7 @@
 
 #include <include/game/Game.h>
 #include <include/launcher/Launcher.h>
+#include <include/game/object/Object.h>
 
 int WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	try {

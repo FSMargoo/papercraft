@@ -21,29 +21,37 @@
  */
 
 /**
- * \file Renderer.h
- * \brief The renderer of the paper craft
+ * \file CollisionReactionComponent.h
+ * \brief The collision reaction component
  */
 
 #pragma once
 
-#include "include/game/component/LightSourceComponent.h"
-#include <include/renderer/BlendRender.h>
-#include <include/renderer/BlockRender.h>
-#include <include/renderer/BloomRender.h>
-#include <include/renderer/LightRenderer.h>
+#include <include/game/component/Component.h>
 
 /**
- * The renderer of the PaperCraft
+ * The collision reaction component for paper craft, this class is the
+ * base class of the collision reaction component
  */
-class PRenderer {
+class PCollisionReactionComponent : public PComponent {
+public:
+	PCollisionReactionComponent() = default;
+	~PCollisionReactionComponent() override = default;
+
+public:
+	PString GetID() const override {
+		return "collision_reaction";
+	}
+
 public:
 	/**
-	 * Construct the renderer by the parameter
-	 * @param Width The width of the renderer window
-	 * @param Height The height of the renderer window
-	 * @param Surface The surface of the OpenGL surface
-	 * @param Map The map of the blocks
+	 * Calculate the collision, if the object has the velocity property, it will adjust the
+	 * velocity property
+	 * @param Interface The interface of the object
+	 * @param Target The object collided with
 	 */
-	static sk_sp<SkImage> Render(const int &Width, const int &Height, sk_sp<VSurface> &GLSurface, PBlockMap *Map);
+	void CalculateCollision(PComponentObjectInterface *Interface, PComponentObjectInterface *Target);
+
+private:
+	virtual void ICollisionCalculating(PComponentObjectInterface *Interface, PComponentObjectInterface *Target) = 0;
 };

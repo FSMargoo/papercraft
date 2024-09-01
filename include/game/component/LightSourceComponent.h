@@ -21,29 +21,64 @@
  */
 
 /**
- * \file Renderer.h
- * \brief The renderer of the paper craft
+ * \file LightSourceBlock.h
+ * \brief The light source block base class
  */
 
 #pragma once
 
-#include "include/game/component/LightSourceComponent.h"
-#include <include/renderer/BlendRender.h>
-#include <include/renderer/BlockRender.h>
-#include <include/renderer/BloomRender.h>
-#include <include/renderer/LightRenderer.h>
+#include <include/game/blocks/Block.h>
 
 /**
- * The renderer of the PaperCraft
+ * The shape of light
  */
-class PRenderer {
+enum class PLightShapeType {
+	Rectangle, Circle
+};
+
+/**
+ * The unit of a light source
+ */
+struct PLightUnit {
+	float			Brightness;
+	SkColor			Color;
+	PLightShapeType Shape;
+	float			Radius;
+	float 			Range;
+	float			X;
+	float			Y;
+};
+
+class PLightSourceComponent : public PComponent {
 public:
-	/**
-	 * Construct the renderer by the parameter
-	 * @param Width The width of the renderer window
-	 * @param Height The height of the renderer window
-	 * @param Surface The surface of the OpenGL surface
-	 * @param Map The map of the blocks
-	 */
-	static sk_sp<SkImage> Render(const int &Width, const int &Height, sk_sp<VSurface> &GLSurface, PBlockMap *Map);
+	PLightSourceComponent() = default;
+	~PLightSourceComponent() override = default;
+
+public:
+	PString GetID() const override {
+		return "light_source";
+	}
+
+public:
+	bool IsLuminous() override {
+		return true;
+	}
+
+public:
+	PLightUnit GetUnit(PObject *Object) const {
+		return { .Brightness = 0.4f, .Color = Color, .Shape = PLightShapeType::Rectangle, .Radius = 40 / 2, .Range = 120, .X = static_cast<float>(Object->Bound.left) + 40 / 2, .Y = static_cast<float>(Object->Bound.top) + 40 / 2 };
+	}
+
+public:
+	float	Level;
+	SkColor Color;
+
+private:
+	PComponent *IClone() override {
+		auto cloneObject = new PLightSourceComponent;
+		cloneObject->Level = Level;
+		cloneObject->Color = Color;
+
+		return cloneObject;
+	}
 };

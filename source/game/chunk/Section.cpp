@@ -21,55 +21,12 @@
  */
 
 /**
- * \file LightSourceBlock.h
- * \brief The light source block base class
+ * \file Section.cpp
+ * \brief The section structure of the game
  */
 
-#pragma once
+#include <include/game/chunk/Section.h>
 
-#include <include/game/blocks/Block.h>
+PSection::PSection(std::vector<PBlock *> BlockList, const int &X) : Block(std::move(BlockList)), _x(X) {
 
-/**
- * The shape of light
- */
-enum class PLightShapeType {
-	Rectangle, Circle
-};
-
-/**
- * The unit of a light source
- */
-struct PLightUnit {
-	float			Brightness;
-	SkColor			Color;
-	PLightShapeType Shape;
-	float			Radius;
-	float 			Range;
-	float			X;
-	float			Y;
-};
-
-class PLightSourceComponent : public PComponent {
-public:
-	PLightSourceComponent() = default;
-	~PLightSourceComponent() override = default;
-
-public:
-	PString GetID() const override {
-		return "light_source";
-	}
-
-public:
-	bool IsLuminous() override {
-		return true;
-	}
-
-public:
-	PLightUnit GetUnit(PObject *Object) const {
-		return { .Brightness = 0.4f, .Color = Color, .Shape = PLightShapeType::Rectangle, .Radius = 40 / 2, .Range = 120, .X = static_cast<float>(Object->Bound.left) + 40 / 2, .Y = static_cast<float>(Object->Bound.top) + 40 / 2 };
-	}
-
-public:
-	float	Level;
-	SkColor Color;
-};
+}

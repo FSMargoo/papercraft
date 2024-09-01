@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.29)
 project(PaperCraft)
 
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /SUBSYSTEM:WINDOWS")
 
 add_link_options(/SUBSYSTEM:WINDOWS)
@@ -18,7 +18,7 @@ include_directories(./thirdparty/)
 include_directories(./thirdparty/mINI/src)
 
 add_executable(PaperCraft main.cpp ${PaperHeader} ${PaperSource}
-        include/game/component/Object.h
+        include/game/object/Object.h
         source/game/component/Object.cpp
         include/SkiaPaperBase.h
         source/SkiaPaperBase.cpp
@@ -36,7 +36,30 @@ add_executable(PaperCraft main.cpp ${PaperHeader} ${PaperSource}
         source/renderer/BlendRender.cpp
         include/renderer/Renderer.h
         source/renderer/Renderer.cpp
-        include/game/blocks/LightSourceComponent.h)
+        include/game/component/LightSourceComponent.h
+        include/game/component/CollisionComponent.h
+        source/game/component/CollisionComponent.cpp
+        include/game/manager/CollisionManager.h
+        source/game/manager/CollisionManager.cpp
+        include/game/component/VelocityComponent.h
+        include/game/component/CollisionReactionComponent.h
+        include/game/component/PauseCollisionComponent.h
+        source/game/component/CollisionReactionComponent.cpp
+        source/game/component/PauseCollisionComponent.cpp
+        source/game/component/VelocityComponent.cpp
+        include/game/manager/BlockIDMapManager.h
+        source/game/manager/BlockIDMapManager.cpp
+        include/game/chunk/Section.h
+        source/game/chunk/Section.cpp
+        include/game/chunk/IChunkProvider.h
+        include/game/chunk/Chunk.h
+        source/game/chunk/Chunk.cpp
+        include/game/chunk/ChunkSerialization.h
+        source/game/chunk/ChunkSerialization.cpp
+        include/game/manager/BlockManager.h
+        source/game/manager/BlockManager.cpp
+        include/game/entity/Entity.h
+        source/entity/Entity.cpp)
 
 target_link_libraries(PaperCraft PRIVATE LibPRenderer)
 

@@ -21,29 +21,36 @@
  */
 
 /**
- * \file Renderer.h
- * \brief The renderer of the paper craft
+ * \file BlockManager.h
+ * \brief The manager of the blocks, it will store a set of the parent instance of blocks
  */
 
 #pragma once
 
-#include "include/game/component/LightSourceComponent.h"
-#include <include/renderer/BlendRender.h>
-#include <include/renderer/BlockRender.h>
-#include <include/renderer/BloomRender.h>
-#include <include/renderer/LightRenderer.h>
+#include <include/String.h>
+#include <include/game/blocks/Block.h>
 
-/**
- * The renderer of the PaperCraft
- */
-class PRenderer {
+#include <unordered_map>
+
+class PBlockManager {
+public:
+	PBlockManager() = default;
+	~PBlockManager() = default;
+
 public:
 	/**
-	 * Construct the renderer by the parameter
-	 * @param Width The width of the renderer window
-	 * @param Height The height of the renderer window
-	 * @param Surface The surface of the OpenGL surface
-	 * @param Map The map of the blocks
+	 * Register a block into the manager
+	 * @param ID The ID of the block
+	 * @param Block The pointer to the block
 	 */
-	static sk_sp<SkImage> Render(const int &Width, const int &Height, sk_sp<VSurface> &GLSurface, PBlockMap *Map);
+	void Register(const PString &ID, PBlock *Block);
+	/**
+	 * Get a parent instance of the block in the specified ID
+	 * @param ID The ID of the block
+	 * @return The block parent pointer
+	 */
+	PBlock *GetBlockParent(const PString &ID);
+
+private:
+	std::unordered_map<PString, PBlock*> _blockMapping;
 };

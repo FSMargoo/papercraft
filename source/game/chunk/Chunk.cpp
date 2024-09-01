@@ -21,29 +21,17 @@
  */
 
 /**
- * \file Renderer.h
- * \brief The renderer of the paper craft
+ * \file Chunk.cpp
+ * \brief The chunk structure in paper craft
  */
 
-#pragma once
+#include <include/game/chunk/Chunk.h>
 
-#include "include/game/component/LightSourceComponent.h"
-#include <include/renderer/BlendRender.h>
-#include <include/renderer/BlockRender.h>
-#include <include/renderer/BloomRender.h>
-#include <include/renderer/LightRenderer.h>
+PChunk::PChunk(std::vector<PSection *> Sections, const int &X) : SectionList(std::move(Sections)), _x(X) {
 
-/**
- * The renderer of the PaperCraft
- */
-class PRenderer {
-public:
-	/**
-	 * Construct the renderer by the parameter
-	 * @param Width The width of the renderer window
-	 * @param Height The height of the renderer window
-	 * @param Surface The surface of the OpenGL surface
-	 * @param Map The map of the blocks
-	 */
-	static sk_sp<SkImage> Render(const int &Width, const int &Height, sk_sp<VSurface> &GLSurface, PBlockMap *Map);
-};
+}
+PChunk::~PChunk() {
+	for (auto &ref : SectionList) {
+		delete ref;
+	}
+}

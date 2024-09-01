@@ -8,11 +8,15 @@
 PAssetManager::PAssetManager() {
 	LoadAssets("./assets/textures/blocks", _blockAssets);
 	LoadAssets("./assets/textures/items", _itemAssets);
+	LoadAssets("./assets/textures/hud", _hudAssets);
 
 	AddFontResource(TEXT("./assets/font/minecraft_font.ttf"));
 }
 PImage *PAssetManager::GetBlock(const PString &Id) {
 	return _blockAssets.find(Id)->second;
+}
+PImage *PAssetManager::GetHud(const PString &Id) {
+
 }
 PImage *PAssetManager::GetItem(const PString &Id) {
 	return _itemAssets.find(Id)->second;

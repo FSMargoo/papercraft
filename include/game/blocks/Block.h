@@ -5,28 +5,11 @@
 
 #pragma once
 
+#include "include/game/object/Object.h"
 #include <include/EasyXBase.h>
 #include <include/game/component/Component.h>
-#include <include/game/component/Object.h>
 
 #include <vector>
-
-/*
- * Yeah, that is actually the "block" hitbox
- */
-class PBlockHitboxComponents : public PComponent {
-public:
-	PBlockHitboxComponents()		   = default;
-	~PBlockHitboxComponents() override = default;
-
-public:
-	RECT HitBox() override;
-
-	bool IsOverlap(const RECT& hitbox);
-
-private:
-	RECT hitbox;
-};
 
 /**
  * The concept of the PBlock type, which has the legit Clone function
@@ -70,37 +53,6 @@ protected:
 	 * @param NormalTexture The normal texture of the block
 	 */
 	PBlock(const PString &Id, const int &X, const int &Y, PImage *Texture, PImage *NormalTexture);
-
-public:
-	/** Whether the block is half brick, if the block is half brick,
-	 * the hitbox of the block on vertical will be cut by half
-	 * @return If the block is half brick, return false, nor true
-	 */
-	virtual bool IsHalfBrick() {
-		return false;
-	}
-	/**
-	 * Whether this block is liquid, the block's hitbox will be changed as
-	 * liquid hitbox
-	 * @return If the block is liquid, return true, nor return false
-	 */
-	virtual bool IsLiquid() {
-		return false;
-	}
-	/** Whether this block is plant, if it is, this block can be destroyed by
-	 * water and has only 1 hardness
-	 * @return If the block is
-	 */
-	virtual bool IsPlant() {
-		return false;
-	}
-
-	/**Whether this block is light sources
-	 * @return the level of light, 0 means not a light source.
-	 */
-	virtual bool IsLightSource() {
-		return false;
-	}
 
 public:
 	/**
@@ -157,6 +109,9 @@ public:
 	[[nodiscard]] virtual float GetLightLevel() const {
 		return 0.;
 	}
+	[[nodiscard]] const PString& GetID() const {
+		return _id;
+	}
 
 public:
 	/** Clone the block with the specified position
@@ -168,8 +123,7 @@ public:
 	template<class Type>
 		requires PBlockTypeHasClone<Type> and std::is_base_of_v<PBlock, Type>
 	Type *Clone(const int &X, const int &Y) {
-		auto object	  = Type::Clone(static_cast<Type *>(this), X, Y);
-		object->_list = _list;
+		auto object = Type::Clone(static_cast<Type *>(this), X, Y);
 
 		return object;
 	}
@@ -183,7 +137,12 @@ public:
 	 * @return The new block in PBlock pointer
 	 */
 	static PBlock *Clone(PBlock *Block, const int &X, const int &Y) {
-		return new PBlock(Block->_id, X, Y, Block->_texture, Block->_normalTexture);
+		auto instance = new PBlock(Block->_id, X, Y, Block->_texture, Block->_normalTexture);
+		for (auto &component : Block->_list) {
+			instance->_list.insert({component.first, component.second->Clone<PComponent>(instance)});
+		}
+
+		return instance;
 	}
 
 protected:
