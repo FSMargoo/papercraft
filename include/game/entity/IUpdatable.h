@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023~Now Margoo
+* Copyright (c) 2023~Now Margoo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,17 +21,18 @@
  */
 
 /**
- * \file Entity.h
- * \brief The entity class in paper craft
+ *\file IUpdatable.h
+ * \brief updatable interface
  */
 
 #pragma once
 
-#include <include/game/object/Object.h>
-#include <include/game/entity/IUpdatable.h>
-
-class PEntity final : public PObject ,public ::PIUpdatable {
+class PIUpdatable {
 public:
-	PEntity();
-	virtual ~PEntity() override = default;
+	virtual ~PIUpdatable() = default;
+	virtual void Update(float deltaTime) = 0;
+	virtual void Control() = 0;
 };
+
+
+
