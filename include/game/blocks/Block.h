@@ -152,6 +152,7 @@ protected:
 	PImage *_texture;
 	PImage *_normalTexture;
 };
+<<<<<<< Updated upstream:include/game/blocks/Block.h
 /**
  *  the map of papercraft
  */
@@ -174,3 +175,6 @@ public:
 private:
 	BlockMap _blockMap;
 };
+=======
+
+>>>>>>> Stashed changes:include/game/Block.h

@@ -15,6 +15,7 @@
 #include <include/gui/ProgressBar.h>
 #include <include/gui/TextLabel.h>
 #include <include/singleton/Singleton.h>
+#include <chrono>
 
 /**
  * The game window

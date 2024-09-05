@@ -23,6 +23,7 @@ add_executable(PaperCraft main.cpp ${PaperHeader} ${PaperSource}
         include/SkiaPaperBase.h
         source/SkiaPaperBase.cpp
         include/renderer/BlockRender.h
+<<<<<<< Updated upstream
         source/renderer/BlockRender.cpp
         include/renderer/Camera.h
         source/renderer/Camera.cpp
@@ -61,6 +62,9 @@ add_executable(PaperCraft main.cpp ${PaperHeader} ${PaperSource}
         include/game/entity/Entity.h
         source/game/entity/Entity.cpp
         include/game/entity/IUpdatable.h)
+=======
+        include/game/BlockMap.h)
+>>>>>>> Stashed changes
 
 target_link_libraries(PaperCraft PRIVATE LibPRenderer)
 
