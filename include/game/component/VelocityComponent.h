@@ -55,5 +55,7 @@ private:
 
 		*cloneObject->_velocity				= *_velocity;
 		*cloneObject->_accelerationVelocity = *_accelerationVelocity;
+
+		return cloneObject;
 	}
 };

@@ -16,7 +16,7 @@ PImage *PAssetManager::GetBlock(const PString &Id) {
 	return _blockAssets.find(Id)->second;
 }
 PImage *PAssetManager::GetHud(const PString &Id) {
-
+	return _hudAssets.find(Id)->second;
 }
 PImage *PAssetManager::GetItem(const PString &Id) {
 	return _itemAssets.find(Id)->second;
@@ -55,9 +55,14 @@ void PAssetManager::LoadAssets(const PString &RootPath, std::unordered_map<PStri
 	auto blockPath = std::filesystem::directory_iterator(RootPath.c_str());
 	for (const auto &entry : blockPath) {
 		auto searchPath = entry.path().string();
-		auto id			= entry.path().stem().string();
+		if (entry.is_directory()) {
+			LoadAssets(searchPath.c_str(), AssetContainer);
+		}
+		else {
+			auto id = entry.path().stem().string();
 
-		AssetContainer.insert(std::make_pair<PString, PImage *>(PString(id.c_str()), new PImage(searchPath.c_str())));
+			AssetContainer.insert(std::make_pair<PString, PImage *>(PString(id.c_str()), new PImage(searchPath.c_str())));
+		}
 	}
 }
 PAssetManager::~PAssetManager() {
