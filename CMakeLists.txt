@@ -60,7 +60,9 @@ add_executable(PaperCraft main.cpp ${PaperHeader} ${PaperSource}
         source/game/manager/BlockManager.cpp
         include/game/entity/Entity.h
         source/game/entity/Entity.cpp
-        include/game/entity/IUpdatable.h)
+        include/game/entity/IUpdatable.h
+        source/game/entity/PlayerIUpdatable.cpp
+        include/game/entity/PlayerIUpdatable.h)
 
 target_link_libraries(PaperCraft PRIVATE LibPRenderer)
 

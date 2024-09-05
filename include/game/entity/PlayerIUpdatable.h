@@ -21,19 +21,19 @@
  */
 
 /**
- *\file IUpdatable.h
- * \brief updatable interface
+ * \file PlayerIUpdatable.h
+ * \brief player updatable interface
  */
 
 #pragma once
 
-#include "include/SkiaPaperBase.h"
+#include <include/game/entity/IUpdatable.h>
 
-class PIUpdatable {
+class PlayerIUpdatable : public PIUpdatable {
 public:
-	virtual ~PIUpdatable() = default;
-	virtual void Update(float deltaTime) = 0;
-	virtual void On_Message(const PMessage &Message) = 0;
+	void Update(float deltaTime) override;
+
+	void On_Message(const PMessage &Message) override;
 };
 
 

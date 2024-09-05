@@ -27,9 +27,10 @@
 
 #pragma once
 
+#include "include/SkiaPaperBase.h"
+
 #include <include/game/object/Object.h>
 #include <include/game/entity/IUpdatable.h>
-#include <vecmath/vecmath.hpp>
 
 /**
  * 实体类，委托给IUpdatable处理更新和控制，通过SetIUpatable设置IUpdatable
@@ -50,7 +51,7 @@ public:
 	/**
 	 * 控制逻辑
 	 */
-	void Control();
+	void On_Message(const PMessage &Message);
 
 	/**
 	 * 传入PIUpdatable的子类，以此实现不同的更新、控制逻辑

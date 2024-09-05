@@ -40,11 +40,10 @@ void PEntity::SetIUpatable(PIUpdatable *updatable) {
 	_updatable = updatable;
 }
 
-void PEntity::Control() {
-	if (_updatable) {
-		_updatable->Control();
-	}
+void PEntity::On_Message(const PMessage &Message) {
+	_updatable->On_Message(Message);
 }
+
 
 PEntity::~PEntity() {
 	if (_updatable) {
