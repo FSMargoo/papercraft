@@ -29,9 +29,35 @@
 
 #include <include/game/object/Object.h>
 #include <include/game/entity/IUpdatable.h>
+#include <vecmath/vecmath.hpp>
 
-class PEntity final : public PObject ,public ::PIUpdatable {
+/**
+ * 实体类，委托给IUpdatable处理更新和控制，通过SetIUpatable设置IUpdatable
+ */
+
+class PEntity final : public PObject {
 public:
 	PEntity();
-	virtual ~PEntity() override = default;
+
+	virtual ~PEntity();
+
+	/**
+	 * 更新逻辑
+	 * @param deltaTime 时间间隔
+	 */
+	void Update(float deltaTime);
+
+	/**
+	 * 控制逻辑
+	 */
+	void Control();
+
+	/**
+	 * 传入PIUpdatable的子类，以此实现不同的更新、控制逻辑
+	 * @param updatable
+	 */
+	void SetIUpatable(PIUpdatable *updatable);
+
+private:
+	PIUpdatable *_updatable;
 };

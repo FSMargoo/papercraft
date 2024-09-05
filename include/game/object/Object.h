@@ -63,6 +63,12 @@ public:
 	}
 
 public:
+	/**
+	 * 
+	 * @tparam Type 
+	 * @tparam Parameter 
+	 * @param parameter 
+	 */
 	template <class Type, class... Parameter>
 		requires std::is_base_of_v<PComponent, Type>
 	void RegisterComponent(Parameter... parameter) {

@@ -24,3 +24,30 @@
  * \file Entity.cpp
  * \brief The entity class in paper craft
  */
+
+#include <include/game/entity/Entity.h>
+
+PEntity::PEntity() : _updatable(nullptr) {
+}
+
+void PEntity::Update(float deltaTime) {
+	if (_updatable) {
+		_updatable->Update(deltaTime);
+	}
+}
+
+void PEntity::SetIUpatable(PIUpdatable *updatable) {
+	_updatable = updatable;
+}
+
+void PEntity::Control() {
+	if (_updatable) {
+		_updatable->Control();
+	}
+}
+
+PEntity::~PEntity() {
+	if (_updatable) {
+		delete _updatable;
+	}
+}
