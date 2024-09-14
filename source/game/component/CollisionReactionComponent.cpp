@@ -31,4 +31,31 @@ void PCollisionReactionComponent::CalculateCollision(PComponentObjectInterface *
 	if (Interface->HasProperty("velocity_vector")) {
 		ICollisionCalculating(Interface, Target);
 	}
+
+	vecmath::Point<float>& Position = *Interface->GetProperty<vecmath::Point<float>>("position");
+	vecmath::Point<float>& TargetPosition = *Target->GetProperty<vecmath::Point<float>>("position");
+
+	vecmath::Vector<float> difference = TargetPosition - Position;
+	float distance = difference.length();
+	float radius = 1.0f; // Example radius
+	float penetrationDepth = std::max(0.0f, 2 * radius - distance);
+
+	vecmath::Vector<float>& Normal = *Interface->GetProperty<vecmath::Vector<float>>("normal_vector");
+	Position = Position + Normal * penetrationDepth;
+	TargetPosition = TargetPosition - Normal * penetrationDepth;
+}
+
+
+
+void PCollisionReactionComponent::ICollisionCalculating(PComponentObjectInterface *Interface, PComponentObjectInterface *Target) {
+	vecmath::Vector<float>& Velocity = *Interface->GetProperty<vecmath::Vector<float>>("velocity_vector");
+	vecmath::Vector<float>& TargetVelocity = *Target->GetProperty<vecmath::Vector<float>>("velocity_vector");
+
+	vecmath::Vector<float>& Normal = *Interface->GetProperty<vecmath::Vector<float>>("normal_vector");
+
+	float dotResult = dot(Velocity, Normal);
+	Velocity = Velocity - 2 * dotResult * Normal;
+
+	dotResult = dot(TargetVelocity, Normal);
+	TargetVelocity = TargetVelocity - 2 * dotResult * Normal;
 }

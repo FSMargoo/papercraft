@@ -36,6 +36,10 @@
  * 实体类，委托给IUpdatable处理更新和控制，通过SetIUpatable设置IUpdatable
  */
 
+
+//不知道如何实现渲染，貌似有用到2D骨骼系统
+
+
 class PEntity final : public PObject {
 public:
 	PEntity();

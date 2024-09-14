@@ -28,6 +28,8 @@
 #pragma once
 
 #include <include/game/component/Component.h>
+#include <thirdparty/vecmath/vecmath.hpp>
+#include <thirdparty/vecmath/vecmath_impl.hpp>
 
 /**
  * The collision reaction component for paper craft, this class is the

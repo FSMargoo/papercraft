@@ -22,18 +22,25 @@
 
 /**
  * \file PlayerIUpdatable.h
- * \brief player updatable interface
+ * \brief player IUpdatable interface
  */
 
 #pragma once
 
 #include <include/game/entity/IUpdatable.h>
+#include <include/game/entity/Entity.h>
 
 class PlayerIUpdatable : public PIUpdatable {
 public:
 	void Update(float deltaTime) override;
 
 	void On_Message(const PMessage &Message) override;
+
+	void SetPlayerEntity(PEntity *PlayerEntity);
+
+protected:
+	PEntity *_playerEntity = nullptr;
+
 };
 
 
