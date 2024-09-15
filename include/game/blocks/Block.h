@@ -152,6 +152,7 @@ protected:
 	PImage *_texture;
 	PImage *_normalTexture;
 };
+
 /**
  *  the map of papercraft
  */
